@@ -18,7 +18,11 @@
   },
   "name":"Lightning Bolt",
   "resources":[
+    {"id":{"name":"obj_controler","path":"objects/obj_controler/obj_controler.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"id":{"name":"PerlinNoise","path":"scripts/PerlinNoise/PerlinNoise.yy",},},
+    {"id":{"name":"Utils","path":"scripts/Utils/Utils.yy",},},
+    {"id":{"name":"shd_perlin_noise_glsl_es","path":"shaders/shd_perlin_noise_glsl_es/shd_perlin_noise_glsl_es.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
