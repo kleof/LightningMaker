@@ -1,6 +1,6 @@
 {
   "$GMAnimCurve":"",
-  "%Name":"ac_gradient",
+  "%Name":"ac_smoothing",
   "channels":[
     {"$GMAnimCurveChannel":"","%Name":"rapid","colour":4290799884,"name":"rapid","points":[
         {"th0":-0.1,"th1":0.1,"tv0":0.0,"tv1":0.5758514,"x":0.0,"y":0.0,},
@@ -8,7 +8,7 @@
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.9,"y":1.0,},
         {"th0":-0.100000024,"th1":0.1,"tv0":0.57894737,"tv1":0.0,"x":1.0,"y":0.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
-    {"$GMAnimCurveChannel":"","%Name":"smooth","colour":4281083598,"name":"smooth","points":[
+    {"$GMAnimCurveChannel":"","%Name":"gentle","colour":4281083598,"name":"gentle","points":[
         {"th0":-0.1,"th1":0.1,"tv0":0.0,"tv1":0.5758514,"x":0.0,"y":0.0,},
         {"th0":-0.014987715,"th1":0.14619164,"tv0":0.0,"tv1":0.0,"x":0.4,"y":1.0,},
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.6,"y":1.0,},
@@ -26,7 +26,7 @@
         {"th0":-0.030272782,"th1":0.04360388,"tv0":0.017132863,"tv1":-0.024677591,"x":0.9103194,"y":0.23810369,},
         {"th0":-0.018696189,"th1":0.1,"tv0":0.0,"tv1":0.0,"x":1.0,"y":0.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
-    {"$GMAnimCurveChannel":"","%Name":"variance","colour":4279234797,"name":"variance","points":[
+    {"$GMAnimCurveChannel":"","%Name":"rapid2","colour":4279234797,"name":"rapid2","points":[
         {"th0":-0.1,"th1":0.05,"tv0":0.0,"tv1":0.5758514,"x":0.0,"y":0.0,},
         {"th0":-0.014987715,"th1":0.14619164,"tv0":0.0,"tv1":0.0,"x":0.05,"y":1.0,},
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.95,"y":1.0,},
@@ -34,7 +34,7 @@
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
   ],
   "function":2,
-  "name":"ac_gradient",
+  "name":"ac_smoothing",
   "parent":{
     "name":"Lightning Bolt",
     "path":"Lightning Bolt.yyp",

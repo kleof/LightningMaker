@@ -1,6 +1,6 @@
 randomize();
-gradient = animcurve_get_channel(ac_gradient, 1);
-variance = animcurve_get_channel(ac_gradient, "variance");
+smoothing_base = animcurve_get_channel(ac_smoothing, "gentle");
+smoothing_secondary = animcurve_get_channel(ac_smoothing, "rapid2");
 
 start_p = new Point(100, 300);
 end_p = new Point(800, 300);

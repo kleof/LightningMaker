@@ -24,7 +24,7 @@
   },
   "name":"Lightning Bolt",
   "resources":[
-    {"id":{"name":"ac_gradient","path":"animcurves/ac_gradient/ac_gradient.yy",},},
+    {"id":{"name":"ac_smoothing","path":"animcurves/ac_smoothing/ac_smoothing.yy",},},
     {"id":{"name":"EaseFastToSlow","path":"animcurves/EaseFastToSlow/EaseFastToSlow.yy",},},
     {"id":{"name":"EaseHeartbeat","path":"animcurves/EaseHeartbeat/EaseHeartbeat.yy",},},
     {"id":{"name":"EaseMidSlow","path":"animcurves/EaseMidSlow/EaseMidSlow.yy",},},
