@@ -4,41 +4,32 @@ function remap(_value, _value_min, _value_max, _target_min, _target_max) {
     return (((_value - _value_min) / (_value_max - _value_min)) * (_target_max - _target_min)) + _target_min;
 }
 
-function Point(_x, _y) constructor {
-	x = _x;
-	y = _y;
-}
 
-function lightning(x1,y1, x2,y2, segment, density, height, spd) {
-	var smoothing_base = animcurve_get_channel(ac_smoothing, "gentle");
-	var smoothing_secondary = animcurve_get_channel(ac_smoothing, "rapid2");
+function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1) {
+	var smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
+	var smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2");
+	var secondary_noise_strength = .17; // jaggedness
+	var secondary_noise_density_multiplier = 2; // jaggedness
+	var noise_offset = random(1); // hmmmmmm
 	
 	var angle = point_direction(x1,y1, x2,y2);
 	var dist = point_distance(x1,y1, x2,y2);
-	var num = floor(dist / segment);
-	segment = dist / num;
+	var num = max(5, floor(dist / segment)); // Number of points from start to end // Min number of segments: 5
+	segment = dist / num; // In case given segment can't divide distance evenly we resize it
 	
-	var s = 0;
-	var s_secondary = 0;
 	var x_offset = 0;
-	var secondary_noise = 0;
-	var base_noise = 0;
 	var y_offset = 0;
 	
 	for (var i = 1; i <= num; i++) {
-		var prev_s = s;
-		var prev_s_secondary = s_secondary;
 		var prev_x_offset = x_offset;
-		var prev_secondary_noise = secondary_noise;
-		var prev_base_noise = base_noise;
 		var prev_y_offset = y_offset;
 		
-		s = animcurve_channel_evaluate(smoothing_base, (i)/(num));
-		s_secondary = animcurve_channel_evaluate(smoothing_secondary, (i)/(num));
+		var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
+		var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
 		x_offset = i * segment;
-		secondary_noise = perlin_noise(x_offset * density*2, spd);
-		base_noise = perlin_noise(x_offset * density, spd);
-		y_offset = base_noise * height * s + secondary_noise * height/6 * s_secondary;
+		var base_noise = perlin_noise(x_offset * density, spd);
+		var secondary_noise = perlin_noise(x_offset * density * secondary_noise_density_multiplier, spd);
+		y_offset = (base_noise * height * smoothing) + (secondary_noise * height * secondary_noise_strength * smoothing_secondary);
 		
 		var prev_x = x1 + lengthdir_x(prev_x_offset, angle) + lengthdir_x(prev_y_offset, angle+90);
 		var prev_y = y1 + lengthdir_y(prev_x_offset, angle) + lengthdir_y(prev_y_offset, angle+90);
@@ -57,5 +48,85 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd) {
 		draw_set_color(c_white);
 		draw_line_width(prev_x, prev_y, nx, ny, 3);
 	}
+}
+
+function Lightning(_x1,_y1, _x2,_y2, _segment, _density, _height, _spd) constructor {
+	smoothing_base = animcurve_get_channel(ac_smoothing, "gentle");
+	smoothing_secondary = animcurve_get_channel(ac_smoothing, "rapid2");
+	x1 = _x1;
+	y1 = _y1;
+	x2 = _x2;
+	y2 = _y2;
+	spd = _spd;
+	density = _density;
+	height = _height;
+	angle = point_direction(x1,y1, x2,y2);
+	dist = point_distance(x1,y1, x2,y2);
+	base_segment = _segment;
+	num = max(1, floor(dist / base_segment));
+	segment = dist / num;
+	noise_offset = random(1);
+	
+	static draw = function() {
+		var s = 0;
+		var s_secondary = 0;
+		var x_offset = 0;
+		var secondary_noise = 0;
+		var base_noise = 0;
+		var y_offset = 0;
+	
+		for (var i = 1; i <= num; i++) {
+			var prev_s = s;
+			var prev_s_secondary = s_secondary;
+			var prev_x_offset = x_offset;
+			var prev_secondary_noise = secondary_noise;
+			var prev_base_noise = base_noise;
+			var prev_y_offset = y_offset;
+		
+			s = animcurve_channel_evaluate(smoothing_base, (i)/(num));
+			s_secondary = animcurve_channel_evaluate(smoothing_secondary, (i)/(num));
+			x_offset = i * segment;
+			secondary_noise = perlin_noise(x_offset * density*2, spd);
+			base_noise = perlin_noise(x_offset * density, spd);
+			y_offset = base_noise * height * s + secondary_noise * height/6 * s_secondary;
+		
+			var prev_x = x1 + lengthdir_x(prev_x_offset, angle) + lengthdir_x(prev_y_offset, angle+90);
+			var prev_y = y1 + lengthdir_y(prev_x_offset, angle) + lengthdir_y(prev_y_offset, angle+90);
+		
+			var nx = x1 + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
+			var ny = y1 + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
+		
+			draw_set_alpha(.2);
+			draw_set_color(c_aqua);
+			draw_line_width(prev_x, prev_y, nx, ny, 12);
+			draw_line_width(prev_x, prev_y, nx, ny, 10);
+			draw_line_width(prev_x, prev_y, nx, ny, 6);
+			draw_line_width(prev_x, prev_y, nx, ny, 4);
+	
+			draw_set_alpha(1);
+			draw_set_color(c_white);
+			draw_line_width(prev_x, prev_y, nx, ny, 3);
+		}
+	}
+		
+	static set_start = function(_x, _y) {
+		x1 = _x;
+		y1 = _y;
+		_update_params();
+	}
+	
+	static set_end = function(_x, _y) {
+		x2 = _x;
+		y2 = _y;
+		_update_params();
+	}
+	
+	static _update_params = function() {
+		dist = point_distance(x1,y1, x2,y2);
+		angle = point_direction(x1,y1, x2,y2);
+		num = max(1, floor(dist / base_segment));
+		segment = dist / num;
+	}
+	
 }
 
