@@ -1,1 +1,2 @@
-bolt.set_end(mouse_x, mouse_y);
+end_point.x = mouse_x;
+end_point.y = mouse_y;

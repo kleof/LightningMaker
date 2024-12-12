@@ -64,8 +64,8 @@
 
 //var t = current_time;
 //repeat (20) 
-	lightning(100,300, mouse_x,mouse_y, 12, .25, 120, -.1);
+	//lightning(100,300, mouse_x,mouse_y, 12, .25, 120, -.1);
 
-//bolt.draw();
+bolt.draw();
 
 //trace((current_time - t));
