@@ -60,8 +60,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	density = _density;
-	height = _height;
+	density = _density; // Wave length
+	height = _height; // Wave height, amplitude
 	spd = _spd;
 	angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 	dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
@@ -70,6 +70,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	segment = dist / num; // In case given segment can't divide distance evenly we resize it
 	height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduse height for small distances
 	noise_offset = 0 //random(100);
+	
+	child_chance = .05;
+	children_points = [];
+	children = [];
 	
 	static draw = function() {
 		_update_params();
