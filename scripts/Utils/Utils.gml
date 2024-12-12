@@ -115,19 +115,19 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
 			var secondary_noise = perlin_noise(noise_offset + x_offset * density * secondary_noise_density_multiplier, spd);
 			var y_offset = base_noise * height * height_reduction * smoothing + secondary_noise * height * secondary_noise_strength * smoothing_secondary;
-		
+			
 			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
 			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
 			
-			if (is_parent) points[i].set_position(nx, ny);
-		
+			if (is_parent) points[i].set_position(nx, ny); // TODO update only point indexes belonging to children?
+			
 			//draw_set_alpha(.2);
 			//draw_set_color(c_aqua);
 			//draw_line_width(prev_x, prev_y, nx, ny, 12);
 			//draw_line_width(prev_x, prev_y, nx, ny, 10);
 			//draw_line_width(prev_x, prev_y, nx, ny, 6);
 			//draw_line_width(prev_x, prev_y, nx, ny, 4);
-	
+			
 			draw_set_alpha(1);
 			draw_set_color(c_white);
 			draw_line_width(prev_x, prev_y, nx, ny, width);
@@ -139,7 +139,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			}
 		}
 	}
-		
+	
 	static set_start = function(_x, _y) {
 		start_point.x = _x;
 		start_point.y = _y;
