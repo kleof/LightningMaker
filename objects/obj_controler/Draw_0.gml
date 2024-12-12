@@ -63,7 +63,7 @@
 //}
 
 //var t = current_time;
-//repeat (20) 
+//repeat (40) 
 	//lightning(100,300, mouse_x,mouse_y, 12, .25, 120, -.1);
 
 bolt.draw();
