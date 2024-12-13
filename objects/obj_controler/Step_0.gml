@@ -1,2 +1,4 @@
-end_point.x = mouse_x;
-end_point.y = mouse_y;
+if (mouse_check_button(mb_left)) {
+	end_point.set_position(mouse_x, mouse_y);
+}
+

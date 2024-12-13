@@ -76,10 +76,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	density = _density; // Wave length
 	height = _height; // Wave height, amplitude
 	spd = _spd;
-	width = _width;
+	width = _width; // line width/thickness
 	angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 	dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
-	base_segment = max(1, _segment);
+	base_segment = max(1, _segment); // segment length in pixels, aka "quality"
 	num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
 	segment = dist / num; // In case given segment can't divide distance evenly we resize it
 	height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduse height for small distances
@@ -155,6 +155,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	}
 	
 	static _update_params = function() {
+		// Not necessary if endpoints are stationary
 		var prev_num = num;
 		dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);

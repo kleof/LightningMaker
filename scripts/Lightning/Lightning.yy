@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Utils",
+  "%Name":"Lightning",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Utils",
+  "name":"Lightning",
   "parent":{
     "name":"Lightning Bolt",
     "path":"Lightning Bolt.yyp",
