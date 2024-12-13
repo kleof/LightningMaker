@@ -99,7 +99,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	parent_array = [];
 	
 	static draw = function() {
-		if (is_parent && not is_child && random(1) > .8) { noise_offset = random(500); return; }
 		if (is_child) life--; // hmmm, may be affected by reducted drawing mode?
 		if (is_child && (life <= 0 || end_point.active == false)) { // is end_point enough or should check start_point too?
 			array_delete(parent_array, array_get_index(parent_array, self), 1);
