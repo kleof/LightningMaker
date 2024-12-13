@@ -16,7 +16,7 @@ height = 120;
 spd = -.1; // preset 2: -.29 + smoothing 1 for secondary wave
 
 
-//TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
+//something like? TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
 
 end_point = {x: mouse_x, y: mouse_y};
 bolt = new Lightning({x:100, y:300}, end_point, 12, .25, 120, -.1, 4);

@@ -18,6 +18,7 @@ function Point(_x, _y) constructor {
 	}
 }
 
+// rest in peace prototype function o7
 function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1) {
 	// Option to draw every 2nd/3rd frame
 	var smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
@@ -61,6 +62,7 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1
 	}
 }
 
+// long live the new queen \o/
 function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, _width, _smoothing_type=1) constructor {
 	// Option to draw every 2nd/3rd frame
 	static min_segments_number = 5;
@@ -85,36 +87,45 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	
 	is_parent = true;
 	is_child = false;
-	static child_chance = .05;
-	static max_children = 3;
+	life = 0;
+	recursion_level = 0;
+	static child_chance = .10;
+	static children_max = 3;
+	static child_life_min = 6; // In frames (hmmm, may be affected by reducted drawing mode?)
+	static child_life_max = 60;
+	static recursion_level_max = 2;
 	points = array_create_ext(200, function() { return new Point(0, 0); });
 	children = [];
 	parent_array = [];
 	
 	static draw = function() {
-		if (is_child && end_point.active == false) { // is end_point enough or should check start_point too?
+		if (is_child) life--; // hmmm, may be affected by reducted drawing mode?
+		if (is_child && (life <= 0 || end_point.active == false)) { // is end_point enough or should check start_point too?
 			array_delete(parent_array, array_get_index(parent_array, self), 1);
 			return;
 		}
 		
-		_update_params();
+		_update_params(); // hmm, we need to update only if endpoints changed, add condition to this?
 		var nx = start_point.x;
 		var ny = start_point.y;
 		
-		if (is_parent && random(1) < child_chance && array_length(children) < max_children) {
+		if (is_parent && random(1) < child_chance && array_length(children) < children_max) {
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
-			var cutoff = max(1, floor(range * .1));
-			var min_length = 3;
+			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
+			var min_length = 5;
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
 			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), smoothing_type, false);
-			new_child.is_parent = false;
+			// child height relative to it's length?
+			new_child.recursion_level = recursion_level + 1;
+			new_child.is_parent = (new_child.recursion_level < recursion_level_max) ? true : false;
 			new_child.parent_array = children;
 			new_child.is_child = true;
+			new_child.life = irandom_range(child_life_min, child_life_max);
 			array_push(children, new_child);
 		}
-		if (is_parent) points[0].set_position(nx, ny);
+		if (is_parent) points[0].set_position(nx, ny); // consolidate with above ^
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -132,15 +143,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			
 			if (is_parent) points[i].set_position(nx, ny); // TODO update only point indexes belonging to children?
 			
-			//draw_set_alpha(.2);
-			//draw_set_color(c_aqua);
-			//draw_line_width(prev_x, prev_y, nx, ny, 12);
-			//draw_line_width(prev_x, prev_y, nx, ny, 10);
-			//draw_line_width(prev_x, prev_y, nx, ny, 6);
-			//draw_line_width(prev_x, prev_y, nx, ny, 4);
 			
-			draw_set_alpha(1);
-			draw_set_color(c_white);
 			draw_line_width(prev_x, prev_y, nx, ny, width);
 		}
 		
