@@ -1,4 +1,5 @@
-randomize();
+//randomize();
+//add particles on end points
 smoothing_base = animcurve_get_channel(ac_smoothing, "gentle");
 smoothing_secondary = animcurve_get_channel(ac_smoothing, "rapid2");
 
@@ -22,3 +23,5 @@ bolt = new Lightning({x:100, y:300}, end_point, 12, .25, 120, -.1, 4);
 
 
 //clipboard_set_text("HEWWO WOLD");
+
+

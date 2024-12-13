@@ -32,6 +32,11 @@
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.95,"y":1.0,},
         {"th0":-0.050000012,"th1":0.1,"tv0":0.57894737,"tv1":0.0,"x":1.0,"y":0.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
+    {"$GMAnimCurveChannel":"","%Name":"loose_end","colour":4279015665,"name":"loose_end","points":[
+        {"th0":-0.1,"th1":0.1,"tv0":0.0,"tv1":0.5758514,"x":0.0,"y":0.0,},
+        {"th0":-0.014987715,"th1":0.14619164,"tv0":0.0,"tv1":0.0,"x":0.1,"y":1.0,},
+        {"th0":-0.13816792,"th1":0.1,"tv0":-0.0010526776,"tv1":0.0,"x":1.0,"y":1.0,},
+      ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":false,},
   ],
   "function":2,
   "name":"ac_smoothing",
