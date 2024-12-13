@@ -99,6 +99,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	parent_array = [];
 	
 	static draw = function() {
+		if (is_parent && not is_child && random(1) > .8) { noise_offset = random(500); return; }
 		if (is_child) life--; // hmmm, may be affected by reducted drawing mode?
 		if (is_child && (life <= 0 || end_point.active == false)) { // is end_point enough or should check start_point too?
 			array_delete(parent_array, array_get_index(parent_array, self), 1);
@@ -110,6 +111,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 		var ny = start_point.y;
 		
 		if (is_parent && random(1) < child_chance && array_length(children) < children_max) {
+			// no children if too short
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
 			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
 			var min_length = 5;
@@ -118,6 +120,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			
 			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), smoothing_type, false);
 			// child height relative to it's length?
+			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
 			new_child.is_parent = (new_child.recursion_level < recursion_level_max) ? true : false;
 			new_child.parent_array = children;
