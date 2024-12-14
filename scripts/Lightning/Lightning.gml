@@ -82,7 +82,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	base_segment = max(1, _segment); // segment length in pixels, aka "quality"
 	num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
 	segment = dist / num; // In case given segment can't divide distance evenly we resize it
-	height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduse height for small distances
+	height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 	noise_offset = random(500); // what is the right range for this???
 	
 	is_parent = true;
@@ -91,19 +91,14 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	recursion_level = 0;
 	static child_chance = .10;
 	static children_max = 3;
-	static child_life_min = 6; // In frames (hmmm, may be affected by reducted drawing mode?)
+	static child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
 	static child_life_max = 60;
 	static recursion_level_max = 2;
-	points = array_create_ext(200, function() { return new Point(0, 0); });
+	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
 	children = [];
-	parent_array = [];
 	
 	static draw = function() {
-		if (is_child) life--; // hmmm, may be affected by reducted drawing mode?
-		if (is_child && (life <= 0 || end_point.active == false)) { // is end_point enough or should check start_point too?
-			array_delete(parent_array, array_get_index(parent_array, self), 1);
-			return;
-		}
+		//noise_offset = random(500);
 		
 		_update_params(); // hmm, we need to update only if endpoints changed, add condition to this?
 		var nx = start_point.x;
@@ -113,7 +108,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			// no children if too short
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
 			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
-			var min_length = 5;
+			var min_length = 5; //higher probability for longer lengths?
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
@@ -122,7 +117,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
 			new_child.is_parent = (new_child.recursion_level < recursion_level_max) ? true : false;
-			new_child.parent_array = children;
 			new_child.is_child = true;
 			new_child.life = irandom_range(child_life_min, child_life_max);
 			array_push(children, new_child);
@@ -135,15 +129,15 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			
 			var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
 			var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
-			var x_offset = i * segment // + random(segment)*choose(-1,1); // random roughness!
+			var x_offset = i * segment//  + random(segment)*choose(-1,1)/2; // random roughness! (add to y as well!)
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
 			var secondary_noise = perlin_noise(noise_offset + x_offset * density * secondary_noise_density_multiplier, spd);
-			var y_offset = base_noise * height * height_reduction * smoothing + secondary_noise * height * secondary_noise_strength * smoothing_secondary;
+			var y_offset = base_noise * height * height_reduction * smoothing + secondary_noise * height * secondary_noise_strength * smoothing_secondary// + random(segment)*choose(-1,1)/2;;
 			
 			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
 			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
 			
-			if (is_parent) points[i].set_position(nx, ny); // TODO update only point indexes belonging to children?
+			if (is_parent) points[i].set_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			
 			draw_line_width(prev_x, prev_y, nx, ny, width);
@@ -151,13 +145,24 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 		
 		if (is_parent) {
 			for (var k = 0; k < array_length(children); k++) {
-				children[k].draw();
+				var child = children[k];
+				with (child) {
+					life--; // hmmm, may be affected by reduced drawing mode?
+					
+					if (life <= 0 || end_point.active == false) { // end_point should be enough, no need for start_point
+						array_delete(other.children, array_get_index(other.children, self), 1);
+						return;
+					}
+					
+					draw();
+				}
 			}
 		}
 	}
 	
 	static _update_params = function() {
 		// Not necessary if endpoints are stationary
+		// BUT what about children? their endpoints are always moving
 		var prev_num = num;
 		dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
@@ -165,7 +170,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 		segment = dist / num;
 		height_reduction = (dist > 50) ? 1 : (dist / 100);
 		
-		// Deactivate points outside of new range so child lightnings using them can destroy themselves
+		// Deactivate points outside of new range so we can destroy children using them
 		if (is_parent && num < prev_num) {
 			for (var i = num; i <= prev_num; i++) {
 				points[i].active = false;
