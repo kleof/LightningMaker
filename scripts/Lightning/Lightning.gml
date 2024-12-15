@@ -73,7 +73,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	density = _density; // Wave length
+	density = _density; // Wave length, precision, quality
 	height = _height; // Wave height, amplitude
 	spd = _spd;
 	width = _width; // line width/thickness
@@ -90,7 +90,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	life = 0;
 	recursion_level = 0;
 	static child_chance = .10;
-	static children_max = 3;
+	static children_max = 6;
 	static child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
 	static child_life_max = 60;
 	static recursion_level_max = 2;

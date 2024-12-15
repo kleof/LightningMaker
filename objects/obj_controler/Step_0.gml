@@ -1,4 +1,5 @@
-if (mouse_check_button(mb_left)) {
-	end_point.set_position(mouse_x, mouse_y);
-}
+start_point.set_position(start_handle.x, start_handle.y);
+end_point.set_position(end_handle.x, end_handle.y);
 
+
+bolt.density = density;

@@ -20,11 +20,13 @@
   "resources":[
     {"id":{"name":"ac_smoothing","path":"animcurves/ac_smoothing/ac_smoothing.yy",},},
     {"id":{"name":"obj_controler","path":"objects/obj_controler/obj_controler.yy",},},
+    {"id":{"name":"obj_handle","path":"objects/obj_handle/obj_handle.yy",},},
     {"id":{"name":"broom","path":"rooms/broom/broom.yy",},},
     {"id":{"name":"Lightning","path":"scripts/Lightning/Lightning.yy",},},
     {"id":{"name":"PerlinNoise","path":"scripts/PerlinNoise/PerlinNoise.yy",},},
     {"id":{"name":"shd_bloom","path":"shaders/shd_bloom/shd_bloom.yy",},},
     {"id":{"name":"shd_perlin_noise_glsl_es","path":"shaders/shd_perlin_noise_glsl_es/shd_perlin_noise_glsl_es.yy",},},
+    {"id":{"name":"spr_handle","path":"sprites/spr_handle/spr_handle.yy",},},
     {"id":{"name":"Sprite1","path":"sprites/Sprite1/Sprite1.yy",},},
   ],
   "resourceType":"GMProject",
