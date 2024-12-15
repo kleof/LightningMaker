@@ -90,10 +90,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	life = 0;
 	recursion_level = 0;
 	static child_chance = .10;
-	static children_max = 6;
+	static children_max = 3;
 	static child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
 	static child_life_max = 60;
 	static recursion_level_max = 2;
+	// only create points array if it's a parent
 	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
 	children = [];
 	
