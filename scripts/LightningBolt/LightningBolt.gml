@@ -101,6 +101,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
 	width = _width; // line width/thickness
+	turbulence = 0;
 	
 	// Private variables
 	is_parent = true;
@@ -117,7 +118,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	noise_offset = random(500); // (?) 500 seems enough, but unsure what is the right value for this
 	
-	is_parent = true;
+	is_parent = true; // if children_max is 0 set to false?
 	is_child = false;
 	life = 0;
 	recursion_level = 0;
@@ -135,6 +136,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var nx = start_point.x;
 		var ny = start_point.y;
 		
+		if (is_parent) points[0].update_position(nx, ny); // merge with below
 		if (is_parent && random(1) < child_chance && array_length(children) < children_max) {
 			// no children if too short
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
@@ -143,16 +145,16 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
-			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), smoothing_type, false);
+			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), smoothing_type);
 			// child height relative to it's length?
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
 			new_child.is_parent = (new_child.recursion_level < recursion_level_max) ? true : false;
 			new_child.is_child = true;
 			new_child.life = irandom_range(child_life_min, child_life_max);
+			new_child.turbulence = turbulence; // ?
 			array_push(children, new_child);
 		}
-		if (is_parent) points[0].update_position(nx, ny); // consolidate with above ^
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -160,13 +162,13 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
 			var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
-			var x_offset = i * segment//  + random(segment)*choose(-1,1)/2; // random roughness! (add to y as well!)
+			var x_offset = i * segment + random(turbulence) * choose(-1,1) * smoothing_secondary;
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
 			var secondary_noise = perlin_noise(noise_offset + x_offset * density * secondary_noise_density_multiplier, spd);
-			var y_offset = base_noise * height * height_reduction * smoothing + secondary_noise * height * secondary_noise_strength * smoothing_secondary// + random(segment)*choose(-1,1)/2;;
+			var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height * secondary_noise_strength + random(turbulence) * choose(-1,1)) * smoothing_secondary;
 			
-			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
-			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
+			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle + 90);
+			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle + 90);
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
@@ -229,6 +231,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static set_width = function(_width) {
 		width = _width;
+		return self;
+	}
+	
+	static set_turbulence = function(_turbulence) {
+		turbulence = _turbulence;
 		return self;
 	}
 	

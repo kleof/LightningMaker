@@ -5,6 +5,7 @@ bolt.update_start(start_handle.x, start_handle.y)
 	.set_speed(spd)
 	.set_width(width)
 	.set_segment(segment)
+	.set_turbulence(turbulence)
 
 
 

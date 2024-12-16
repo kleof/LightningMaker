@@ -10,8 +10,10 @@
 //draw_clear_alpha(c_black, 1);
 //draw_sprite(Sprite1, 0, 200, 200);
 
-//repeat (40)
-	bolt.draw();
+bolt.draw();
+//for (var i = 0; i < array_length(bolts); i++) {
+//	bolts[i].draw();
+//}
 
 //surface_reset_target();
 
