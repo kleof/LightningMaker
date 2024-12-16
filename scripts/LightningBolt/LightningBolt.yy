@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"Lightning",
+  "%Name":"LightningBolt",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Lightning",
+  "name":"LightningBolt",
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningBolt",
+    "path":"folders/LightningBolt.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

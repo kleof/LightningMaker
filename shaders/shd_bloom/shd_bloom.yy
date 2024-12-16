@@ -3,8 +3,8 @@
   "%Name":"shd_bloom",
   "name":"shd_bloom",
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningBolt",
+    "path":"folders/LightningBolt.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",
