@@ -1,15 +1,12 @@
 #macro trace show_debug_message
 
-function remap(_value, _value_min, _value_max, _target_min, _target_max) {
-    return (((_value - _value_min) / (_value_max - _value_min)) * (_target_max - _target_min)) + _target_min;
-}
 
 function Point(_x, _y) constructor {
 	x = _x;
 	y = _y;
 	active = true;
 	
-	static set_position = function(_x, _y) {
+	static update_position = function(_x, _y) {
 		x = _x;
 		y = _y;
 		
@@ -63,8 +60,8 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1
 }
 
 // long live the new queen \o/
-function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, _width, _smoothing_type=1) constructor {
-	// Option to draw every 2nd/3rd frame
+function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _smoothing_type=1) constructor {
+	
 	static min_segments_number = 5;
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
@@ -73,17 +70,26 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	density = _density; // Wave length, precision, quality
-	height = _height; // Wave height, amplitude
-	spd = _spd;
-	width = _width; // line width/thickness
-	angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
-	dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 	base_segment = max(1, _segment); // segment length in pixels, aka "quality"
-	num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
-	segment = dist / num; // In case given segment can't divide distance evenly we resize it
-	height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
-	noise_offset = random(500); // what is the right range for this???
+	density = _density; // Wave length, precision, quality
+	height = _height; // Max wave height, in pixels // (amplitude)
+	spd = _speed;
+	width = _width; // line width/thickness
+	
+	// Private variables
+	is_parent = true;
+	is_child = false;
+	
+	angle = 0;
+	num = -1;
+	segment = 0;
+	height_reduction = 0;
+	_update_distance_params();
+	
+	// only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're chaning is_parent to false, until we pass is_parent as argument?
+	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
+	
+	noise_offset = random(500); // (?) 500 seems enough, but unsure what is the right value for this
 	
 	is_parent = true;
 	is_child = false;
@@ -94,14 +100,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 	static child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
 	static child_life_max = 60;
 	static recursion_level_max = 2;
-	// only create points array if it's a parent
-	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
 	children = [];
 	
 	static draw = function() {
 		//noise_offset = random(500);
 		
-		_update_params(); // hmm, we need to update only if endpoints changed, add condition to this?
+		if (is_child) _update_distance_params(); // Not necessary if not a child, as start/end points are only going to change through update_start/end methods
 		var nx = start_point.x;
 		var ny = start_point.y;
 		
@@ -122,7 +126,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			new_child.life = irandom_range(child_life_min, child_life_max);
 			array_push(children, new_child);
 		}
-		if (is_parent) points[0].set_position(nx, ny); // consolidate with above ^
+		if (is_parent) points[0].update_position(nx, ny); // consolidate with above ^
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -138,7 +142,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
 			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
 			
-			if (is_parent) points[i].set_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
+			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			
 			draw_line_width(prev_x, prev_y, nx, ny, width);
@@ -159,17 +163,56 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 				}
 			}
 		}
+
 	}
 	
-	static _update_params = function() {
-		// Not necessary if endpoints are stationary
-		// BUT what about children? their endpoints are always moving
+	static update_start = function(_x, _y) {
+		start_point.x = _x;
+		start_point.y = _y;
+		_update_distance_params();
+		return self;
+	}
+	
+	static update_end = function(_x, _y) {
+		end_point.x = _x;
+		end_point.y = _y;
+		_update_distance_params();
+		return self;
+	}
+	
+	static set_segment = function(_segment) {
+		base_segment = _segment;
+		_update_distance_params();
+		return self;
+	}
+	
+	static set_density = function(_density) {
+		density = _density;
+		return self;
+	}
+	
+	static set_height = function(_height) {
+		height = _height;
+		return self;
+	}
+	
+	static set_speed = function(_speed) {
+		spd = _speed;
+		return self;
+	}
+	
+	static set_width = function(_width) {
+		width = _width;
+		return self;
+	}
+	
+	static _update_distance_params = function() {
 		var prev_num = num;
-		dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
+		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
-		num = max(min_segments_number, floor(dist / base_segment));
-		segment = dist / num;
-		height_reduction = (dist > 50) ? 1 : (dist / 100);
+		num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
+		segment = dist / num; // In case given segment can't divide distance evenly, we resize it
+		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
 		// Deactivate points outside of new range so we can destroy children using them
 		if (is_parent && num < prev_num) {
@@ -178,7 +221,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _spd, 
 			}
 		}
 	}
-	
 }
 
 
