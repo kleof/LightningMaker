@@ -102,6 +102,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	spd = _speed;
 	width = _width; // line width/thickness
 	turbulence = 0;
+	outline_strength = 4; // <- TODO
 	
 	// Private variables
 	is_parent = true;
@@ -153,6 +154,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			new_child.is_child = true;
 			new_child.life = irandom_range(child_life_min, child_life_max);
 			new_child.turbulence = turbulence; // ?
+			new_child.outline_strength = outline_strength;
 			array_push(children, new_child);
 		}
 		
@@ -172,7 +174,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			//draw_line_width_color(prev_x, prev_y, nx, ny, width+2, c_red, c_red);
+			if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
 			draw_line_width(prev_x, prev_y, nx, ny, width);
 		}
 		
@@ -236,6 +238,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static set_turbulence = function(_turbulence) {
 		turbulence = _turbulence;
+		return self;
+	}
+	
+	static set_outline_strength = function(_outline_strength) {
+		outline_strength = _outline_strength;
 		return self;
 	}
 	
