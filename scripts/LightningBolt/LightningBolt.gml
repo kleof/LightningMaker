@@ -172,7 +172,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			
+			//draw_line_width_color(prev_x, prev_y, nx, ny, width+2, c_red, c_red);
 			draw_line_width(prev_x, prev_y, nx, ny, width);
 		}
 		

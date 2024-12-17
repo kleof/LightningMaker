@@ -49,6 +49,7 @@ dbg_text_separator("Effects");
 
 dbg_checkbox(ref_create(self, "fx_glow_enabled"), "Glow");
 dbg_slider(ref_create(self, "fx_outline_width"), 0, 5, "Outline strength", 1);
+// what's up with these decimal values? why are they different than ones on the web?
 dbg_drop_down(ref_create(self, "fx_outline_color"), "Rose:7868927,Steel:16741378,Toxic:2686792,Gold:1163263,Cyan:11992832", "Outline color");
 
 
