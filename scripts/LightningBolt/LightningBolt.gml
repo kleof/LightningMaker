@@ -137,8 +137,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		if (is_child) _update_distance_params(); // Not necessary for "root" lightning (if not a child), as start/end points are only going to change through update_start/end methods
 		var nx = start_point.x;
 		var ny = start_point.y;
-		draw_primitive_begin(pr_linestrip);
-		draw_vertex(_x1, _y1);
+		
 		
 		if (is_parent) points[0].update_position(nx, ny); // merge with below
 		// move babies conception to separate method?
@@ -168,7 +167,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
 			var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
-			var x_offset = i * segment + random(turbulence) * choose(-1,1) * smoothing_secondary;
+			var x_offset = i * segment + random_range(-turbulence, turbulence) * smoothing_secondary;
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
 			var secondary_noise = perlin_noise(noise_offset + x_offset * density * secondary_noise_density_multiplier, spd);
 			var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height * secondary_noise_strength + random(turbulence) * choose(-1,1)) * smoothing_secondary;
