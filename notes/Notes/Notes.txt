@@ -1,0 +1,23 @@
+- for drawing every n'th frame?
+
+if (!surface_exists(my_surf)) {
+   my_surf = surface_create();
+   surface_set_target(my_surf);
+   draw_stuff();
+   surface_reset_target();
+}
+
+draw_surface(my_surf, x, y);
+
+
+- use sprite (with round edges) instead of lines?
+
+function draw_line_sprite(_x1, _y1, _x2, _y2) {
+    var _a    = point_direction(_x1, _y1, _x2, _y2);
+    var _d    = point_distance(_x1, _y1, _x2, _y2);
+    // 64 is the sprite's width and height
+    draw_sprite_ext(sprite, 0, _x1, _y1, _d/64, 1/64, _a, color, 1);
+}
+
+
+- SPLIT draw() method to allow manual surface/shader setup, but make combined function for convenience too

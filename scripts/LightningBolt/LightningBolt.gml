@@ -88,7 +88,7 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1
 // long live the new queen \o/
 function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _smoothing_type=1) constructor {
 	
-	static min_segments_number = 5;
+	static min_segments_number = 3;
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
 	smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2");
@@ -132,17 +132,21 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static draw = function() {
 		//noise_offset = random(500);
+		// set surfaces and shaders only in "root" lightning
 		
-		if (is_child) _update_distance_params(); // Not necessary if not a child, as start/end points are only going to change through update_start/end methods
+		if (is_child) _update_distance_params(); // Not necessary for "root" lightning (if not a child), as start/end points are only going to change through update_start/end methods
 		var nx = start_point.x;
 		var ny = start_point.y;
+		draw_primitive_begin(pr_linestrip);
+		draw_vertex(_x1, _y1);
 		
 		if (is_parent) points[0].update_position(nx, ny); // merge with below
+		// move babies conception to separate method?
 		if (is_parent && random(1) < child_chance && array_length(children) < children_max) {
 			// no children if too short
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
 			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
-			var min_length = 5; //higher probability for longer lengths?
+			var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
@@ -184,6 +188,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 				with (child) {
 					life--; // hmmm, may be affected by reduced drawing mode?
 					
+					// Deleting dead children or whos endpoint got deactivated, and by extension all of their children are lost (right?)
 					if (life <= 0 || end_point.active == false) { // end_point should be enough, no need for start_point
 						array_delete(other.children, array_get_index(other.children, self), 1);
 						return;
@@ -193,7 +198,22 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 				}
 			}
 		}
-
+	}
+	
+	static _update_distance_params = function() {
+		var prev_num = num;
+		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
+		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
+		num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
+		segment = dist / num; // In case given segment can't divide distance evenly, we resize it
+		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
+		
+		// Deactivate points outside of new range so we can destroy children using them
+		if (is_parent && num < prev_num) {
+			for (var i = num; i <= prev_num; i++) {
+				points[i].active = false;
+			}
+		}
 	}
 	
 	static update_start = function(_x, _y) {
@@ -246,21 +266,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
-	static _update_distance_params = function() {
-		var prev_num = num;
-		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
-		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
-		num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
-		segment = dist / num; // In case given segment can't divide distance evenly, we resize it
-		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
-		
-		// Deactivate points outside of new range so we can destroy children using them
-		if (is_parent && num < prev_num) {
-			for (var i = num; i <= prev_num; i++) {
-				points[i].active = false;
-			}
-		}
-	}
 }
 
 
