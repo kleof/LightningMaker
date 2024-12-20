@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"shd_bloom",
-  "name":"shd_bloom",
+  "%Name":"shd_blur",
+  "name":"shd_blur",
   "parent":{
     "name":"Various Shader Tests",
     "path":"folders/Various Shader Tests.yy",

@@ -55,5 +55,6 @@ dbg_slider(ref_create(self, "outline_strength"), 0, 20, "Outline strength", 1);
 //// what's up with these decimal values? why are they different than ones on the web?
 //dbg_drop_down(ref_create(self, "fx_outline_color"), "Rose:7868927,Steel:16741378,Toxic:2686792,Gold:1163263,Cyan:11992832", "Outline color");
 
-
+//blur_init();
+//kawase_init(room_width, room_height);
 surf = -1;
