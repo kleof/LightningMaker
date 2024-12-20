@@ -1,6 +1,4 @@
-	
-//	//gpu_set_blendmode(bm_max);	
-//	//gpu_set_blendmode(bm_normal);
+
 
 
 //if (not surface_exists(surf)) {

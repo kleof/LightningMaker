@@ -21,3 +21,11 @@ function draw_line_sprite(_x1, _y1, _x2, _y2) {
 
 
 - SPLIT draw() method to allow manual surface/shader setup, but make combined function for convenience too
+
+
+- object pooling - Precreate all potentially needed children and use them, instead of creating and destroying
+but does it matter, is it even impactful enough?
+
+
+
+
