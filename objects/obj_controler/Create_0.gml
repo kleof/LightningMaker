@@ -6,6 +6,9 @@
 // separate smoothing type for children? potentially rapid looks better than gentle
 // Option to draw every 2nd/3rd frame
 
+outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
+tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
+
 // ***** DEFAULTS ***** //
 
 start_handle = instance_create_layer(520, 264, "Thingies", obj_handle);

@@ -27,5 +27,5 @@ function draw_line_sprite(_x1, _y1, _x2, _y2) {
 but does it matter, is it even impactful enough?
 
 
-
+- check CleanShapes for line drawing to avoid gaps in lines of high width
 

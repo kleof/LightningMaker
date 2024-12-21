@@ -11,8 +11,8 @@
   "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"LightningBolt","folderPath":"folders/LightningBolt.yy","name":"LightningBolt","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Kawase Scripts","folderPath":"folders/Various Shader Tests/Kawase Scripts.yy","name":"Kawase Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Various Shader Tests","folderPath":"folders/Various Shader Tests.yy","name":"Various Shader Tests","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Kawase Scripts","folderPath":"folders/Various Shader Tests/Kawase Scripts.yy","name":"Kawase Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Kawase Shaders","folderPath":"folders/Various Shader Tests/Kawase Shaders.yy","name":"Kawase Shaders","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[],
@@ -40,6 +40,7 @@
     {"id":{"name":"shd_blur","path":"shaders/shd_blur/shd_blur.yy",},},
     {"id":{"name":"shd_kawase_downscale","path":"shaders/shd_kawase_downscale/shd_kawase_downscale.yy",},},
     {"id":{"name":"shd_kawase_upscale","path":"shaders/shd_kawase_upscale/shd_kawase_upscale.yy",},},
+    {"id":{"name":"shd_outline_mimpy","path":"shaders/shd_outline_mimpy/shd_outline_mimpy.yy",},},
     {"id":{"name":"shd_perlin_noise_glsl_es","path":"shaders/shd_perlin_noise_glsl_es/shd_perlin_noise_glsl_es.yy",},},
     {"id":{"name":"spr_handle","path":"sprites/spr_handle/spr_handle.yy",},},
     {"id":{"name":"Sprite1","path":"sprites/Sprite1/Sprite1.yy",},},

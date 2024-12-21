@@ -87,7 +87,10 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1
 
 // long live the new queen \o/
 function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _smoothing_type=1) constructor {
-	
+	static surf_base = -1;
+	static surf_pass = -1;
+	static surf_width = 1;
+	static surf_height = 1;
 	static min_segments_number = 3;
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
@@ -112,7 +115,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	num = -1;
 	segment = 0;
 	height_reduction = 0;
-	_update_distance_params();
+	__update_distance_params();
 	
 	// only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're chaning is_parent to false, until we pass is_parent as argument?
 	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
@@ -134,7 +137,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		//noise_offset = random(500);
 		// set surfaces and shaders only in "root" lightning
 		
-		if (is_child) _update_distance_params(); // Not necessary for "root" lightning (if not a child), as start/end points are only going to change through update_start/end methods
+		if (is_child) __update_distance_params(); // Not necessary for "root" lightning (if not a child), as start/end points are only going to change through update_start/end methods
 		var nx = start_point.x;
 		var ny = start_point.y;
 		
@@ -161,6 +164,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			array_push(children, new_child);
 		}
 		
+		//gpu_set_blendmode(bm_add); // *for drawing outline with draw_line
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
 			var prev_y = ny;
@@ -177,9 +181,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
+			//if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
 			draw_line_width(prev_x, prev_y, nx, ny, width);
 		}
+		//gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
 		
 		if (is_parent) {
 			for (var k = 0; k < array_length(children); k++) {
@@ -199,7 +204,40 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		}
 	}
 	
-	static _update_distance_params = function() {
+	static glow_set = function() {
+		// Setting up surfaces
+		var _surf_width = camera_get_view_width(camera_get_active());
+		var _surf_height = camera_get_view_height(camera_get_active());
+		if (!surface_exists(surf_base)) {
+			surf_base = surface_create(_surf_width, _surf_height);
+		}
+		else if ((surf_width != _surf_width)  || (surf_height != _surf_height)) {
+			surface_resize(surf_base, _surf_width, _surf_height);
+		}
+		if (!surface_exists(surf_pass)) {
+			surf_pass = surface_create(_surf_width, _surf_height);
+		}
+		else if ((surf_width != _surf_width)  || (surf_height != _surf_height)) {
+			surface_resize(surf_pass, _surf_width, _surf_height);
+		}
+		surf_width = _surf_width;
+		surf_height = _surf_height;
+		
+		surface_set_target(surf_base);
+		draw_clear_alpha(c_black, 1);
+	}
+	
+	static glow_reset = function() {
+		surface_reset_target();
+	}
+	
+	static update = function() {
+		glow_set();
+		draw();
+		glow_reset();
+	}
+	
+	static __update_distance_params = function() {
 		var prev_num = num;
 		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
@@ -218,20 +256,20 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static update_start = function(_x, _y) {
 		start_point.x = _x;
 		start_point.y = _y;
-		_update_distance_params();
+		__update_distance_params();
 		return self;
 	}
 	
 	static update_end = function(_x, _y) {
 		end_point.x = _x;
 		end_point.y = _y;
-		_update_distance_params();
+		__update_distance_params();
 		return self;
 	}
 	
 	static set_segment = function(_segment) {
 		base_segment = _segment;
-		_update_distance_params();
+		__update_distance_params();
 		return self;
 	}
 	
@@ -263,6 +301,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static set_outline_strength = function(_outline_strength) {
 		outline_strength = _outline_strength;
 		return self;
+	}
+	
+	static cleanup = function() {
+		// free surfaces?
 	}
 	
 }
