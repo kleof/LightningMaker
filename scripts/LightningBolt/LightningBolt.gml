@@ -91,7 +91,16 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static surf_pass = -1;
 	static surf_width = 1;
 	static surf_height = 1;
+	static blur_horizontal_glow_uniform = shader_get_uniform(shd_blur_horizontal, "u_glowProperties");
+	static blur_horizontal_time_uniform = shader_get_uniform(shd_blur_horizontal, "u_time");
+	static blur_vertical_glow_uniform = shader_get_uniform(shd_blur_vertical, "u_glowProperties");
+	static blur_vertical_time_uniform = shader_get_uniform(shd_blur_vertical, "u_time");
 	static min_segments_number = 3;
+	
+	glow_outer_intensity = 2;
+	glow_inner_intensity = 10;
+	glow_inner_multiplier = 22;
+	
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
 	smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2");
@@ -104,7 +113,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
 	width = _width; // line width/thickness
-	turbulence = 0;
+	turbulence = 0; // slow it down, every other/3rd frame frame?
 	outline_strength = 4; // <- TODO
 	
 	// Private variables
@@ -148,7 +157,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			// no children if too short
 			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
 			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
-			var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments
+			var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments // relative to whole length (dist from start to end)
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
@@ -182,7 +191,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			//if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
-			draw_line_width(prev_x, prev_y, nx, ny, width);
+			draw_line_width_color(prev_x, prev_y, nx, ny, width, #D6007C, #D6007C);
+			//draw_line_width(prev_x, prev_y, nx, ny, 1);
 		}
 		//gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
 		
@@ -229,6 +239,34 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static glow_reset = function() {
 		surface_reset_target();
+		var time = current_time;
+		
+		// Horizontal blur
+		surface_set_target(surf_pass); {
+			//draw_clear_alpha(c_black, 0); // why don't we need to clear this one?
+			
+			shader_set(shd_blur_horizontal); {
+				shader_set_uniform_f(blur_horizontal_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
+				shader_set_uniform_f(blur_horizontal_time_uniform, time); // rather subtle effect, but why not
+
+				gpu_set_blendenable(false); // important!
+				draw_surface(surf_base, 0, 0);
+				gpu_set_blendenable(true);
+
+			} shader_reset();
+		} surface_reset_target();
+		
+		// Final drawing + Vertical blur + Blending
+		gpu_set_blendmode(bm_add);
+
+		shader_set(shd_blur_vertical); {
+			shader_set_uniform_f(blur_vertical_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
+			shader_set_uniform_f(blur_vertical_time_uniform, time); // rather subtle effect, but why not
+			draw_surface(surf_pass, 0, 0);
+			
+		} shader_reset();
+		
+		gpu_set_blendmode(bm_normal);
 	}
 	
 	static update = function() {
@@ -303,8 +341,32 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
+	static set_glow_outer_intensity = function(_glow_outer_intensity) {
+		glow_outer_intensity = _glow_outer_intensity;
+		return self;
+	}
+	
+	static set_glow_inner_intensity = function(_glow_inner_intensity) {
+		glow_inner_intensity = _glow_inner_intensity;
+		return self;
+	}
+	
+	static set_glow_inner_multiplier = function(_glow_inner_multiplier) {
+		glow_inner_multiplier = _glow_inner_multiplier;
+		return self;
+	}
+	
+	// Freeing surfaces
 	static cleanup = function() {
-		// free surfaces?
+		// when do we actually suppose to call it though?
+		if (surface_exists(surf_base)) {
+			surface_free(surf_base);
+			surf_base = -1;
+		}
+		if (surface_exists(surf_pass)) {
+			surface_free(surf_pass);
+			surf_pass = -1;
+		}
 	}
 	
 }

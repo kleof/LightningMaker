@@ -8,6 +8,9 @@
 
 outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
 tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
+glow_outer_intensity = 1.9;
+glow_inner_intensity = 13.7;
+glow_inner_multiplier = 21;
 
 // ***** DEFAULTS ***** //
 
@@ -25,11 +28,14 @@ segment = 12;
 density = .25; // preset 2: .25  // tween density -> something like? TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
 height = 120;
 spd = -.1; // preset 2: -.29 + smoothing 1 for secondary wave
-width = 4;
+width = 7;
 turbulence = 0;
 outline_strength = 4;
 
 bolt = new Lightning(start_point, end_point, segment, density, height, spd, width);
+//bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
+//bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
+
 //bolts = [];
 //repeat (50) {
 //	var bolt = new Lightning(start_point, end_point, segment, density, height, spd, width);
@@ -52,6 +58,10 @@ dbg_slider(ref_create(self, "turbulence"), 0, 20, "Turbulence", 1);
 dbg_text_separator("Outline");
 
 dbg_slider(ref_create(self, "outline_strength"), 0, 20, "Outline strength", 1);
+
+dbg_slider(ref_create(self, "glow_outer_intensity"), 0, 7, "Glow outer intensity", .1);
+dbg_slider(ref_create(self, "glow_inner_intensity"), 0, 40, "Glow inner intensity", .1);
+dbg_slider(ref_create(self, "glow_inner_multiplier"), 0, 40, "Glow inner multiplier", .1);
 
 //dbg_checkbox(ref_create(self, "fx_glow_enabled"), "Glow");
 //dbg_slider(ref_create(self, "fx_outline_width"), 0, 5, "Outline strength", 1);

@@ -1,0 +1,13 @@
+{
+  "segment":12.0,
+  "density":0.20999999344348907,
+  "spd":-0.10000000000000001,
+  "width":7.0,
+  "height":112.0,
+  "turbulence":4.0,
+  "outline_strength":4.0,
+  "glow_outer_intensity":1.8999999761581421,
+  "glow_inner_intensity":7.8000001907348633,
+  "glow_inner_multiplier":9.6000003814697266
+}
+

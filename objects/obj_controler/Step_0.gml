@@ -7,6 +7,9 @@ bolt.update_start(start_handle.x, start_handle.y)
 	.set_segment(segment)
 	.set_turbulence(turbulence)
 	.set_outline_strength(outline_strength)
+	.set_glow_outer_intensity(glow_outer_intensity)
+	.set_glow_inner_intensity(glow_inner_intensity)
+	.set_glow_inner_multiplier(glow_inner_multiplier)
 
 
 

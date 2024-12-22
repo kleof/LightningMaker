@@ -29,3 +29,13 @@ but does it matter, is it even impactful enough?
 
 - check CleanShapes for line drawing to avoid gaps in lines of high width
 
+- picked color interactions with glow depending on it's brightness
+brighter -> wider
+
+- intensity perception varies depending on background, allow to import background into visualizer
+
+- why calling set_glow/reset_glow more than once seems to severaly slow/lag game, but fps is not that low
+
+
+
+

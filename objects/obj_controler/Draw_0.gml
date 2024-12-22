@@ -7,7 +7,16 @@
 //surface_set_target(surf);
 //draw_clear_alpha(c_black, 0);
 
+bolt.glow_set();
 bolt.draw();
+//bolt2.draw();
+//bolt3.draw();
+bolt.glow_reset();
+
+//bolt.update();
+//bolt2.update();
+//bolt3.update();
+
 //for (var i = 0; i < array_length(bolts); i++) {
 //	bolts[i].draw();
 //}
