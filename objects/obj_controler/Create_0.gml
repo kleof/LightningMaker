@@ -1,5 +1,5 @@
 //randomize();
-//add particles on end points
+// add particles on end points
 // Randomize segments length
 // forks?
 // arch-like bend? +height(or additional param)*arc_curve?
@@ -8,9 +8,6 @@
 
 outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
 tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
-glow_outer_intensity = 1.9;
-glow_inner_intensity = 13.7;
-glow_inner_multiplier = 21;
 
 // ***** DEFAULTS ***** //
 
@@ -31,6 +28,10 @@ spd = -.1; // preset 2: -.29 + smoothing 1 for secondary wave
 width = 7;
 turbulence = 0;
 outline_strength = 4;
+
+glow_outer_intensity = 1.9;
+glow_inner_intensity = 13.7;
+glow_inner_multiplier = 21;
 
 bolt = new Lightning(start_point, end_point, segment, density, height, spd, width);
 //bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
@@ -59,7 +60,7 @@ dbg_text_separator("Outline");
 
 dbg_slider(ref_create(self, "outline_strength"), 0, 20, "Outline strength", 1);
 
-dbg_slider(ref_create(self, "glow_outer_intensity"), 0, 7, "Glow outer intensity", .1);
+dbg_slider(ref_create(self, "glow_outer_intensity"), 0, 5, "Glow outer intensity", .1);
 dbg_slider(ref_create(self, "glow_inner_intensity"), 0, 40, "Glow inner intensity", .1);
 dbg_slider(ref_create(self, "glow_inner_multiplier"), 0, 40, "Glow inner multiplier", .1);
 

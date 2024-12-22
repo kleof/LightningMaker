@@ -3,8 +3,8 @@
   "%Name":"shd_blur_vertical",
   "name":"shd_blur_vertical",
   "parent":{
-    "name":"Shaders",
-    "path":"folders/Shaders.yy",
+    "name":"LightningBolt",
+    "path":"folders/LightningBolt.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

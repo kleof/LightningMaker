@@ -87,6 +87,7 @@ function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1
 
 // long live the new queen \o/
 function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _smoothing_type=1) constructor {
+	// Surfaces and shaders statics
 	static surf_base = -1;
 	static surf_pass = -1;
 	static surf_width = 1;
@@ -95,7 +96,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static blur_horizontal_time_uniform = shader_get_uniform(shd_blur_horizontal, "u_time");
 	static blur_vertical_glow_uniform = shader_get_uniform(shd_blur_vertical, "u_glowProperties");
 	static blur_vertical_time_uniform = shader_get_uniform(shd_blur_vertical, "u_time");
-	static min_segments_number = 3;
+	
+	static min_segments_number = 3; // Increase if you need more fluid movement at low lightning's lengths
 	
 	glow_outer_intensity = 2;
 	glow_inner_intensity = 10;
@@ -108,15 +110,15 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	base_segment = max(1, _segment); // segment length in pixels, aka "quality"
+	base_segment = max(1, _segment); // segment length in pixels, aka "quality", bigger -> better performance
 	density = _density; // Wave length, precision, quality
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
 	width = _width; // line width/thickness
-	turbulence = 0; // slow it down, every other/3rd frame frame?
+	turbulence = 0; // slow it down, change every other/3rd frame?
 	outline_strength = 4; // <- TODO
 	
-	// Private variables
+	// Private variables, TODO add __
 	is_parent = true;
 	is_child = false;
 	
@@ -124,10 +126,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	num = -1;
 	segment = 0;
 	height_reduction = 0;
+	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're chaning is_parent to false, until we pass is_parent as argument?
 	__update_distance_params();
-	
-	// only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're chaning is_parent to false, until we pass is_parent as argument?
-	points = array_create_ext(200, function() { return new Point(0, 0); }); // set some max amount of points after which we draw only part of lightning, not reaching the endpoint
 	
 	noise_offset = random(500); // (?) 500 seems enough, but unsure what is the right value for this
 	
@@ -256,12 +256,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			} shader_reset();
 		} surface_reset_target();
 		
-		// Final drawing + Vertical blur + Blending
+		// Final drawing: Vertical blur + Blending
 		gpu_set_blendmode(bm_add);
 
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(blur_vertical_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
-			shader_set_uniform_f(blur_vertical_time_uniform, time); // rather subtle effect, but why not
+			shader_set_uniform_f(blur_vertical_time_uniform, time);
 			draw_surface(surf_pass, 0, 0);
 			
 		} shader_reset();
@@ -283,7 +283,14 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		segment = dist / num; // In case given segment can't divide distance evenly, we resize it
 		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
-		// Deactivate points outside of new range so we can destroy children using them
+		// Add new points if lightning length increased
+		var _diff = num - prev_num;
+		if (_diff > 0) {
+			var _additional_points = array_create_ext(_diff, function() { return new Point(0, 0); });
+			points = array_concat(points, _additional_points);
+		}
+		
+		// Deactivate points if lightning length decreased, so we can destroy children using them
 		if (is_parent && num < prev_num) {
 			for (var i = num; i <= prev_num; i++) {
 				points[i].active = false;

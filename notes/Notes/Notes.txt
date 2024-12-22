@@ -36,6 +36,8 @@ brighter -> wider
 
 - why calling set_glow/reset_glow more than once seems to severaly slow/lag game, but fps is not that low
 
+- surface size taken from window size, camera size or perhaps application surface (surface_get_width/height)?
+
 
 
 
