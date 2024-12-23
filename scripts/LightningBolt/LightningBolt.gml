@@ -1,92 +1,8 @@
-#macro trace show_debug_message
 
-function color_to_array(_color) {
-	var _hex = [];
-	var _ret = [];
-	for (var i = 0; _color != 0; ++i) {
-		_hex[i] = _color % 16;
-		_color = floor( _color / 16);
-	}
-	
-	// Make sure this is a color code
-	while (array_length(_hex) < 6) {
-		_hex[array_length(_hex)] = 0;
-	}
-	if (array_length( _hex) > 6) {
-		show_error("Unknown color: " + string(_color), true);
-		return -1;
-	}
-	
-	// Convert _hex to RGB
-	for (var i = 0; i < 3; ++i) {
-		_ret[i] = _hex[i * 2 + 1] * 16 + _hex[i * 2];
-		_ret[i] /= 255;
-	}
-	array_push(_ret, 1);
-	
-	return _ret;
-}
 
-function Point(_x, _y) constructor {
-	x = _x;
-	y = _y;
-	active = true;
-	
-	static update_position = function(_x, _y) {
-		x = _x;
-		y = _y;
-		
-		// If they are being set, means they are active
-		active = true;
-	}
-}
+//*****     --_./\/\./``\__/`\/\.-->     *****//
 
-// rest in peace prototype function o7
-function lightning(x1,y1, x2,y2, segment, density, height, spd, smoothing_type=1) {
-	// Option to draw every 2nd/3rd frame
-	var smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
-	var smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2");
-	var secondary_noise_strength = .17; // jaggedness
-	var secondary_noise_density_multiplier = 2; // jaggedness
-	var noise_offset = random(1); // hmmmmmm
-	
-	var angle = point_direction(x1,y1, x2,y2);
-	var dist = point_distance(x1,y1, x2,y2);
-	var num = max(5, floor(dist / segment)); // Number of points from start to end // Min number of segments: 5
-	segment = dist / num; // In case given segment can't divide distance evenly we resize it
-	
-	var nx = x1;
-	var ny = y1;
-	
-	for (var i = 1; i <= num; i++) {
-		var prev_x = nx;
-		var prev_y = ny;
-		
-		var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
-		var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
-		x_offset = i * segment;
-		var base_noise = perlin_noise(x_offset * density, spd);
-		var secondary_noise = perlin_noise(x_offset * density * secondary_noise_density_multiplier, spd);
-		y_offset = (base_noise * height * smoothing) + (secondary_noise * height * secondary_noise_strength * smoothing_secondary);
-		
-		nx = x1 + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle+90);
-		ny = y1 + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle+90);
-		
-		draw_set_alpha(.2);
-		draw_set_color(c_aqua);
-		draw_line_width(prev_x, prev_y, nx, ny, 12);
-		draw_line_width(prev_x, prev_y, nx, ny, 10);
-		draw_line_width(prev_x, prev_y, nx, ny, 6);
-		draw_line_width(prev_x, prev_y, nx, ny, 4);
-	
-		draw_set_alpha(1);
-		draw_set_color(c_white);
-		draw_line_width(prev_x, prev_y, nx, ny, 3);
-	}
-}
-
-// long live the new queen \o/
-function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _smoothing_type=1) constructor {
+function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _color, _smoothing_type=1) constructor {
 	// Surfaces and shaders statics
 	static surf_base = -1;
 	static surf_pass = -1;
@@ -102,6 +18,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	glow_outer_intensity = 2;
 	glow_inner_intensity = 10;
 	glow_inner_multiplier = 22;
+	glow_color = _color;
 	
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
@@ -118,9 +35,15 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	turbulence = 0; // slow it down, change every other/3rd frame?
 	outline_strength = 4; // <- TODO
 	
-	// Private variables, TODO add __
+	// Private variables, add _ ?
 	is_parent = true;
 	is_child = false;
+	// temporary solution for built-in glow effect
+	static _layer = other.layer;
+	static _fx = fx_create("_effect_glow");
+	fx_set_parameters(_fx, {g_GlowIntensity: .5, g_GlowGamma: .1});
+	fx_set_single_layer(_fx, true);
+	layer_set_fx(_layer, _fx);
 	
 	angle = 0;
 	num = -1;
@@ -161,7 +84,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
-			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), smoothing_type);
+			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), glow_color, smoothing_type);
 			// child height relative to it's length?
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
@@ -191,7 +114,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			//if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
-			draw_line_width_color(prev_x, prev_y, nx, ny, width, #D6007C, #D6007C);
+			draw_line_width_color(prev_x, prev_y, nx, ny, width, glow_color, glow_color);
 			//draw_line_width(prev_x, prev_y, nx, ny, 1);
 		}
 		//gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
@@ -280,23 +203,27 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 		num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
-		segment = dist / num; // In case given segment can't divide distance evenly, we resize it
+		segment = dist / num; // In case given segment can't divide distance evenly, resize it
 		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
-		// Add new points if lightning length increased
-		var _diff = num - prev_num;
-		if (_diff > 0) {
-			var _additional_points = array_create_ext(_diff, function() { return new Point(0, 0); });
-			points = array_concat(points, _additional_points);
-		}
-		
-		// Deactivate points if lightning length decreased, so we can destroy children using them
-		if (is_parent && num < prev_num) {
-			for (var i = num; i <= prev_num; i++) {
-				points[i].active = false;
+		// In case of parent, "resize" array of all points when distance changes
+		if (is_parent) {
+			// Add new points if lightning length increased, but not if array is long enough already
+			var _diff = num - prev_num;
+			if (_diff > 0 && array_length(points) <= num) {
+				var _additional_points = array_create_ext(_diff, function() { return new LPoint(0, 0); });
+				points = array_concat(points, _additional_points);
+			}
+			// Deactivate points (not delete) if lightning length decreased, so we can destroy children using them
+			else if (_diff < 0) {
+				for (var i = num; i <= prev_num; i++) {
+					points[i].active = false;
+				}
 			}
 		}
 	}
+	
+	#region SETTERS
 	
 	static update_start = function(_x, _y) {
 		start_point.x = _x;
@@ -363,6 +290,21 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
+	static set_glow_color = function(_glow_color) {
+		glow_color = _glow_color;
+		
+		// for smooth parameter changes that should affect children immediately, not just the newly created ones
+		// TODO add to rest setters
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_glow_color(_glow_color);
+			}
+		}
+		return self;
+	}
+	
+	#endregion
+	
 	// Freeing surfaces
 	static cleanup = function() {
 		// when do we actually suppose to call it though?
@@ -375,7 +317,49 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			surf_pass = -1;
 		}
 	}
+}
+
+
+function LPoint(_x, _y) constructor {
+	x = _x;
+	y = _y;
+	active = true;
 	
+	static update_position = function(_x, _y) {
+		x = _x;
+		y = _y;
+		
+		// If they are being set, means they are active
+		active = true;
+	}
+}
+
+
+function color_to_array(_color) {
+	var _hex = [];
+	var _ret = [];
+	for (var i = 0; _color != 0; ++i) {
+		_hex[i] = _color % 16;
+		_color = floor( _color / 16);
+	}
+	
+	// Make sure this is a color code
+	while (array_length(_hex) < 6) {
+		_hex[array_length(_hex)] = 0;
+	}
+	if (array_length( _hex) > 6) {
+		show_error("Unknown color: " + string(_color), true);
+		return -1;
+	}
+	
+	// Convert _hex to RGB
+	for (var i = 0; i < 3; ++i) {
+		_ret[i] = _hex[i * 2 + 1] * 16 + _hex[i * 2];
+		_ret[i] /= 255;
+	}
+	array_push(_ret, 1);
+	
+	return _ret;
 }
 
 

@@ -10,10 +10,9 @@ bolt.update_start(start_handle.x, start_handle.y)
 	.set_glow_outer_intensity(glow_outer_intensity)
 	.set_glow_inner_intensity(glow_inner_intensity)
 	.set_glow_inner_multiplier(glow_inner_multiplier)
+	.set_glow_color(glow_color)
 
 
 
-
-layer_enable_fx("Lightnings", fx_glow_enabled);
-
+layer_enable_fx(layer, fx_glow_enabled);
 

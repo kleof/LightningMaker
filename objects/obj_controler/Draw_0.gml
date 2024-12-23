@@ -1,6 +1,5 @@
 
 
-
 //if (not surface_exists(surf)) {
 //	surf = surface_create(room_width, room_height);
 //}
@@ -35,32 +34,3 @@ bolt.glow_reset();
 //gpu_set_blendmode(bm_normal);
 
 
-// ===== XOR KAWASE BLUR =====
-
-//kawase_set();
-//draw_surface(surf, 0, 0);
-//kawase_reset();
-
-//gpu_set_blendmode(bm_max);
-//kawase_draw(1);
-//kawase_draw(3);
-//gpu_set_blendmode(bm_normal);
-
-
-
-// ===== XOR 1PASS BLUR =====
-
-//blur_set(surf, .15);
-//gpu_set_blendmode(bm_max);
-//draw_surface(surf, 0, 0);
-//blur_reset();
-
-//blur_set(surf, 1);
-//draw_surface(surf, 0, 0);
-//blur_reset();
-
-//blur_set(surf, .2);
-//draw_surface(surf, 0, 0);
-//blur_reset();
-
-//gpu_set_blendmode(bm_normal);

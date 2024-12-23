@@ -13,8 +13,7 @@
   "glow_inner_multiplier":9.6000003814697266
 }
 
-very thin lightning
-
+very thin
 {
   "segment":12.0,
   "density":0.38999998569488525,
@@ -39,6 +38,21 @@ very thin lightning
   "glow_outer_intensity":2.7999999523162842,
   "glow_inner_intensity":21.5,
   "glow_inner_multiplier":32.599998474121094,
+  "fx_glow_enabled":false
+}
+
+"dual"-color blurred
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "width":7.0,
+  "height":120.0,
+  "turbulence":0.0,
+  "glow_outer_intensity":3.2999999523162842,
+  "glow_inner_intensity":12.199999809265137,
+  "glow_inner_multiplier":8.8999996185302734,
+  "glow_color":5375259,
   "fx_glow_enabled":false
 }
 
