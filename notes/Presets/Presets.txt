@@ -1,3 +1,5 @@
+//clipboard_set_text();
+
 {
   "segment":12.0,
   "density":0.20999999344348907,
@@ -26,6 +28,18 @@ very thin lightning
   "glow_inner_multiplier":32.599998474121094
 }
 
-
+{
+  "segment":12.0,
+  "density":0.20000000298023224,
+  "spd":-0.10000000149011612,
+  "width":2.0,
+  "height":120.0,
+  "turbulence":3.0,
+  "outline_strength":4.0,
+  "glow_outer_intensity":2.7999999523162842,
+  "glow_inner_intensity":21.5,
+  "glow_inner_multiplier":32.599998474121094,
+  "fx_glow_enabled":false
+}
 
 

@@ -24,8 +24,8 @@
   "name":"Lightning Bolt",
   "resources":[
     {"id":{"name":"ac_smoothing","path":"animcurves/ac_smoothing/ac_smoothing.yy",},},
-    {"id":{"name":"License","path":"notes/License/License.yy",},},
-    {"id":{"name":"Notes","path":"notes/Notes/Notes.yy",},},
+    {"id":{"name":"Licenses","path":"notes/Licenses/Licenses.yy",},},
+    {"id":{"name":"notes","path":"notes/notes/notes.yy",},},
     {"id":{"name":"Presets","path":"notes/Presets/Presets.yy",},},
     {"id":{"name":"obj_controler","path":"objects/obj_controler/obj_controler.yy",},},
     {"id":{"name":"obj_handle","path":"objects/obj_handle/obj_handle.yy",},},

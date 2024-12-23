@@ -16,10 +16,8 @@ end_handle = instance_create_layer(1160, 174, "Thingies", obj_handle);
 start_point = new Point(start_handle.x, start_handle.y);
 end_point = new Point(end_handle.x, end_handle.y);
 
-//fx_glow_enabled = true;
-//fx_outline_width = 1;
-//fx_outline_color = 7868927;
-//fx_outline = layer_get_fx("Lightnings");
+fx_glow_enabled = true;
+fx_glow = layer_get_fx("Lightnings");
 
 segment = 12;
 density = .25; // preset 2: .25  // tween density -> something like? TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
@@ -34,8 +32,8 @@ glow_inner_intensity = 13.7;
 glow_inner_multiplier = 21;
 
 bolt = new Lightning(start_point, end_point, segment, density, height, spd, width);
-//bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
-//bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
+bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
+bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width);
 
 //bolts = [];
 //repeat (50) {
@@ -43,7 +41,6 @@ bolt = new Lightning(start_point, end_point, segment, density, height, spd, widt
 //	array_push(bolts, bolt);
 //}
 
-//clipboard_set_text("HEWWO WOLD");
 
 // ***** DEBUG PANEL ***** //
 
@@ -64,10 +61,9 @@ dbg_slider(ref_create(self, "glow_outer_intensity"), 0, 5, "Glow outer intensity
 dbg_slider(ref_create(self, "glow_inner_intensity"), 0, 40, "Glow inner intensity", .1);
 dbg_slider(ref_create(self, "glow_inner_multiplier"), 0, 40, "Glow inner multiplier", .1);
 
-//dbg_checkbox(ref_create(self, "fx_glow_enabled"), "Glow");
-//dbg_slider(ref_create(self, "fx_outline_width"), 0, 5, "Outline strength", 1);
-//// what's up with these decimal values? why are they different than ones on the web?
-//dbg_drop_down(ref_create(self, "fx_outline_color"), "Rose:7868927,Steel:16741378,Toxic:2686792,Gold:1163263,Cyan:11992832", "Outline color");
+dbg_checkbox(ref_create(self, "fx_glow_enabled"), "Glow");
+//// what's up with these colors decimal values? why are they different than ones on the web?
+dbg_drop_down(ref_create(self, "fx_outline_color"), "Rose:7868927,Steel:16741378,Toxic:2686792,Gold:1163263,Cyan:11992832", "Outline color");
 
 //blur_init();
 //kawase_init(room_width, room_height);

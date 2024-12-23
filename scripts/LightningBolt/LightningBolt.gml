@@ -243,7 +243,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		// Horizontal blur
 		surface_set_target(surf_pass); {
-			//draw_clear_alpha(c_black, 0); // why don't we need to clear this one?
+			//draw_clear_alpha(c_black, 0); // why don't we need to clear this one? probably because of "gpu_set_blendenable(false)" later?
 			
 			shader_set(shd_blur_horizontal); {
 				shader_set_uniform_f(blur_horizontal_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);

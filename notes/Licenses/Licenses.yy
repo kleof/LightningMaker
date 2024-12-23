@@ -1,7 +1,7 @@
 {
   "$GMNotes":"",
-  "%Name":"License",
-  "name":"License",
+  "%Name":"Licenses",
+  "name":"Licenses",
   "parent":{
     "name":"Lightning Bolt",
     "path":"Lightning Bolt.yyp",

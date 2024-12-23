@@ -1,3 +1,5 @@
+- naming suggestions
+
 - for drawing every n'th frame?
 
 if (!surface_exists(my_surf)) {
