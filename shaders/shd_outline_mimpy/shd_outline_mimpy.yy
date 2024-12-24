@@ -3,8 +3,8 @@
   "%Name":"shd_outline_mimpy",
   "name":"shd_outline_mimpy",
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"stuffs",
+    "path":"folders/stuffs.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

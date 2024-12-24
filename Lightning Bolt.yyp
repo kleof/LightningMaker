@@ -10,6 +10,7 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"stuffs","folderPath":"folders/stuffs.yy","name":"stuffs","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"LightningBolt","folderPath":"folders/LightningBolt.yy","name":"LightningBolt","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[],

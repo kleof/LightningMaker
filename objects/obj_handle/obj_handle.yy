@@ -9,8 +9,8 @@
   "name":"obj_handle",
   "overriddenProperties":[],
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"stuffs",
+    "path":"folders/stuffs.yy",
   },
   "parentObjectId":null,
   "persistent":false,

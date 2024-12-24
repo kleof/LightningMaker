@@ -2,7 +2,7 @@
 	naming
 	missing "chunks" of line if line has high width
 	- check CleanShapes for line drawing to avoid gaps in lines of high width
-	calling set_glow/reset_glow more than once seems to severaly slow/lag game, but fps is still above few hundreds
+	set surface size to match lightning area and not whole screen, will it help with performance?
 	reduce number of parameters? or presets are enough?
 
 - drawing every n'th frame?

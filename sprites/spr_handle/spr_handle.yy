@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"stuffs",
+    "path":"folders/stuffs.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

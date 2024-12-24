@@ -41,7 +41,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	// temporary solution for built-in glow effect
 	static _layer = other.layer;
 	static _fx = fx_create("_effect_glow");
-	fx_set_parameters(_fx, {g_GlowIntensity: 1, g_GlowGamma: .9});
+	fx_set_parameters(_fx, {g_GlowIntensity: 1, g_GlowGamma: .9, g_GlowAlpha: .0});
 	fx_set_single_layer(_fx, true);
 	layer_set_fx(_layer, _fx);
 	
@@ -181,7 +181,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		// Final drawing: Vertical blur + Blending
 		gpu_set_blendmode(bm_add);
-
+		
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(blur_vertical_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
 			shader_set_uniform_f(blur_vertical_time_uniform, time);

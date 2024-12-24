@@ -1,5 +1,5 @@
-//randomize(); //get/set seed to freeze setup, randomize afterwards
 #macro trace show_debug_message
+//randomize(); //get/set seed to freeze setup, randomize afterwards
 // add particles on end points
 // Randomize segments length
 // forks?
