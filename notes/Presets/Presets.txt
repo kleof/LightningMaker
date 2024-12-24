@@ -56,4 +56,20 @@ very thin
   "fx_glow_enabled":false
 }
 
+slow-mo blue disk blur
+{
+  "segment":8.0,
+  "density":0.18999999761581421,
+  "spd":-0.019999999552965164,
+  "width":9.0,
+  "height":120.0,
+  "turbulence":0.0,
+  "glow_outer_intensity":1.8999999999999999,
+  "glow_inner_intensity":13.699999999999999,
+  "glow_inner_multiplier":21.0,
+  "glow_color":16719104.0,
+  "fx_glow_enabled":true
+}
+
+
 

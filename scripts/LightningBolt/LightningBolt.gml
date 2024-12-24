@@ -41,7 +41,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	// temporary solution for built-in glow effect
 	static _layer = other.layer;
 	static _fx = fx_create("_effect_glow");
-	fx_set_parameters(_fx, {g_GlowIntensity: .5, g_GlowGamma: .1});
+	fx_set_parameters(_fx, {g_GlowIntensity: 1, g_GlowGamma: .9});
 	fx_set_single_layer(_fx, true);
 	layer_set_fx(_layer, _fx);
 	
@@ -115,7 +115,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			//if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, glow_color, glow_color);
-			//draw_line_width(prev_x, prev_y, nx, ny, 1);
+			//draw_line_width(prev_x, prev_y, nx, ny, 1); // make toggable, allow to set width
 		}
 		//gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
 		

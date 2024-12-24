@@ -1,6 +1,11 @@
-- naming suggestions
+* issues: 
+	naming
+	missing "chunks" of line if line has high width
+	- check CleanShapes for line drawing to avoid gaps in lines of high width
+	calling set_glow/reset_glow more than once seems to severaly slow/lag game, but fps is still above few hundreds
+	reduce number of parameters? or presets are enough?
 
-- for drawing every n'th frame?
+- drawing every n'th frame?
 
 if (!surface_exists(my_surf)) {
    my_surf = surface_create();
@@ -29,16 +34,15 @@ function draw_line_sprite(_x1, _y1, _x2, _y2) {
 but does it matter, is it even impactful enough?
 
 
-- check CleanShapes for line drawing to avoid gaps in lines of high width
-
 - picked color interactions with glow depending on it's brightness
 brighter -> wider
 
-- intensity perception varies depending on background, allow to import background into visualizer
+- intensity perception varies depending on background, allow to import background into visualizer?
 
-- why calling set_glow/reset_glow more than once seems to severaly slow/lag game, but fps is not that low
 
 - surface size taken from window size, camera size or perhaps application surface (surface_get_width/height)?
+
+
 
 
 

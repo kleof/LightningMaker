@@ -10,6 +10,8 @@ bolt.glow_set();
 bolt.draw();
 //bolt2.draw();
 //bolt3.draw();
+//bolt4.draw();
+//bolt5.draw();
 bolt.glow_reset();
 
 //bolt.update();
@@ -19,7 +21,8 @@ bolt.glow_reset();
 //for (var i = 0; i < array_length(bolts); i++) {
 //	bolts[i].draw();
 //}
-
+draw_text(10, 700, fps);
+draw_text(10, 700, $"\n{1000 / fps_real} /16.67ms");
 
 //surface_reset_target();
 

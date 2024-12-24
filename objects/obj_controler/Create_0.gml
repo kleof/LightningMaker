@@ -35,6 +35,8 @@ glow_color = #D6007C;
 bolt = new Lightning(start_point, end_point, segment, density, height, spd, width, #D6007C);
 bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width, #D6007C);
 bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width, #D6007C);
+bolt4 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width, #D6007C);
+bolt5 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd, width, #D6007C);
 
 //bolts = [];
 //repeat (50) {
