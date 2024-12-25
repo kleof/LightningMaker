@@ -8,17 +8,25 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static surf_pass = -1;
 	static surf_width = 1;
 	static surf_height = 1;
-	static blur_horizontal_glow_uniform = shader_get_uniform(shd_blur_horizontal, "u_glowProperties");
-	static blur_horizontal_time_uniform = shader_get_uniform(shd_blur_horizontal, "u_time");
-	static blur_vertical_glow_uniform = shader_get_uniform(shd_blur_vertical, "u_glowProperties");
-	static blur_vertical_time_uniform = shader_get_uniform(shd_blur_vertical, "u_time");
+	static uniform_blur_horizontal_glow = shader_get_uniform(shd_blur_horizontal, "u_glowProperties");
+	static uniform_blur_horizontal_time = shader_get_uniform(shd_blur_horizontal, "u_time");
+	static uniform_blur_vertical_glow = shader_get_uniform(shd_blur_vertical, "u_glowProperties");
+	static uniform_blur_vertical_time = shader_get_uniform(shd_blur_vertical, "u_time");
+	static uniform_disk_glow_radius = shader_get_uniform(shd_disk_glow, "g_GlowRadius");
+	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
+	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
-	static min_segments_number = 3; // Increase if you need more fluid movement at low lightning's lengths
+	static min_segments_number = 4; // Increase if you need more fluid movement at low lightning's lengths
 	
-	glow_outer_intensity = 2;
-	glow_inner_intensity = 10;
-	glow_inner_multiplier = 22;
-	glow_color = _color;
+	neon_glow_intensity = 2;
+	neon_glow_inner = 10;
+	neon_glow_inner_mult = 22;
+	
+	disk_glow_radius = 256;
+	disk_glow_quality = 5;
+	disk_glow_intensity = 1;
+	disk_glow_alpha = 0; //!
+	disk_glow_gamma = .5;
 	
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
@@ -31,25 +39,22 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	density = _density; // Wave length, precision, quality
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
-	width = _width; // line width/thickness
 	turbulence = 0; // slow it down, change every other/3rd frame?
-	outline_strength = 4; // <- TODO
+	
+	width = _width; // line width/thickness
+	color = _color;
+	outline_width = 0; // <- TODO
+	outline_color = #D6007C;
 	
 	// Private variables, add _ ?
 	is_parent = true;
 	is_child = false;
-	// temporary solution for built-in glow effect
-	static _layer = other.layer;
-	static _fx = fx_create("_effect_glow");
-	fx_set_parameters(_fx, {g_GlowIntensity: 1, g_GlowGamma: .9, g_GlowAlpha: .0});
-	fx_set_single_layer(_fx, true);
-	layer_set_fx(_layer, _fx);
 	
 	angle = 0;
 	num = -1;
 	segment = 0;
 	height_reduction = 0;
-	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're chaning is_parent to false, until we pass is_parent as argument?
+	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're changing is_parent to false, until we pass is_parent as argument?
 	__update_distance_params();
 	
 	noise_offset = random(500); // (?) 500 seems enough, but unsure what is the right value for this
@@ -84,7 +89,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
-			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), glow_color, smoothing_type);
+			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), color, smoothing_type);
 			// child height relative to it's length?
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
@@ -92,11 +97,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			new_child.is_child = true;
 			new_child.life = irandom_range(child_life_min, child_life_max);
 			new_child.turbulence = turbulence; // ?
-			new_child.outline_strength = outline_strength;
+			new_child.outline_width = outline_width;
 			array_push(children, new_child);
 		}
 		
-		//gpu_set_blendmode(bm_add); // *for drawing outline with draw_line
+		if (outline_width > 0) gpu_set_blendmode(bm_add); // *for drawing outline with draw_line
+		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
 			var prev_y = ny;
@@ -113,11 +119,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			//if (outline_strength > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_strength / (recursion_level+1)), #D6007C, #D6007C);
-			draw_line_width_color(prev_x, prev_y, nx, ny, width, glow_color, glow_color);
+			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level+1)), outline_color, outline_color);
+			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
 			//draw_line_width(prev_x, prev_y, nx, ny, 1); // make toggable, allow to set width
 		}
-		//gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
+		
+		if (outline_width > 0) gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
 		
 		if (is_parent) {
 			for (var k = 0; k < array_length(children); k++) {
@@ -125,7 +132,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 				with (child) {
 					life--; // hmmm, may be affected by reduced drawing mode?
 					
-					// Deleting dead children or whos endpoint got deactivated, and by extension all of their children are lost (right?)
+					// Deleting dead children or whos endpoint got deactivated; by extension all of their children are lost (right?)
 					if (life <= 0 || end_point.active == false) { // end_point should be enough, no need for start_point
 						array_delete(other.children, array_get_index(other.children, self), 1);
 						return;
@@ -160,7 +167,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		draw_clear_alpha(c_black, 1);
 	}
 	
-	static glow_reset = function() {
+	static glow_reset_neon = function() {
 		surface_reset_target();
 		var time = current_time;
 		
@@ -169,8 +176,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			//draw_clear_alpha(c_black, 0); // why don't we need to clear this one? probably because of "gpu_set_blendenable(false)" later?
 			
 			shader_set(shd_blur_horizontal); {
-				shader_set_uniform_f(blur_horizontal_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
-				shader_set_uniform_f(blur_horizontal_time_uniform, time); // rather subtle effect, but why not
+				shader_set_uniform_f(uniform_blur_horizontal_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
+				shader_set_uniform_f(uniform_blur_horizontal_time, time); // rather subtle effect, but why not
 
 				gpu_set_blendenable(false); // important!
 				draw_surface(surf_base, 0, 0);
@@ -183,13 +190,52 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		gpu_set_blendmode(bm_add);
 		
 		shader_set(shd_blur_vertical); {
-			shader_set_uniform_f(blur_vertical_glow_uniform, glow_outer_intensity, glow_inner_intensity, glow_inner_multiplier);
-			shader_set_uniform_f(blur_vertical_time_uniform, time);
+			shader_set_uniform_f(uniform_blur_vertical_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
+			shader_set_uniform_f(uniform_blur_vertical_time, time);
 			draw_surface(surf_pass, 0, 0);
 			
 		} shader_reset();
 		
 		gpu_set_blendmode(bm_normal);
+	}
+	
+	static glow_reset_disk = function() {
+		surface_reset_target();
+		
+		var _num = disk_glow_quality;
+		var _mult = power(disk_glow_radius, 1 / _num);
+		var _radius = _mult;
+		var _colour = merge_colour(c_black, c_white, disk_glow_intensity); // Colour for glow intensity
+		
+		gpu_set_blendmode(bm_max);
+		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha); // remove for more blurry effect
+		
+		repeat(_num)
+		{
+			//Apply glow blur pass
+			surface_set_target(surf_pass); {
+			draw_clear(0);
+				shader_set(shd_disk_glow);
+					shader_set_uniform_f(uniform_disk_glow_texel_size, 1/surf_width, 1/surf_height);
+					shader_set_uniform_f(uniform_disk_glow_radius, _radius);
+					shader_set_uniform_f(uniform_disk_glow_gamma, disk_glow_gamma);
+					draw_surface(surf_base, 0, 0);
+				shader_reset();
+			} surface_reset_target();
+
+			draw_surface_ext(surf_pass, 0,0,1,1,0, _colour, 1);
+
+			_radius *= -_mult;
+			var _surf = surf_base;
+			surf_base = surf_pass;
+			surf_pass = _surf;
+		}
+	
+		gpu_set_blendmode(bm_normal);
+	}
+	
+	static glow_reset = function() {
+		
 	}
 	
 	static update = function() {
@@ -270,34 +316,70 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
-	static set_outline_strength = function(_outline_strength) {
-		outline_strength = _outline_strength;
+	static set_outline_width = function(_outline_width) {
+		outline_width = _outline_width;
 		return self;
 	}
 	
-	static set_glow_outer_intensity = function(_glow_outer_intensity) {
-		glow_outer_intensity = _glow_outer_intensity;
+	static set_neon_glow_intensity = function(_neon_glow_intensity) {
+		neon_glow_intensity = _neon_glow_intensity;
 		return self;
 	}
 	
-	static set_glow_inner_intensity = function(_glow_inner_intensity) {
-		glow_inner_intensity = _glow_inner_intensity;
+	static set_neon_glow_inner = function(_neon_glow_inner) {
+		neon_glow_inner = _neon_glow_inner;
 		return self;
 	}
 	
-	static set_glow_inner_multiplier = function(_glow_inner_multiplier) {
-		glow_inner_multiplier = _glow_inner_multiplier;
+	static set_neon_glow_inner_mult = function(_neon_glow_inner_mult) {
+		neon_glow_inner_mult = _neon_glow_inner_mult;
 		return self;
 	}
 	
-	static set_glow_color = function(_glow_color) {
-		glow_color = _glow_color;
+	static set_disk_glow_radius = function(_disk_glow_radius) {
+		disk_glow_radius = _disk_glow_radius;
+		return self;
+	}
+	
+	static set_disk_glow_quality = function(_disk_glow_quality) {
+		disk_glow_quality = _disk_glow_quality;
+		return self;
+	}
+	
+	static set_disk_glow_intensity = function(_disk_glow_intensity) {
+		disk_glow_intensity = _disk_glow_intensity;
+		return self;
+	}
+	
+	static set_disk_glow_alpha = function(_disk_glow_alpha) {
+		disk_glow_alpha = _disk_glow_alpha;
+		return self;
+	}
+	
+	static set_disk_glow_gamma = function(_disk_glow_gamma) {
+		disk_glow_gamma = _disk_glow_gamma;
+		return self;
+	}
+	
+	static set_color = function(_color) {
+		color = _color;
 		
 		// for smooth parameter changes that should affect children immediately, not just the newly created ones
 		// TODO add to rest setters
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_glow_color(_glow_color);
+				children[i].set_color(_color);
+			}
+		}
+		return self;
+	}
+	
+	static set_outline_color = function(_outline_color) {
+		outline_color = _outline_color;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_outline_color(_outline_color);
 			}
 		}
 		return self;

@@ -1,9 +1,17 @@
+put bm_add in glow_set and remove from shaders stuff and line drawing
+
 * issues: 
 	naming
-	missing "chunks" of line if line has high width
+	missing "chunks" of line if line has too high width
 	- check CleanShapes for line drawing to avoid gaps in lines of high width
 	set surface size to match lightning area and not whole screen, will it help with performance?
 	reduce number of parameters? or presets are enough?
+
+- dual color mode
+glow_color = merge_color(c1, c2, i/num);
+
+- heart-beat rainbow
+var color1 = make_color_hsv((current_time*0.2 % 255), 255, 255);
 
 - drawing every n'th frame?
 

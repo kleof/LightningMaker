@@ -41,6 +41,20 @@ very thin
   "fx_glow_enabled":false
 }
 
+{
+  "segment":12.0,
+  "density":0.20000000298023224,
+  "spd":-0.10000000149011612,
+  "width":2.0,
+  "height":120.0,
+  "turbulence":1.0,
+  "neon_glow_intensity":2.4000000953674316,
+  "neon_glow_inner":8.8999996185302734,
+  "neon_glow_inner_mult":15.199999809265137,
+  "glow_color":54928,
+  "fx_glow_enabled":false
+}
+
 "dual"-color blurred
 {
   "segment":12.0,
@@ -71,5 +85,61 @@ slow-mo blue disk blur
   "fx_glow_enabled":true
 }
 
+
+blurred neon
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "width":11.0,
+  "height":120.0,
+  "turbulence":0.0,
+  "glow_outer_intensity":1.8999999999999999,
+  "glow_inner_intensity":8.1000003814697266,
+  "glow_inner_multiplier":9.3000001907348633,
+  "glow_color":8126678.0,
+  "fx_glow_enabled":false
+}
+
+disk glow
+{
+  "segment":18.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "width":6.0,
+  "height":120.0,
+  "turbulence":0.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "glow_color":1965853,
+  "fx_glow_enabled":false,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000298023224,
+  "disk_glow_alpha":0.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.0,
+  "outline_strength":6.0
+}
+
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "color":16514043,
+  "width":4.0,
+  "outline_width":8.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "fx_glow_enabled":false,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.40000000596046448,
+  "disk_glow_alpha":0.89999997615814209,
+  "disk_glow_radius":353.0,
+  "disk_glow_quality":5.0
+}
 
 
