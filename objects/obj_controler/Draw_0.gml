@@ -12,7 +12,7 @@ bolt.draw();
 //bolt3.draw();
 //bolt4.draw();
 //bolt5.draw();
-bolt.glow_reset_disk();
+bolt.glow_reset();
 
 //bolt.update();
 //bolt2.update();

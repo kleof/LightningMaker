@@ -142,4 +142,44 @@ disk glow
   "disk_glow_quality":5.0
 }
 
+green toxic
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "width":5.0,
+  "color":2162464,
+  "outline_width":3.0,
+  "outline_color":42313,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.69999998807907104,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.0
+}
+{
+  "segment":12.0,
+  "density":0.079999998211860657,
+  "spd":-0.10999999940395355,
+  "height":300.0,
+  "turbulence":8.0,
+  "width":3.0,
+  "color":16777215.0,
+  "outline_width":10.0,
+  "outline_color":8126678.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.80000001192092896,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":287.0,
+  "disk_glow_quality":7.0
+}
+
 

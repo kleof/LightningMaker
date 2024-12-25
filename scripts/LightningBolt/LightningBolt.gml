@@ -1,4 +1,6 @@
-
+#macro GLOW_MODE_NONE 0
+#macro GLOW_MODE_NEON 1
+#macro GLOW_MODE_DISK 2
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
@@ -17,6 +19,9 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
 	static min_segments_number = 4; // Increase if you need more fluid movement at low lightning's lengths
+	
+	__glow_reset_function = __glow_reset_disk;
+	__glow_set_function = __glow_set_default;
 	
 	neon_glow_intensity = 2;
 	neon_glow_inner = 10;
@@ -145,6 +150,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static glow_set = function() {
+		__glow_set_function();
+	}
+	
+	static __glow_set_default = function() {
 		// Setting up surfaces
 		var _surf_width = camera_get_view_width(camera_get_active());
 		var _surf_height = camera_get_view_height(camera_get_active());
@@ -167,7 +176,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		draw_clear_alpha(c_black, 1);
 	}
 	
-	static glow_reset_neon = function() {
+	static __glow_reset_neon = function() {
 		surface_reset_target();
 		var time = current_time;
 		
@@ -199,7 +208,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		gpu_set_blendmode(bm_normal);
 	}
 	
-	static glow_reset_disk = function() {
+	static __glow_reset_disk = function() {
 		surface_reset_target();
 		
 		var _num = disk_glow_quality;
@@ -235,7 +244,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static glow_reset = function() {
-		
+		__glow_reset_function();
 	}
 	
 	static update = function() {
@@ -385,6 +394,23 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
+	static set_glow_mode = function(_mode) {
+		switch (_mode) {
+			case 0:
+				__glow_reset_function = noop;
+				__glow_set_function = noop;
+				break;
+			case 1:
+				__glow_reset_function = __glow_reset_neon;
+				__glow_set_function = __glow_set_default;
+				break;
+			case 2:
+				__glow_reset_function = __glow_reset_disk;
+				__glow_set_function = __glow_set_default;
+				break;
+		}
+	}
+	
 	#endregion
 	
 	// Freeing surfaces
@@ -415,6 +441,9 @@ function LPoint(_x, _y) constructor {
 		active = true;
 	}
 }
+
+
+function noop() {}
 
 
 function color_to_array(_color) {

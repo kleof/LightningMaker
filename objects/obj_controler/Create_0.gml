@@ -7,9 +7,6 @@
 // separate smoothing type for children? potentially rapid looks better than gentle
 // Option to draw every 2nd/3rd frame
 
-outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
-tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
-
 // ***** DEFAULTS ***** //
 
 start_handle = instance_create_layer(520, 264, "Thingies", obj_handle);
@@ -28,6 +25,9 @@ outline_width = 6;
 color = #FFFFFF;
 outline_color = #D6007C;
 
+glow_mode_neon = false;
+glow_mode_disk = true;
+
 neon_glow_intensity = 1.9;
 neon_glow_inner = 13.7;
 neon_glow_inner_mult = 21;
@@ -35,7 +35,7 @@ neon_glow_inner_mult = 21;
 disk_glow_radius = 256;
 disk_glow_quality = 5;
 disk_glow_intensity = 1;
-disk_glow_alpha = 1; //!
+disk_glow_alpha = .8; //!
 disk_glow_gamma = 0;
 
 bolt = new Lightning(start_point, end_point, segment, density, height, spd, width, #D6007C);
@@ -50,6 +50,12 @@ bolt5 = new Lightning({x:0, y:0}, {x:600, y:600}, segment, density, height, spd,
 //	array_push(bolts, bolt);
 //}
 
+activate_disk_mode = function() {
+	bolt.set_glow_mode(GLOW_MODE_DISK);
+}
+activate_neon_mode = function() {
+	bolt.set_glow_mode(GLOW_MODE_NEON);
+}
 
 // ***** DEBUG PANEL ***** //
 
@@ -69,6 +75,11 @@ dbg_colour(ref_create(self, "outline_color"), "Outline color");
 
 dbg_text_separator("Neon Glow Settings");
 
+dbg_button("Turn ON \"Neon Glow\"", activate_neon_mode);
+dbg_same_line();
+dbg_button("Load defaults", activate_neon_mode);
+
+
 dbg_slider(ref_create(self, "neon_glow_intensity"), 0, 5, "Outer intensity", .1);
 dbg_slider(ref_create(self, "neon_glow_inner"), 0, 40, "Inner intensity", .1);
 dbg_slider(ref_create(self, "neon_glow_inner_mult"), 0, 40, "Inner multiplier", .1);
@@ -76,11 +87,11 @@ dbg_slider(ref_create(self, "neon_glow_inner_mult"), 0, 40, "Inner multiplier", 
 dbg_text_separator("Disk Glow Settings");
 
 //add "Disk glow preset" button
-dbg_checkbox(ref_create(self, "fx_glow_enabled"), "Disk blur mode");
+dbg_button("Turn ON \"Disk Glow\"", activate_disk_mode);
 
 dbg_slider(ref_create(self, "disk_glow_intensity"), 0, 1, "Intensity", .1);
 dbg_slider(ref_create(self, "disk_glow_gamma"), 0, 2, "Gamma", .1);
-dbg_slider(ref_create(self, "disk_glow_alpha"), 0, 1, "Alpha", .1);
+dbg_slider(ref_create(self, "disk_glow_alpha"), 0, 1, "Sharpness", .1);
 dbg_slider(ref_create(self, "disk_glow_radius"), 1, 1024, "Radius", 1);
 dbg_slider(ref_create(self, "disk_glow_quality"), 3, 10, "Quality", .5);
 
@@ -89,5 +100,6 @@ dbg_slider(ref_create(self, "disk_glow_quality"), 3, 10, "Quality", .5);
 
 
 
-
-surf = -1;
+//outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
+//tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
+//surf = -1;
