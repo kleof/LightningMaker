@@ -8,6 +8,9 @@
 
 bolt.glow_set();
 bolt.draw();
+//gpu_set_blendmode(bm_max);
+//draw_line_width_color(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 18, #D6007C, #D6007C);
+//draw_line_width(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 10);
 //bolt2.draw();
 //bolt3.draw();
 //bolt4.draw();

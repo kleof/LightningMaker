@@ -55,6 +55,26 @@ very thin
   "fx_glow_enabled":false
 }
 
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "width":1.0,
+  "color":16761220,
+  "outline_width":0.0,
+  "outline_color":8126678.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":1.6000000238418579,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":312.0,
+  "disk_glow_quality":7.0
+}
+
 "dual"-color blurred
 {
   "segment":12.0,
@@ -181,5 +201,51 @@ green toxic
   "disk_glow_radius":287.0,
   "disk_glow_quality":7.0
 }
+
+add one more or two lightnings, smoothing type rapid (0) or rapid2
+gpu_set_blendmode(bm_max);
+draw_line_width_color(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 18, #D6007C, #D6007C);
+draw_line_width(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 10);
+{
+  "segment":12.0,
+  "density":0.10999999940395355,
+  "spd":-0.05000000074505806,
+  "height":77.0,
+  "turbulence":0.0,
+  "width":4.0,
+  "color":16777215.0,
+  "outline_width":6.0,
+  "outline_color":8126678.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.0,
+  "disk_glow_alpha":0.89999997615814209,
+  "disk_glow_radius":230.0,
+  "disk_glow_quality":6.0
+}
+inner beam ^v^ =======`|
+{
+  "segment":37.0,
+  "density":0.039999999105930328,
+  "spd":-0.029999999329447746,
+  "height":36.0,
+  "turbulence":0.0,
+  "width":18.0,
+  "color":16777215.0,
+  "outline_width":0.0,
+  "outline_color":8126678.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.0,
+  "disk_glow_alpha":0.80000000000000004,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.0
+}
+
+
 
 

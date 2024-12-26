@@ -106,7 +106,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			array_push(children, new_child);
 		}
 		
-		if (outline_width > 0) gpu_set_blendmode(bm_add); // *for drawing outline with draw_line
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -128,8 +127,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
 			//draw_line_width(prev_x, prev_y, nx, ny, 1); // make toggable, allow to set width
 		}
-		
-		if (outline_width > 0) gpu_set_blendmode(bm_normal); // *for drawing outline with draw_line
+
 		
 		if (is_parent) {
 			for (var k = 0; k < array_length(children); k++) {
@@ -174,6 +172,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		surface_set_target(surf_base);
 		draw_clear_alpha(c_black, 1);
+		
+		gpu_set_blendmode(bm_max);
 	}
 	
 	static __glow_reset_neon = function() {
@@ -195,8 +195,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			} shader_reset();
 		} surface_reset_target();
 		
-		// Final drawing: Vertical blur + Blending
-		gpu_set_blendmode(bm_add);
+		// Final drawing: Vertical blur (+ formely Blending)
 		
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(uniform_blur_vertical_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
@@ -216,7 +215,6 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var _radius = _mult;
 		var _colour = merge_colour(c_black, c_white, disk_glow_intensity); // Colour for glow intensity
 		
-		gpu_set_blendmode(bm_max);
 		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha); // remove for more blurry effect
 		
 		repeat(_num)

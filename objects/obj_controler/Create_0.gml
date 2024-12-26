@@ -77,8 +77,7 @@ dbg_text_separator("Neon Glow Settings");
 
 dbg_button("Turn ON \"Neon Glow\"", activate_neon_mode);
 dbg_same_line();
-dbg_button("Load defaults", activate_neon_mode);
-
+dbg_button("Load \"Neon Glow\" defaults", activate_neon_mode, 200);
 
 dbg_slider(ref_create(self, "neon_glow_intensity"), 0, 5, "Outer intensity", .1);
 dbg_slider(ref_create(self, "neon_glow_inner"), 0, 40, "Inner intensity", .1);
@@ -91,7 +90,7 @@ dbg_button("Turn ON \"Disk Glow\"", activate_disk_mode);
 
 dbg_slider(ref_create(self, "disk_glow_intensity"), 0, 1, "Intensity", .1);
 dbg_slider(ref_create(self, "disk_glow_gamma"), 0, 2, "Gamma", .1);
-dbg_slider(ref_create(self, "disk_glow_alpha"), 0, 1, "Sharpness", .1);
+dbg_slider(ref_create(self, "disk_glow_alpha"), 0, 1, "Alpha", .1);
 dbg_slider(ref_create(self, "disk_glow_radius"), 1, 1024, "Radius", 1);
 dbg_slider(ref_create(self, "disk_glow_quality"), 3, 10, "Quality", .5);
 
