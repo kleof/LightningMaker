@@ -62,7 +62,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're changing is_parent to false, until we pass is_parent as argument?
 	__update_distance_params();
 	
-	noise_offset = random(500); // (?) 500 seems enough, but unsure what is the right value for this
+	noise_offset = random(10000); // (?) 500 seems enough, but unsure what is the right value for this
 	
 	is_parent = true; // if children_max is 0 set to false?
 	is_child = false;
@@ -123,11 +123,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
+			// outline_width = set_outline_width(_outline_width) -> outline_width = width + max(1, _outline_width / (recursion_level+1))
 			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level+1)), outline_color, outline_color);
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
 			//draw_line_width(prev_x, prev_y, nx, ny, 1); // make toggable, allow to set width
 		}
-
+		
 		
 		if (is_parent) {
 			for (var k = 0; k < array_length(children); k++) {

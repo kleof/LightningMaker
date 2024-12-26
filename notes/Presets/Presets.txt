@@ -13,7 +13,47 @@
   "glow_inner_multiplier":9.6000003814697266
 }
 
+hot plasma (neon)
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "width":5.0,
+  "color":6226135.0,
+  "outline_width":0.0,
+  "outline_color":16711739,
+  "neon_glow_intensity":2.2999999523162842,
+  "neon_glow_inner":7.4000000953674316,
+  "neon_glow_inner_mult":5.0999999046325684,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5
+}
+
 very thin
+{
+  "segment":12.0,
+  "density":0.20000000298023224,
+  "spd":-0.029999999329447746,
+  "height":133.0,
+  "turbulence":0.0,
+  "width":1.0,
+  "color":14580787.0,
+  "outline_width":0.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":2.7999999523162842,
+  "neon_glow_inner":16.600000381469727,
+  "neon_glow_inner_mult":28.799999237060547,
+  "disk_glow_intensity":0.69999998807907104,
+  "disk_glow_gamma":0.69999998807907104,
+  "disk_glow_alpha":0.89999997615814209,
+  "disk_glow_radius":206.0,
+  "disk_glow_quality":5.5
+}
 {
   "segment":12.0,
   "density":0.38999998569488525,
@@ -246,6 +286,45 @@ inner beam ^v^ =======`|
   "disk_glow_quality":5.0
 }
 
+toxic(disk) add inner white?
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "width":4.0,
+  "color":1048320,
+  "outline_width":1.0,
+  "outline_color":65384,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.69999998807907104,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":271.0,
+  "disk_glow_quality":7.0
+}
 
-
+thin (disk)
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":0.0,
+  "width":2.0,
+  "color":16762449,
+  "outline_width":0.0,
+  "outline_color":65384.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":1.0,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":271.0,
+  "disk_glow_quality":7.0
+}
 
