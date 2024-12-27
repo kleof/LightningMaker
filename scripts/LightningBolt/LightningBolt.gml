@@ -1,6 +1,11 @@
-#macro GLOW_MODE_NONE 0
-#macro GLOW_MODE_NEON 1
-#macro GLOW_MODE_DISK 2
+#macro GLOW_TYPE_NONE 0
+#macro GLOW_TYPE_NEON 1
+#macro GLOW_TYPE_DISK 2
+#macro SMOOTHING_RAPID 0
+#macro SMOOTHING_GENTLE 1
+#macro SMOOTHING_SINE 2
+#macro SMOOTHING_RAPID2 3
+#macro SMOOTHING_OPENEND 4
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
@@ -18,7 +23,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
-	static min_segments_number = 4; // Increase if you need more fluid movement at low lightning's lengths
+	static min_segments_number = 4; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
 	
 	__glow_reset_function = __glow_reset_disk;
 	__glow_set_function = __glow_set_default;
@@ -35,12 +40,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	smoothing_type = _smoothing_type;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
-	smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2");
+	smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2"); // change this to gentle for non-directional up&down wave motion mode //make static?
 	secondary_noise_strength = .17; // jaggedness
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	base_segment = max(1, _segment); // segment length in pixels, aka "quality", bigger -> better performance
+	segment_base = max(1, _segment); // segment length in pixels, aka "quality", bigger -> better performance
 	density = _density; // Wave length, precision, quality
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
@@ -57,22 +62,25 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	angle = 0;
 	num = -1;
-	segment = 0;
+	segment_real = 0;
 	height_reduction = 0;
-	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're changing is_parent to false, until we pass is_parent as argument?
+	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're changing is_parent to false, unless we pass is_parent as argument?
 	__update_distance_params();
 	
-	noise_offset = random(10000); // (?) 500 seems enough, but unsure what is the right value for this
+	noise_offset = random(10000); // (?) 500 seems enough, unsure what is the right value for this
+	noise_secondary_offset = random(10000);
 	
 	is_parent = true; // if children_max is 0 set to false?
 	is_child = false;
 	life = 0;
 	recursion_level = 0;
-	static child_chance = .10;
-	static children_max = 3;
-	static child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
-	static child_life_max = 60;
+	
+	child_chance = .10;
+	child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
+	child_life_max = 60; // Allow infinite life?
+	children_max = 3;
 	static recursion_level_max = 2;
+	static children_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best
 	children = [];
 	
 	static draw = function() {
@@ -94,7 +102,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
 			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
 			
-			var new_child = new Lightning(points[p1_index], points[p2_index], base_segment, density, height*.8, spd, max(1, width-2), color, smoothing_type);
+			var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color, children_smoothing_type);
 			// child height relative to it's length?
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
@@ -113,9 +121,9 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			
 			var smoothing = animcurve_channel_evaluate(smoothing_base_type, (i)/(num));
 			var smoothing_secondary = animcurve_channel_evaluate(smoothing_secondary_type, (i)/(num));
-			var x_offset = i * segment + random_range(-turbulence, turbulence) * smoothing_secondary;
+			var x_offset = i * segment_real + random_range(-turbulence, turbulence) * smoothing_secondary;
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
-			var secondary_noise = perlin_noise(noise_offset + x_offset * density * secondary_noise_density_multiplier, spd);
+			var secondary_noise = perlin_noise(noise_secondary_offset + x_offset * density * secondary_noise_density_multiplier, spd); // add speed multiplier
 			var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height * secondary_noise_strength + random(turbulence) * choose(-1,1)) * smoothing_secondary;
 			
 			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle + 90);
@@ -256,8 +264,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var prev_num = num;
 		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
-		num = max(min_segments_number, floor(dist / base_segment)); // Number of segments from start to end 
-		segment = dist / num; // In case given segment can't divide distance evenly, resize it
+		num = max(min_segments_number, floor(dist / segment_base)); // Number of segments from start to end 
+		segment_real = dist / num; // In case given segment can't divide distance evenly, resize it
 		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
 		// In case of parent, "resize" array of all points when distance changes
@@ -294,7 +302,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static set_segment = function(_segment) {
-		base_segment = _segment;
+		segment_base = _segment;
 		__update_distance_params();
 		return self;
 	}
@@ -326,6 +334,13 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static set_outline_width = function(_outline_width) {
 		outline_width = _outline_width;
+		return self;
+	}
+	
+	static set_smoothing_type = function(_smoothing_type) {
+		smoothing_type = _smoothing_type;
+		smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
+		// Do not set for it's children
 		return self;
 	}
 	
@@ -393,28 +408,70 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
-	static set_glow_mode = function(_mode) {
-		switch (_mode) {
+	static set_glow_type = function(_glow_type) {
+		switch (_glow_type) {
 			case 0:
-				__glow_reset_function = noop;
 				__glow_set_function = noop;
+				__glow_reset_function = noop;
 				break;
 			case 1:
-				__glow_reset_function = __glow_reset_neon;
 				__glow_set_function = __glow_set_default;
+				__glow_reset_function = __glow_reset_neon;
 				break;
 			case 2:
-				__glow_reset_function = __glow_reset_disk;
 				__glow_set_function = __glow_set_default;
+				__glow_reset_function = __glow_reset_disk;
 				break;
 		}
+		return self;
+	}
+	
+	// CHILDREN SETTERS
+
+	static set_child_chance = function(_child_chance) {
+		child_chance = _child_chance;
+		return self;
+	}
+	
+	static set_child_life_min = function(_child_life_min) {
+		child_life_min = min(_child_life_min, children_max); // Do not allow for min to be bigger than max?
+		return self;
+	}
+	
+	static set_child_life_max = function(_child_life_max) {
+		child_life_max = _child_life_max;
+		child_life_min = min(child_life_min, child_life_max);
+		// Reduce the life to new max if it's currently too high
+		life = min(life, child_life_max);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_life_max(_child_life_max);
+			}
+		}
+		return self;
+	}
+	
+	static set_children_max = function(_children_max) {
+		children_max = _children_max;
+		// Remove surpluss children
+		if (array_length(children) > children_max) {
+			array_resize(children, children_max);
+		}
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_children_max(_children_max);
+			}
+		}
+		return self;
 	}
 	
 	#endregion
 	
 	// Freeing surfaces
 	static cleanup = function() {
-		// when do we actually suppose to call it though?
+		// don't know about that one, all instances are using same static surfaces so trying to free them when one dies seems bad
 		if (surface_exists(surf_base)) {
 			surface_free(surf_base);
 			surf_base = -1;

@@ -37,6 +37,30 @@ hot plasma (neon)
 very thin
 {
   "segment":12.0,
+  "density":0.25,
+  "spd":-0.10000000000000001,
+  "height":120.0,
+  "turbulence":3.0,
+  "smoothing_type":1.0,
+  "width":2.0,
+  "color":16777215.0,
+  "outline_width":8.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5,
+  "child_chance":0.05000000074505806,
+  "children_max":1.0,
+  "child_life_min":0.0,
+  "child_life_max":7.0
+}
+{
+  "segment":12.0,
   "density":0.20000000298023224,
   "spd":-0.029999999329447746,
   "height":133.0,
@@ -327,4 +351,99 @@ thin (disk)
   "disk_glow_radius":271.0,
   "disk_glow_quality":7.0
 }
+
+show case, put vertically, secondary noise speed x5, add turbulance
+{
+  "segment":12.0,
+  "density":0.34000000357627869,
+  "spd":-0.10000000000000001,
+  "height":66.0,
+  "turbulence":0.0,
+  "smoothing_type":1.0,
+  "width":4.0,
+  "color":16777215.0,
+  "outline_width":5.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5
+}
+
++beam
+{
+  "segment":12.0,
+  "density":0.31999999284744263,
+  "spd":-0.14000000059604645,
+  "height":100.0,
+  "turbulence":5.0,
+  "smoothing_type":3.0,
+  "width":4.0,
+  "color":16777215.0,
+  "outline_width":5.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5
+}
+
++beam, sine smoothing good for that
+{
+  "segment":9.0,
+  "density":0.68999999761581421,
+  "spd":-0.23999999463558197,
+  "height":84.0,
+  "turbulence":3.0,
+  "smoothing_type":2.0,
+  "width":4.0,
+  "color":16758497,
+  "outline_width":2.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5
+}
+
+rapid children flashes
+{
+  "segment":12.0,
+  "density":0.25,
+  "spd":-0.11999999731779099,
+  "height":104.0,
+  "turbulence":3.0,
+  "smoothing_type":1.0,
+  "width":4.0,
+  "color":16777215.0,
+  "outline_width":5.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5,
+  "child_chance":0.30000001192092896,
+  "children_max":7.0,
+  "child_life_min":10.0,
+  "child_life_max":20.0
+}
+
+
+
 

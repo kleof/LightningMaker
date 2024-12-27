@@ -5,12 +5,21 @@
 	set surface size to match lightning area and not whole screen, will it help with performance?
 	reduce number of parameters? or presets are enough?
 	after changing colors some children still spawn with previous color, check passed variables
+	neon blur looking not good with vertical lines
 
 - allow more instances to be added in visualizer
+- allow to set Default values for parameters that are not passed on creation
 
 - less awkward children movement
 
 - less directional, more up and down main lightning movement
+var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
+var secondary_noise = perlin_noise(r + x_offset * density , -spd);
+var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height  + random(turbulence) * choose(-1,1)) * smoothing_secondary;
+v2
+var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
+var secondary_noise = perlin_noise(r + x_offset * density , -spd);
+var y_offset = base_noise * height *.5* height_reduction * smoothing + (secondary_noise * height * .5 + random(turbulence) * choose(-1,1)) * smoothing_secondary;
 
 - dual color mode
 glow_color = merge_color(c1, c2, i/num);

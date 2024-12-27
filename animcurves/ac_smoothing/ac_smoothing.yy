@@ -14,7 +14,7 @@
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.6,"y":1.0,},
         {"th0":-0.100000024,"th1":0.1,"tv0":0.57894737,"tv1":0.0,"x":1.0,"y":0.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
-    {"$GMAnimCurveChannel":"","%Name":"wild","colour":4279025727,"name":"wild","points":[
+    {"$GMAnimCurveChannel":"","%Name":"sine","colour":4279025727,"name":"sine","points":[
         {"th0":-0.1,"th1":0.011614464,"tv0":0.0,"tv1":0.0,"x":0.0,"y":0.0,},
         {"th0":-0.028741946,"th1":0.04054054,"tv0":-0.0020477732,"tv1":0.0028883857,"x":0.11056512,"y":0.61609906,},
         {"th0":-0.027853332,"th1":0.04741198,"tv0":0.00075283647,"tv1":0.005620964,"x":0.2027027,"y":0.34256524,},
@@ -32,7 +32,7 @@
         {"th0":-0.14619164,"th1":0.013022125,"tv0":0.0,"tv1":0.0,"x":0.95,"y":1.0,},
         {"th0":-0.050000012,"th1":0.1,"tv0":0.57894737,"tv1":0.0,"x":1.0,"y":0.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
-    {"$GMAnimCurveChannel":"","%Name":"loose_end","colour":4279015665,"name":"loose_end","points":[
+    {"$GMAnimCurveChannel":"","%Name":"open_end","colour":4279015665,"name":"open_end","points":[
         {"th0":-0.1,"th1":0.1,"tv0":0.0,"tv1":0.5758514,"x":0.0,"y":0.0,},
         {"th0":-0.014987715,"th1":0.14619164,"tv0":0.0,"tv1":0.0,"x":0.1,"y":1.0,},
         {"th0":-0.13816792,"th1":0.1,"tv0":-0.0010526776,"tv1":0.0,"x":1.0,"y":1.0,},

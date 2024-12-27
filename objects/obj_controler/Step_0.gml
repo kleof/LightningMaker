@@ -1,4 +1,6 @@
 //var color = make_color_hsv((current_time*0.2 % 255), 255, 255);
+child_life_min = min(child_life_min, child_life_max);
+
 bolt.update_start(start_handle.x, start_handle.y)
 	.update_end(end_handle.x, end_handle.y)
 	.set_density(density)
@@ -18,6 +20,13 @@ bolt.update_start(start_handle.x, start_handle.y)
 	.set_disk_glow_quality(disk_glow_quality)
 	.set_disk_glow_gamma(disk_glow_gamma)
 	.set_disk_glow_intensity(disk_glow_intensity)
+	.set_smoothing_type(smoothing_type)
+	.set_child_chance(child_chance)
+	.set_child_life_min(child_life_min)
+	.set_child_life_max(child_life_max)
+	.set_children_max(children_max)
+
+
 
 
 

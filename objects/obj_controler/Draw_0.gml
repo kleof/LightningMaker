@@ -24,9 +24,9 @@ bolt.glow_reset();
 //for (var i = 0; i < array_length(bolts); i++) {
 //	bolts[i].draw();
 //}
-draw_text(10, 700, $"fps_real:   {fps_real}");
-draw_text(10, 700, $"\nframe time: {1000 / fps_real} /16.67ms");
-draw_text(10, 700, $"\n\nfps:        {fps}");
+draw_text(1130, 700, $"fps_real:   {fps_real}");
+draw_text(1130, 700, $"\nframe time: {1000 / fps_real} /16.67ms");
+draw_text(1130, 700, $"\n\nfps:        {fps}");
 
 
 //surface_reset_target();
