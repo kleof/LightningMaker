@@ -41,8 +41,8 @@
   "function":2,
   "name":"ac_smoothing",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
   },
   "resourceType":"GMAnimCurve",
   "resourceVersion":"2.0",

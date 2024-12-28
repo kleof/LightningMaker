@@ -3,8 +3,8 @@
   "%Name":"shd_disk_glow",
   "name":"shd_disk_glow",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

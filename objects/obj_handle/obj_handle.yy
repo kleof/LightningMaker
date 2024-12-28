@@ -9,8 +9,8 @@
   "name":"obj_handle",
   "overriddenProperties":[],
   "parent":{
-    "name":"stuffs",
-    "path":"folders/stuffs.yy",
+    "name":"Visualizer",
+    "path":"folders/Visualizer.yy",
   },
   "parentObjectId":null,
   "persistent":false,

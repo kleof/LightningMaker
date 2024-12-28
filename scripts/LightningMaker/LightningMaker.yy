@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"LightningBolt",
+  "%Name":"LightningMaker",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"LightningBolt",
+  "name":"LightningMaker",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"LightningMaker",
+    "path":"folders/LightningMaker.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

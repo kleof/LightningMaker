@@ -38,7 +38,7 @@ load_all_defaults = function() {
 	disk_glow_alpha = 1;
 	disk_glow_gamma = .2;
 	
-	child_chance = .10;
+	child_chance = .1;
 	child_life_min = 6; 
 	child_life_max = 60;
 	children_max = 3;

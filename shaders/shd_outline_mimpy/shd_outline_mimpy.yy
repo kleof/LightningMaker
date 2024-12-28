@@ -3,8 +3,8 @@
   "%Name":"shd_outline_mimpy",
   "name":"shd_outline_mimpy",
   "parent":{
-    "name":"stuffs",
-    "path":"folders/stuffs.yy",
+    "name":"Visualizer",
+    "path":"folders/Visualizer.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

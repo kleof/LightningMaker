@@ -3,8 +3,8 @@
   "%Name":"Licenses",
   "name":"Licenses",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
   },
   "resourceType":"GMNotes",
   "resourceVersion":"2.0",

@@ -3,8 +3,8 @@
   "%Name":"shd_perlin_noise_glsl_es",
   "name":"shd_perlin_noise_glsl_es",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

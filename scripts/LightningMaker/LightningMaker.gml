@@ -156,8 +156,44 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		}
 	}
 	
+	static __update_distance_params = function() {
+		// TODO add check if points changed, if not evacuate early
+		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
+		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
+		var prev_num = num;
+		num = max(min_segments_number, floor(dist / segment_base)); // Number of segments from start to end 
+		segment_real = dist / num; // In case given segment can't divide distance evenly, resize it
+		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
+		
+		// In case of parent, "resize" array of all points when distance changes
+		if (is_parent) {
+			// Add new points if lightning length increased, but not if array is long enough already
+			var _diff = num - prev_num;
+			if (_diff > 0 && array_length(points) <= num) {
+				var _additional_points = array_create_ext(_diff, function() { return new LPoint(0, 0); });
+				points = array_concat(points, _additional_points);
+			}
+			// Deactivate points (not delete) if lightning length decreased, so we can destroy children using them
+			else if (_diff < 0) {
+				for (var i = num; i <= prev_num; i++) {
+					points[i].active = false;
+				}
+			}
+		}
+	}
+	
 	static glow_set = function() {
 		__glow_set_function();
+	}
+	
+	static glow_reset = function() {
+		__glow_reset_function();
+	}
+	
+	static update = function() {
+		glow_set();
+		draw();
+		glow_reset();
 	}
 	
 	static __glow_set_default = function() {
@@ -226,8 +262,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha); // remove for more blurry effect
 		
-		repeat(_num)
-		{
+		repeat(_num) {
 			//Apply glow blur pass
 			surface_set_target(surf_pass); {
 			draw_clear(0);
@@ -246,43 +281,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			surf_base = surf_pass;
 			surf_pass = _surf;
 		}
-	
-		gpu_set_blendmode(bm_normal);
-	}
-	
-	static glow_reset = function() {
-		__glow_reset_function();
-	}
-	
-	static update = function() {
-		glow_set();
-		draw();
-		glow_reset();
-	}
-	
-	static __update_distance_params = function() {
-		var prev_num = num;
-		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
-		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
-		num = max(min_segments_number, floor(dist / segment_base)); // Number of segments from start to end 
-		segment_real = dist / num; // In case given segment can't divide distance evenly, resize it
-		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
-		// In case of parent, "resize" array of all points when distance changes
-		if (is_parent) {
-			// Add new points if lightning length increased, but not if array is long enough already
-			var _diff = num - prev_num;
-			if (_diff > 0 && array_length(points) <= num) {
-				var _additional_points = array_create_ext(_diff, function() { return new LPoint(0, 0); });
-				points = array_concat(points, _additional_points);
-			}
-			// Deactivate points (not delete) if lightning length decreased, so we can destroy children using them
-			else if (_diff < 0) {
-				for (var i = num; i <= prev_num; i++) {
-					points[i].active = false;
-				}
-			}
-		}
+		gpu_set_blendmode(bm_normal);
 	}
 	
 	#region SETTERS

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"PerlinNoise",
   "parent":{
-    "name":"LightningBolt",
-    "path":"folders/LightningBolt.yy",
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
