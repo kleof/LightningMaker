@@ -1,14 +1,16 @@
 * issues: 
-	naming
 	missing "chunks" of line if line has too high width
-	- check CleanShapes for line drawing to avoid gaps in lines of high width
-	set surface size to match lightning area and not whole screen, will it help with performance?
+		- check CleanShapes for line drawing to avoid gaps in lines of high width?
+	set surface size to match lightning area and not whole screen, will it help with performance? (yes, it does, with GPU side of it!)
+		- will need some margin though, so glow won't get cut
+		- won't constant surface resizing be even worse?
 	reduce number of parameters? or presets are enough?
+	paremeters naming
 	after changing colors some children still spawn with previous color, check passed variables
-	neon blur looking not good with vertical lines
+	neon blur not looking too good with vertical lines
 
-- allow more instances to be added in visualizer
-- allow to set Default values for parameters that are not passed on creation
+- allow more instances to be added in visualizer?
+- allow to set Default values for parameters (that are not passed on creation)
 
 - less awkward children movement
 
@@ -26,6 +28,8 @@ glow_color = merge_color(c1, c2, i/num);
 
 - heart-beat rainbow
 var color1 = make_color_hsv((current_time*0.2 % 255), 255, 255);
+
+- drain effect with slow speed and long length, long lasting children
 
 - drawing every n'th frame?
 
@@ -53,13 +57,8 @@ function draw_line_sprite(_x1, _y1, _x2, _y2) {
 unsure if impactful enough to implement?
 
 
-- picked color interactions with glow depending on it's brightness
-brighter -> wider
-
-- intensity perception varies depending on background, allow to import background into visualizer?
-
-
 - surface size taken from window size, camera size or perhaps application surface (surface_get_width/height)?
+
 
 
 

@@ -28,7 +28,7 @@ draw_text(1130, 700, $"fps_real:   {fps_real}");
 draw_text(1130, 700, $"\nframe time: {1000 / fps_real} /16.67ms");
 draw_text(1130, 700, $"\n\nfps:        {fps}");
 
-
+draw_text(30,30, $"{start_point} {end_point}");
 //surface_reset_target();
 
 //gpu_set_blendmode(bm_add);

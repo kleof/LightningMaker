@@ -22,8 +22,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static uniform_disk_glow_radius = shader_get_uniform(shd_disk_glow, "g_GlowRadius");
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
-	
-	static min_segments_number = 4; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
+	glow_type = GLOW_TYPE_DISK;
 	
 	__glow_reset_function = __glow_reset_disk;
 	__glow_set_function = __glow_set_default;
@@ -79,9 +78,10 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
 	child_life_max = 60; // Allow infinite life?
 	children_max = 3;
-	static recursion_level_max = 2;
-	static children_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best
 	children = [];
+	recursion_level_max = 1;
+	static min_segments_number = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
+	static children_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
 	
 	static draw = function() {
 		//noise_offset = random(500);
@@ -106,7 +106,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			// child height relative to it's length?
 			// reduce alpha for children?
 			new_child.recursion_level = recursion_level + 1;
-			new_child.is_parent = (new_child.recursion_level < recursion_level_max) ? true : false;
+			new_child.is_parent = (new_child.recursion_level <= recursion_level_max) ? true : false;
 			new_child.is_child = true;
 			new_child.life = irandom_range(child_life_min, child_life_max);
 			new_child.turbulence = turbulence; // ?
@@ -317,7 +317,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		return self;
 	}
 	
-	static set_speed = function(_speed) {
+	static set_spd = function(_speed) {
 		spd = _speed;
 		return self;
 	}
@@ -409,10 +409,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static set_glow_type = function(_glow_type) {
+		glow_type = _glow_type;
 		switch (_glow_type) {
 			case 0:
-				__glow_set_function = noop;
-				__glow_reset_function = noop;
+				// Set additive blendmode for drawing without any glow, so outlines don't go over main line
+				__glow_set_function = function() { gpu_set_blendmode(bm_max); };
+				__glow_reset_function = function() { gpu_set_blendmode(bm_normal); };
 				break;
 			case 1:
 				__glow_set_function = __glow_set_default;
@@ -453,7 +455,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static set_children_max = function(_children_max) {
-		children_max = _children_max;
+		children_max = max(0, _children_max);
+		
 		// Remove surpluss children
 		if (array_length(children) > children_max) {
 			array_resize(children, children_max);
@@ -462,6 +465,17 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
 				children[i].set_children_max(_children_max);
+			}
+		}
+		return self;
+	}
+	
+	static set_recursion_level_max = function(_recursion_level_max) {
+		recursion_level_max = max(0, _recursion_level_max);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_recursion_level_max(_recursion_level_max);
 			}
 		}
 		return self;

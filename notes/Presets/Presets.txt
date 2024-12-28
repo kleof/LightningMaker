@@ -443,6 +443,35 @@ rapid children flashes
   "child_life_min":10.0,
   "child_life_max":20.0
 }
+rapid child flashes2
+{
+  "segment":12.0,
+  "density":0.41999998688697815,
+  "spd":-0.17000000178813934,
+  "height":56.0,
+  "turbulence":4.0,
+  "smoothing_type":0.0,
+  "width":6.0,
+  "color":5767376,
+  "outline_width":0.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":2.0,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":0.20000000000000001,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5,
+  "child_chance":1.0,
+  "children_max":10.0,
+  "child_life_min":26.0,
+  "child_life_max":26.0
+}
+
+
+
+
 
 
 
