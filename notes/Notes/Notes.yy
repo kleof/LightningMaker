@@ -3,8 +3,8 @@
   "%Name":"notes",
   "name":"notes",
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningMaker",
+    "path":"LightningMaker.yyp",
   },
   "resourceType":"GMNotes",
   "resourceVersion":"2.0",

@@ -11,8 +11,8 @@
   "name":"obj_controler",
   "overriddenProperties":[],
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningMaker",
+    "path":"LightningMaker.yyp",
   },
   "parentObjectId":null,
   "persistent":false,

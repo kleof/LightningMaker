@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningMaker",
+    "path":"LightningMaker.yyp",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

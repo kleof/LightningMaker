@@ -1,6 +1,6 @@
 {
   "$GMProject":"",
-  "%Name":"Lightning Bolt",
+  "%Name":"LightningMaker",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
@@ -20,7 +20,7 @@
   "MetaData":{
     "IDEVersion":"2024.8.1.171",
   },
-  "name":"Lightning Bolt",
+  "name":"LightningMaker",
   "resources":[
     {"id":{"name":"ac_smoothing","path":"animcurves/ac_smoothing/ac_smoothing.yy",},},
     {"id":{"name":"Licenses","path":"notes/Licenses/Licenses.yy",},},

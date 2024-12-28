@@ -21,8 +21,8 @@
   ],
   "name":"broom",
   "parent":{
-    "name":"Lightning Bolt",
-    "path":"Lightning Bolt.yyp",
+    "name":"LightningMaker",
+    "path":"LightningMaker.yyp",
   },
   "parentRoom":null,
   "physicsSettings":{
