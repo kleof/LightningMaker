@@ -59,6 +59,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	is_parent = true;
 	is_child = false;
 	
+	length = 0;
 	angle = 0;
 	num = -1;
 	segment_real = 0;
@@ -71,8 +72,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	is_parent = true; // if children_max is 0 set to false?
 	is_child = false;
-	life = 0;
 	recursion_level = 0;
+	life = 0;
 	
 	child_chance = .10;
 	child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
@@ -86,6 +87,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static __generate_child = function() {
 		// no children if too short
+		// percent based cutoff?
 		var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
 		var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
 		var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments // relative to whole length (dist from start to end)
@@ -113,7 +115,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		if (is_parent) {
 			points[0].update_position(nx, ny);
 			
-			if (random(1) < child_chance && array_length(children) < children_max) __generate_child();
+			if (random(1) < child_chance && 
+				array_length(children) < children_max &&
+				length >= children_length_min) {
+				__generate_child();
+			}
 		}
 		
 		for (var i = 1; i <= num; i++) {
@@ -159,12 +165,12 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	static __update_positional_data = function() {
 		// add check if points changed, if not, evacuate early?
-		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
+		length = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 		var prev_num = num;
-		num = max(segments_number_min, floor(dist / segment_base)); // Number of segments from start to end 
-		segment_real = dist / num; // In case given segment can't divide distance evenly, resize it
-		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
+		num = max(segments_number_min, floor(length / segment_base)); // Number of segments from start to end 
+		segment_real = length / num; // In case given segment can't divide distance evenly, resize it
+		height_reduction = (length > 50) ? 1 : (length / 100); // Reduce height for small distances
 		
 		// In case of parent, "resize" array of all points when distance changes
 		if (is_parent) {
@@ -183,6 +189,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			}
 		}
 	}
+	
 	
 	static glow_set = function() {
 		__glow_set_function();

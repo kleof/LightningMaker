@@ -1,4 +1,3 @@
-//clipboard_set_text();
 
 {
   "segment":12.0,
