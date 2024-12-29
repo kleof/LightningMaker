@@ -164,5 +164,14 @@ dbg_text(ref_create(self, "code_text"));
 //tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
 //surf = -1;
 
+counter = 0;
+average = 0;
+
+
+
+
+
+
+
 
 

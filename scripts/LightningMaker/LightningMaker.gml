@@ -9,7 +9,7 @@
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
-function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _color, _smoothing_type=1) constructor {
+function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _color) constructor {
 	// Surfaces and shaders statics
 	static surf_base = -1;
 	static surf_pass = -1;
@@ -37,9 +37,9 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	disk_glow_alpha = 0; //!
 	disk_glow_gamma = .5;
 	
-	smoothing_type = _smoothing_type;
+	smoothing_type = SMOOTHING_GENTLE;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
-	smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2"); // change this to gentle for non-directional up&down wave motion mode //make static?
+	static smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2"); // change this to gentle for non-directional up&down wave motion mode //make static?
 	secondary_noise_strength = .17; // jaggedness
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
@@ -64,7 +64,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	segment_real = 0;
 	height_reduction = 0;
 	points = []; // only populate points array if it's a parent, hmmm, but it will be too late as this will execute before we're changing is_parent to false, unless we pass is_parent as argument?
-	__update_distance_params();
+	__update_positional_data();
 	
 	noise_offset = random(10000); // (?) 500 seems enough, unsure what is the right value for this
 	noise_secondary_offset = random(10000);
@@ -80,40 +80,41 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	children_max = 3;
 	children = [];
 	recursion_level_max = 1;
-	static min_segments_number = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
+	static segments_number_min = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
 	static children_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
+	static children_length_min = 50; //?
+	
+	static __generate_child = function() {
+		// no children if too short
+		var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
+		var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
+		var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments // relative to whole length (dist from start to end)
+		var p1_index = irandom_range(cutoff, range - cutoff - min_length);
+		var p2_index = irandom_range(p1_index + min_length, range - cutoff);
+		
+		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color);
+		// child height relative to it's length?
+		// reduce alpha for children?
+		new_child.recursion_level = recursion_level + 1;
+		new_child.is_parent = (new_child.recursion_level <= recursion_level_max) ? true : false;
+		new_child.is_child = true;
+		new_child.life = irandom_range(child_life_min, child_life_max);
+		new_child.turbulence = turbulence; // ?
+		new_child.outline_width = outline_width;
+		array_push(children, new_child);
+	}
 	
 	static draw = function() {
 		//noise_offset = random(500);
-		// set surfaces and shaders only in "root" lightning
 		
-		if (is_child) __update_distance_params(); // Not necessary for "root" lightning (if not a child), as start/end points are only going to change through update_start/end methods
 		var nx = start_point.x;
-		var ny = start_point.y;
+		var ny = start_point.y;	
 		
-		
-		if (is_parent) points[0].update_position(nx, ny); // merge with below
-		// move babies conception to separate method?
-		if (is_parent && random(1) < child_chance && array_length(children) < children_max) {
-			// no children if too short
-			var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
-			var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
-			var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments // relative to whole length (dist from start to end)
-			var p1_index = irandom_range(cutoff, range - cutoff - min_length);
-			var p2_index = irandom_range(p1_index + min_length, range - cutoff);
+		if (is_parent) {
+			points[0].update_position(nx, ny);
 			
-			var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color, children_smoothing_type);
-			// child height relative to it's length?
-			// reduce alpha for children?
-			new_child.recursion_level = recursion_level + 1;
-			new_child.is_parent = (new_child.recursion_level <= recursion_level_max) ? true : false;
-			new_child.is_child = true;
-			new_child.life = irandom_range(child_life_min, child_life_max);
-			new_child.turbulence = turbulence; // ?
-			new_child.outline_width = outline_width;
-			array_push(children, new_child);
+			if (random(1) < child_chance && array_length(children) < children_max) __generate_child();
 		}
-		
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -134,47 +135,48 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			// outline_width = set_outline_width(_outline_width) -> outline_width = width + max(1, _outline_width / (recursion_level+1))
 			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level+1)), outline_color, outline_color);
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
-			//draw_line_width(prev_x, prev_y, nx, ny, 1); // make toggable, allow to set width
 		}
 		
-		
 		if (is_parent) {
-			for (var k = 0; k < array_length(children); k++) {
+			for (var k = array_length(children) - 1; k >= 0; k--) { // looping backwards so we don't skip anything when deleting elements
 				var child = children[k];
 				with (child) {
 					life--; // hmmm, may be affected by reduced drawing mode?
 					
-					// Deleting dead children or whos endpoint got deactivated; by extension all of their children are lost (right?)
-					if (life <= 0 || end_point.active == false) { // end_point should be enough, no need for start_point
+					// Deleting dead children or whos endpoint got deactivated; by extension, reference to their children is lost (right?)
+					if (life <= 0 || end_point.active == false) { // end_point should be enough
 						array_delete(other.children, array_get_index(other.children, self), 1);
-						return;
+						continue;
 					}
 					
+					// Update children positional data (because their endpoints are constantly changing) & draw them 
+					__update_positional_data();
 					draw();
 				}
 			}
 		}
 	}
 	
-	static __update_distance_params = function() {
-		// TODO add check if points changed, if not evacuate early
+	static __update_positional_data = function() {
+		// add check if points changed, if not, evacuate early?
 		var dist = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 		var prev_num = num;
-		num = max(min_segments_number, floor(dist / segment_base)); // Number of segments from start to end 
+		num = max(segments_number_min, floor(dist / segment_base)); // Number of segments from start to end 
 		segment_real = dist / num; // In case given segment can't divide distance evenly, resize it
 		height_reduction = (dist > 50) ? 1 : (dist / 100); // Reduce height for small distances
 		
 		// In case of parent, "resize" array of all points when distance changes
 		if (is_parent) {
+			
 			// Add new points if lightning length increased, but not if array is long enough already
-			var _diff = num - prev_num;
-			if (_diff > 0 && array_length(points) <= num) {
-				var _additional_points = array_create_ext(_diff, function() { return new LPoint(0, 0); });
-				points = array_concat(points, _additional_points);
+			if (prev_num < num && array_length(points) <= num) {
+				var additional_points = array_create_ext((num - prev_num), function() { return new LPoint(0, 0); });
+				points = array_concat(points, additional_points);
 			}
+			
 			// Deactivate points (not delete) if lightning length decreased, so we can destroy children using them
-			else if (_diff < 0) {
+			else if (prev_num > num) {
 				for (var i = num; i <= prev_num; i++) {
 					points[i].active = false;
 				}
@@ -240,7 +242,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			} shader_reset();
 		} surface_reset_target();
 		
-		// Final drawing: Vertical blur (+ formely Blending)
+		// Final drawing: Vertical blur (+ formely, Blending)
 		
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(uniform_blur_vertical_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
@@ -260,7 +262,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var _radius = _mult;
 		var _colour = merge_colour(c_black, c_white, disk_glow_intensity); // Colour for glow intensity
 		
-		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha); // remove for more blurry effect
+		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha);
 		
 		repeat(_num) {
 			//Apply glow blur pass
@@ -290,20 +292,20 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	static update_start = function(_x, _y) {
 		start_point.x = _x;
 		start_point.y = _y;
-		__update_distance_params();
+		__update_positional_data();
 		return self;
 	}
 	
 	static update_end = function(_x, _y) {
 		end_point.x = _x;
 		end_point.y = _y;
-		__update_distance_params();
+		__update_positional_data();
 		return self;
 	}
 	
 	static set_segment = function(_segment) {
 		segment_base = _segment;
-		__update_distance_params();
+		__update_positional_data();
 		return self;
 	}
 	
@@ -343,6 +345,8 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		// Do not set for it's children
 		return self;
 	}
+	
+	// GLOW SETTERS
 	
 	static set_neon_glow_intensity = function(_neon_glow_intensity) {
 		neon_glow_intensity = _neon_glow_intensity;
