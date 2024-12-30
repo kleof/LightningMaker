@@ -81,18 +81,18 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	children_max = 3;
 	children = [];
 	recursion_level_max = 1;
-	static segments_number_min = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
-	static children_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
-	static children_length_min = 50; //?
+	static segments_num_min = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
+	static child_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
+	child_length_min = 100; //? In pixels (could be % of starting/actual length?), could add % based max parameter as well
+	child_cutoff_start = .0; // % of parent length
+	child_cutoff_end = .0;
 	
-	static __generate_child = function() {
-		// no children if too short
-		// percent based cutoff?
-		var range = num; // if range too small (min_length+2), no children - ^^^ add to conditions above ^^^
-		var cutoff = 0 //max(1, floor(range * .1)); // move to static class variables
-		var min_length = 3; //higher probability for longer lengths? // can't be higher than min_segments // relative to whole length (dist from start to end)
-		var p1_index = irandom_range(cutoff, range - cutoff - min_length);
-		var p2_index = irandom_range(p1_index + min_length, range - cutoff);
+	static __spawn_child = function() {
+		var child_segments_num_min = floor(child_length_min / segment_real);
+		var cutoff_start = floor(child_cutoff_start * num);
+		var cutoff_end = floor(child_cutoff_end * num);
+		var p1_index = irandom_range(cutoff_start, num - cutoff_end - child_segments_num_min);
+		var p2_index = irandom_range(p1_index + child_segments_num_min, num - cutoff_end);
 		
 		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color);
 		// child height relative to it's length?
@@ -103,6 +103,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		new_child.life = irandom_range(child_life_min, child_life_max);
 		new_child.turbulence = turbulence; // ?
 		new_child.outline_width = outline_width;
+		new_child.smoothing_type = child_smoothing_type; // Could change to parent smoothing_type
 		array_push(children, new_child);
 	}
 	
@@ -112,15 +113,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var nx = start_point.x;
 		var ny = start_point.y;	
 		
-		if (is_parent) {
-			points[0].update_position(nx, ny);
-			
-			if (random(1) < child_chance && 
-				array_length(children) < children_max &&
-				length >= children_length_min) {
-				__generate_child();
-			}
-		}
+		if (is_parent) points[0].update_position(nx, ny); // Updating starting point here, because we're skipping i=0
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -143,11 +136,19 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
 		}
 		
+		// Taking care of the babies
 		if (is_parent) {
+			
+			// Conception
+			if (random(1) < child_chance && 
+				array_length(children) < children_max &&
+				length * (1 - child_cutoff_start - child_cutoff_end) >= child_length_min) {
+				__spawn_child();
+			}
+			
 			for (var k = array_length(children) - 1; k >= 0; k--) { // looping backwards so we don't skip anything when deleting elements
 				var child = children[k];
 				with (child) {
-					life--; // hmmm, may be affected by reduced drawing mode?
 					
 					// Deleting dead children or whos endpoint got deactivated; by extension, reference to their children is lost (right?)
 					if (life <= 0 || end_point.active == false) { // end_point should be enough
@@ -158,6 +159,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 					// Update children positional data (because their endpoints are constantly changing) & draw them 
 					__update_positional_data();
 					draw();
+					life--; // ?dmode reminder
 				}
 			}
 		}
@@ -168,7 +170,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		length = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);
 		var prev_num = num;
-		num = max(segments_number_min, floor(length / segment_base)); // Number of segments from start to end 
+		num = max(segments_num_min, floor(length / segment_base)); // Number of segments from start to end 
 		segment_real = length / num; // In case given segment can't divide distance evenly, resize it
 		height_reduction = (length > 50) ? 1 : (length / 100); // Reduce height for small distances
 		
@@ -311,7 +313,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static set_segment = function(_segment) {
-		segment_base = _segment;
+		segment_base = max(1, _segment);
 		__update_positional_data();
 		return self;
 	}
