@@ -83,16 +83,18 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	recursion_level_max = 1;
 	static segments_num_min = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
 	static child_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
-	child_length_min = 100; //? In pixels (could be % of starting/actual length?), could add % based max parameter as well
+	child_length_min = 100; //? In pixels (could be % of starting/actual length?), must be > 0
+	child_length_max = infinity; // must be > min
 	child_cutoff_start = .0; // % of parent length
 	child_cutoff_end = .0;
 	
 	static __spawn_child = function() {
 		var child_segments_num_min = floor(child_length_min / segment_real);
+		var delta_min_max = floor(child_length_max / segment_real) - child_segments_num_min;
 		var cutoff_start = floor(child_cutoff_start * num);
 		var cutoff_end = floor(child_cutoff_end * num);
 		var p1_index = irandom_range(cutoff_start, num - cutoff_end - child_segments_num_min);
-		var p2_index = irandom_range(p1_index + child_segments_num_min, num - cutoff_end);
+		var p2_index = irandom_range(p1_index + child_segments_num_min, min(p1_index + child_segments_num_min + delta_min_max, num - cutoff_end));
 		
 		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color);
 		// child height relative to it's length?
@@ -113,7 +115,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var nx = start_point.x;
 		var ny = start_point.y;	
 		
-		if (is_parent) points[0].update_position(nx, ny); // Updating starting point here, because we're skipping i=0
+		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -142,11 +144,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			// Conception
 			if (random(1) < child_chance && 
 				array_length(children) < children_max &&
-				length * (1 - child_cutoff_start - child_cutoff_end) >= child_length_min) {
+				length * (1 - child_cutoff_start - child_cutoff_end) >= child_length_min) { // You need to be this tall to have a kid
 				__spawn_child();
 			}
 			
-			for (var k = array_length(children) - 1; k >= 0; k--) { // looping backwards so we don't skip anything when deleting elements
+			for (var k = array_length(children) - 1; k >= 0; k--) {
 				var child = children[k];
 				with (child) {
 					
