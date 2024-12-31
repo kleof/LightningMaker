@@ -4,9 +4,7 @@ params.child_length_min = min(params.child_length_min, params.child_length_max);
 //child_life_max = max(child_life_min, child_life_max);
 generate_code();
 
-bolt.update_start(start_handle.x, start_handle.y)
-	.update_end(end_handle.x, end_handle.y)
-	.set_density(params.density)
+bolt.set_density(params.density)
 	.set_height(params.height)
 	.set_spd(params.spd)
 	.set_width(params.width)

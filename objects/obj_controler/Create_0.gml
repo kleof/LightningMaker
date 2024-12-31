@@ -13,8 +13,6 @@
 
 start_handle = instance_create_layer(969, 85, "Thingies", obj_handle, {image_alpha: .3});
 end_handle = instance_create_layer(587, 703, "Thingies", obj_handle, {image_alpha: .3});
-start_point = new LPoint(start_handle.x, start_handle.y);
-end_point = new LPoint(end_handle.x, end_handle.y);
 
 load_all_defaults = function() {
 	params = {
@@ -22,11 +20,11 @@ load_all_defaults = function() {
 		density : .25,
 		height : 120,
 		spd : -.1,
-		turbulence : 3,
 		width : 4,
 		outline_width : 5,
 		color : #FFFFFF,
 		outline_color : #E90057,
+		turbulence : 3,
 		smoothing_type : SMOOTHING_GENTLE,
 		
 		glow_type : GLOW_TYPE_DISK,
@@ -54,11 +52,11 @@ load_all_defaults = function() {
 }
 load_all_defaults();
 
-bolt = new Lightning(start_point, end_point, params.segment, params.density, params.height, params.spd, params.width, #D6007C);
-bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment, params.density, params.height, params.spd, params.width, #D6007C);
-bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment, params.density, params.height, params.spd, params.width, #D6007C);
-bolt4 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment, params.density, params.height, params.spd, params.width, #D6007C);
-bolt5 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment, params.density, params.height, params.spd, params.width, #D6007C);
+bolt = new Lightning(start_handle, end_handle, params.segment);
+bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
+bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
+bolt4 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
+bolt5 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
 
 //bolts = [];
 //repeat (50) {

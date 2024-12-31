@@ -3,12 +3,13 @@
 		- check CleanShapes for line drawing to avoid gaps in lines of high width?
 	set surface size to match lightning area and not whole screen, will it help with performance? (yes, it does, with GPU side of it!)
 		- will need some margin though, so glow won't get cut
-		- won't constant surface resizing be even worse?
+		- this should work for "stationary" lightnings, but for "moving", won't constant surface resizing be even worse?
 	reduce number of parameters? or presets are enough?
 	paremeters naming
 	after changing colors some children still spawn with previous color, check passed variables
 	neon blur not looking too good with vertical lines
 
+- start/endpoints can be anything with x,y - objects, struct literal, LPoint, etc
 - allow more instances to be added in visualizer?
 - allow to set Default values for parameters (that are not passed on creation)
 

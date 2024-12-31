@@ -9,7 +9,7 @@
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
-function Lightning(_start_point, _end_point, _segment, _density, _height, _speed, _width, _color) constructor {
+function Lightning(_start_point, _end_point, _segment) constructor {
 	// Surfaces and shaders statics
 	static surf_base = -1;
 	static surf_pass = -1;
@@ -45,13 +45,13 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	start_point = _start_point;
 	end_point = _end_point;
 	segment_base = max(1, _segment); // segment length in pixels, aka "quality", bigger -> better performance
-	density = _density; // Wave length, precision, quality
-	height = _height; // Max wave height, in pixels // (amplitude)
-	spd = _speed;
+	density = .25; // Wave length, precision, quality
+	height = 120; // Max wave height, in pixels // (amplitude)
+	spd = -.1;
 	turbulence = 3; // slow it down, change every other/3rd frame?
 	
-	width = _width; // line width/thickness
-	color = _color;
+	width = 4; // line width/thickness
+	color = #FFFFFF;
 	outline_width = 0; // <- TODO
 	outline_color = #D6007C;
 	
@@ -89,6 +89,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	child_cutoff_end = .0;
 	
 	static __spawn_child = function() {
+		// Calculating start/end point index
 		var child_segments_num_min = floor(child_length_min / segment_real);
 		var max_delta = floor(child_length_max / segment_real) - child_segments_num_min;
 		var cutoff_start = floor(child_cutoff_start * num);
@@ -97,14 +98,23 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		var p2_start = p1_index + child_segments_num_min;
 		var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
 		
-		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color);
+		var child_density = density;
+		var child_height = height * .8;
+		var child_spd = spd;
+		var child_width = max(1, width - 2);
+		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base);
 		// child height relative to it's length?
 		// reduce alpha for children?
+		new_child.height = child_height;
+		new_child.spd = child_spd;
+		new_child.width = child_width;
+		new_child.density = child_density;
+		new_child.color = color;
 		new_child.recursion_level = recursion_level + 1;
 		new_child.is_parent = (new_child.recursion_level <= recursion_level_max) ? true : false;
 		new_child.is_child = true;
 		new_child.life = irandom_range(child_life_min, child_life_max);
-		new_child.turbulence = turbulence; // ?
+		new_child.turbulence = turbulence;
 		new_child.outline_width = outline_width;
 		new_child.smoothing_type = child_smoothing_type; // Could change to parent smoothing_type
 		array_push(children, new_child);
@@ -214,6 +224,13 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		// Setting up surfaces
 		var _surf_width = camera_get_view_width(camera_get_active());
 		var _surf_height = camera_get_view_height(camera_get_active());
+		
+		//var _surf_width = max(1, abs(start_point.x - end_point.x));
+		//var _surf_height = max(1, abs(start_point.y - end_point.y));
+		//surf_x = min(start_point.x, end_point.x);
+		//surf_y = min(start_point.y, end_point.y);
+		//trace($"{_surf_width} {_surf_height}");
+		
 		if (!surface_exists(surf_base)) {
 			surf_base = surface_create(_surf_width, _surf_height);
 		}
