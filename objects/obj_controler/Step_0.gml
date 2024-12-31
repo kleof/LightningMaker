@@ -1,5 +1,6 @@
 //var color = make_color_hsv((current_time*0.2 % 255), 255, 255);
 params.child_life_min = min(params.child_life_min, params.child_life_max);
+params.child_length_min = min(params.child_length_min, params.child_length_max);
 //child_life_max = max(child_life_min, child_life_max);
 generate_code();
 
@@ -29,6 +30,10 @@ bolt.update_start(start_handle.x, start_handle.y)
 	.set_children_max(params.children_max)
 	.set_recursion_level_max(params.recursion_level_max)
 	.set_glow_type(params.glow_type)
+	.set_child_length_min(params.child_length_min)
+	.set_child_length_max(params.child_length_max)
+	.set_child_cutoff_start(params.child_cutoff_start)
+	.set_child_cutoff_end(params.child_cutoff_end)
 
 
 

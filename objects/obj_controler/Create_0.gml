@@ -22,12 +22,14 @@ load_all_defaults = function() {
 		density : .25,
 		height : 120,
 		spd : -.1,
-		turbulence : 0,
+		turbulence : 3,
 		width : 4,
 		outline_width : 5,
 		color : #FFFFFF,
 		outline_color : #E90057,
 		smoothing_type : SMOOTHING_GENTLE,
+		
+		glow_type : GLOW_TYPE_DISK,
 
 		neon_glow_intensity : 1.9,
 		neon_glow_inner : 13.7,
@@ -43,8 +45,11 @@ load_all_defaults = function() {
 		child_life_min : 6,
 		child_life_max : 60,
 		children_max : 3,
-		recursion_level_max : 1,
-		glow_type : GLOW_TYPE_DISK
+		recursion_level_max : 2,
+		child_length_min: 100,
+		child_length_max: 2000,
+		child_cutoff_start: 0,
+		child_cutoff_end: 0
 	}
 }
 load_all_defaults();
@@ -131,7 +136,11 @@ dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .05);
 dbg_slider(ref_create(params, "children_max"), 0, 10, "Max children amount", 1); // maybe allow for more
 dbg_slider(ref_create(params, "child_life_min"), 0, 300, "Min child life", 1);
 dbg_slider(ref_create(params, "child_life_max"), 0, 300, "Max child life", 1);
-dbg_slider(ref_create(params, "recursion_level_max"), 0, 10, "Max recursion level", 1);
+dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
+dbg_slider(ref_create(params, "child_length_min"), 1, 500, "Min child length", 1);
+dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 1);
+dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
+dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 
 
 // ~~~~~ CODE GENERATION ~~~~~ //

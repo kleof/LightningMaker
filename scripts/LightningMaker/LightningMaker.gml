@@ -48,7 +48,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	density = _density; // Wave length, precision, quality
 	height = _height; // Max wave height, in pixels // (amplitude)
 	spd = _speed;
-	turbulence = 0; // slow it down, change every other/3rd frame?
+	turbulence = 3; // slow it down, change every other/3rd frame?
 	
 	width = _width; // line width/thickness
 	color = _color;
@@ -72,7 +72,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	is_parent = true; // if children_max is 0 set to false?
 	is_child = false;
-	recursion_level = 0;
+	recursion_level = 1;
 	life = 0;
 	
 	child_chance = .10;
@@ -80,21 +80,22 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	child_life_max = 60; // Allow infinite life?
 	children_max = 3;
 	children = [];
-	recursion_level_max = 1;
+	recursion_level_max = 2;
 	static segments_num_min = 5; // Increase if you need more fluid movement at low lightning's lengths and short child lightnings
 	static child_smoothing_type = SMOOTHING_GENTLE; // Seems to look the best regardless of base smoothing type
-	child_length_min = 100; //? In pixels (could be % of starting/actual length?), must be > 0
-	child_length_max = infinity; // must be > min
+	child_length_min = 100; //? In pixels (could be % of starting/actual length?)
+	child_length_max = infinity;
 	child_cutoff_start = .0; // % of parent length
 	child_cutoff_end = .0;
 	
 	static __spawn_child = function() {
 		var child_segments_num_min = floor(child_length_min / segment_real);
-		var delta_min_max = floor(child_length_max / segment_real) - child_segments_num_min;
+		var max_delta = floor(child_length_max / segment_real) - child_segments_num_min;
 		var cutoff_start = floor(child_cutoff_start * num);
 		var cutoff_end = floor(child_cutoff_end * num);
 		var p1_index = irandom_range(cutoff_start, num - cutoff_end - child_segments_num_min);
-		var p2_index = irandom_range(p1_index + child_segments_num_min, min(p1_index + child_segments_num_min + delta_min_max, num - cutoff_end));
+		var p2_start = p1_index + child_segments_num_min;
+		var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
 		
 		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base, density, height*.8, spd, max(1, width-2), color);
 		// child height relative to it's length?
@@ -126,7 +127,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			var x_offset = i * segment_real + random_range(-turbulence, turbulence) * smoothing_secondary;
 			var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
 			var secondary_noise = perlin_noise(noise_secondary_offset + x_offset * density * secondary_noise_density_multiplier, spd); // add speed multiplier
-			var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height * secondary_noise_strength + random(turbulence) * choose(-1,1)) * smoothing_secondary;
+			var y_offset = base_noise * height * height_reduction * smoothing + (secondary_noise * height * secondary_noise_strength + random_range(-turbulence, turbulence)) * smoothing_secondary;
 			
 			nx = start_point.x + lengthdir_x(x_offset, angle) + lengthdir_x(y_offset, angle + 90);
 			ny = start_point.y + lengthdir_y(x_offset, angle) + lengthdir_y(y_offset, angle + 90);
@@ -134,11 +135,11 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			// outline_width = set_outline_width(_outline_width) -> outline_width = width + max(1, _outline_width / (recursion_level+1))
-			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level+1)), outline_color, outline_color);
+			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level)), outline_color, outline_color);
 			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
 		}
 		
-		// Taking care of the babies
+		// Taking care of babies
 		if (is_parent) {
 			
 			// Conception
@@ -406,7 +407,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		// TODO add to rest setters
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_color(_color);
+				children[i].set_color(color);
 			}
 		}
 		return self;
@@ -417,7 +418,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_outline_color(_outline_color);
+				children[i].set_outline_color(outline_color);
 			}
 		}
 		return self;
@@ -456,14 +457,14 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	}
 	
 	static set_child_life_max = function(_child_life_max) {
-		child_life_max = _child_life_max;
+		child_life_max = max(0, _child_life_max);
 		child_life_min = min(child_life_min, child_life_max);
 		// Reduce the life to new max if it's currently too high
 		life = min(life, child_life_max);
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_child_life_max(_child_life_max);
+				children[i].set_child_life_max(child_life_max);
 			}
 		}
 		return self;
@@ -479,18 +480,63 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_children_max(_children_max);
+				children[i].set_children_max(children_max);
 			}
 		}
 		return self;
 	}
 	
 	static set_recursion_level_max = function(_recursion_level_max) {
-		recursion_level_max = max(0, _recursion_level_max);
+		recursion_level_max = max(1, _recursion_level_max);
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_recursion_level_max(_recursion_level_max);
+				children[i].set_recursion_level_max(recursion_level_max);
+			}
+		}
+		return self;
+	}
+	
+	static set_child_length_min = function(_child_length_min) {
+		child_length_min = min(_child_length_min, child_length_max); // cut too long ones?
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_length_min(child_length_min);
+			}
+		}
+		return self;
+	}
+	
+	static set_child_length_max = function(_child_length_max) {
+		child_length_max = max(1, _child_length_max);
+		child_length_min = min(child_length_min, child_length_max);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_length_max(child_length_max);
+			}
+		}
+		return self;
+	}
+	
+	static set_child_cutoff_start = function(_child_cutoff_start) {
+		child_cutoff_start = clamp(_child_cutoff_start, 0, 1);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_cutoff_start(child_cutoff_start);
+			}
+		}
+		return self;
+	}
+	
+	static set_child_cutoff_end = function(_child_cutoff_end) {
+		child_cutoff_end = clamp(_child_cutoff_end, 0, 1);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_cutoff_end(child_cutoff_end);
 			}
 		}
 		return self;
@@ -500,7 +546,7 @@ function Lightning(_start_point, _end_point, _segment, _density, _height, _speed
 	
 	// Freeing surfaces
 	static cleanup = function() {
-		// don't know about that one, all instances are using same static surfaces so trying to free them when one dies seems bad
+		// all instances are re-using same static surfaces so when are we supposed to call this?
 		if (surface_exists(surf_base)) {
 			surface_free(surf_base);
 			surf_base = -1;

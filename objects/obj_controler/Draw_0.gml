@@ -24,6 +24,7 @@ draw_text(1130, 700, $"\nframe time: {1000 / fps_real} /16.67ms");
 draw_text(1130, 700, $"\n\nfps:        {fps}");
 
 //draw_text(30,30, $"{start_point} {end_point}");
+//draw_text(30,30, $"{bolt.child_length_min} {bolt.child_length_max}");
 counter += 1;
 average += 1000 / max(200, fps_real);
 draw_text(1130, 700, $"\n\n\nAverage: {average / counter}");
