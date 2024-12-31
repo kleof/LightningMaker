@@ -110,6 +110,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		new_child.width = child_width;
 		new_child.density = child_density;
 		new_child.color = color;
+		new_child.outline_color = outline_color;
 		new_child.recursion_level = recursion_level + 1;
 		new_child.is_parent = (new_child.recursion_level <= recursion_level_max) ? true : false;
 		new_child.is_child = true;
