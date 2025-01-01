@@ -96,6 +96,7 @@ dbg_section("Main Properties");
 dbg_button("RESET ALL", load_all_defaults, 230); dbg_same_line();
 dbg_button("Turn OFF Glow", activate_none_mode);
 
+// MAIN
 dbg_slider(ref_create(params, "segment"), 1, 80, "Segment", 1);
 dbg_slider(ref_create(params, "density"), 0, 1, "Density", .01);
 dbg_slider(ref_create(params, "spd"), -.7, 0, "Speed", .01);
@@ -103,7 +104,7 @@ dbg_slider(ref_create(params, "height"), 10, 300, "Height", 1);
 dbg_slider(ref_create(params, "turbulence"), 0, 20, "Turbulence", 1);
 dbg_drop_down(ref_create(params, "smoothing_type"), "Rapid:0,Gentle:1,Sine:2,Rapid2:3,OpenEnd:4", "Endpoints smoothing");
 
-// LINES
+// LINES & COLOR
 dbg_text_separator("Line");
 dbg_slider(ref_create(params, "width"), 1, 18, "Line width", 1);
 dbg_colour(ref_create(params, "color"), "Main color");
@@ -147,7 +148,7 @@ code_text = "";
 generate_code = function() {
 	// TODO add basics to generation, x,y, etc
 	var _names = struct_get_names(params);
-	text = $"bolt.set_glow_type({params.glow_type})\n";
+	text = $"bolt = new Lightning(your_start_point, your_endpoint, {params.segment})\n";
 	for (var i = 0; i < array_length(_names); i++) {
 		var _name = _names[i];
 		if ((params.glow_type == GLOW_TYPE_DISK || params.glow_type == GLOW_TYPE_NONE) && (string_pos("neon", _name) != 0)) continue;

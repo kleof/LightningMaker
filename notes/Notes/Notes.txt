@@ -31,6 +31,8 @@ var color1 = make_color_hsv((current_time*0.2 % 255), 255, 255);
 
 - drain effect with slow speed and long length, long lasting children
 
+- children with different color(s)
+
 - drawing every n'th frame?
 
 if (!surface_exists(my_surf)) {

@@ -34,7 +34,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	disk_glow_radius = 256;
 	disk_glow_quality = 5;
 	disk_glow_intensity = 1;
-	disk_glow_alpha = 0; //!
+	disk_glow_alpha = 0;
 	disk_glow_gamma = .5;
 	
 	smoothing_type = SMOOTHING_GENTLE;
@@ -101,7 +101,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		var child_density = density;
 		var child_height = height * .8;
 		var child_spd = spd;
-		var child_width = max(1, width - 2);
+		var child_width = max(1, width - 2); // add more ways of reduction
 		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base);
 		// child height relative to it's length?
 		// reduce alpha for children?
@@ -116,7 +116,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		new_child.is_child = true;
 		new_child.life = irandom_range(child_life_min, child_life_max);
 		new_child.turbulence = turbulence;
-		new_child.outline_width = outline_width;
+		new_child.outline_width = outline_width; // TODO put child width reduction here, instead of draw method
 		new_child.smoothing_type = child_smoothing_type; // Could change to parent smoothing_type
 		array_push(children, new_child);
 	}
@@ -247,6 +247,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		surf_width = _surf_width;
 		surf_height = _surf_height;
 		
+		gpu_push_state();
 		surface_set_target(surf_base);
 		draw_clear_alpha(c_black, 1);
 		
@@ -281,7 +282,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 			
 		} shader_reset();
 		
-		gpu_set_blendmode(bm_normal);
+		gpu_pop_state();
 	}
 	
 	static __glow_reset_disk = function() {
@@ -314,7 +315,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 			surf_pass = _surf;
 		}
 		
-		gpu_set_blendmode(bm_normal);
+		gpu_pop_state();
 	}
 	
 	#region SETTERS
