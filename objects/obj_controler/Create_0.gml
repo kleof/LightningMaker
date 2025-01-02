@@ -12,7 +12,7 @@ load_all_defaults = function() {
 		density : .25,
 		height : 120,
 		spd : -.1,
-		width : 4,
+		line_width : 4,
 		outline_width : 5,
 		color : #FFFFFF,
 		outline_color : #E90057,
@@ -68,14 +68,14 @@ activate_none_mode = function() {
 
 load_disk_mode_defaults = function() {
 	params.glow_type = GLOW_TYPE_DISK;
-	params.width = 4;
+	params.line_width = 4;
 	params.color = #FFFFFF;
 	params.outline_color = #E90057;
 	params.outline_width = 5;
 }
 load_neon_mode_defaults = function() {
 	params.glow_type = GLOW_TYPE_NEON;
-	params.width = 6;
+	params.line_width = 6;
 	params.color = 6226135;
 	params.outline_width = 0;
 }
@@ -97,7 +97,7 @@ dbg_drop_down(ref_create(params, "smoothing_type"), "Rapid:0,Gentle:1,Sine:2,Rap
 
 // LINES & COLOR
 dbg_text_separator("Line");
-dbg_slider(ref_create(params, "width"), 1, 18, "Line width", 1);
+dbg_slider(ref_create(params, "line_width"), 1, 18, "Line width", 1);
 dbg_colour(ref_create(params, "color"), "Main color");
 dbg_slider(ref_create(params, "outline_width"), 0, 20, "Outline width", 1);
 dbg_colour(ref_create(params, "outline_color"), "Outline color");
@@ -159,8 +159,6 @@ dbg_view("GENERATED CODE", true, 910, 530, 450, 200);
 dbg_section("");
 dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260);
 dbg_text(ref_create(self, "code_text"));
-
-
 
 
 

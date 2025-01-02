@@ -7,7 +7,7 @@ generate_code();
 bolt.set_density(params.density)
 	.set_height(params.height)
 	.set_spd(params.spd)
-	.set_width(params.width)
+	.set_line_width(params.line_width)
 	.set_segment(params.segment)
 	.set_turbulence(params.turbulence)
 	.set_outline_width(params.outline_width)

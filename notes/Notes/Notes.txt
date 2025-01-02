@@ -1,4 +1,5 @@
 * issues: 
+	change width, height and other too ambiguous names
 	missing "chunks" of line if line has too high width
 		- check CleanShapes for line drawing to avoid gaps in lines of high width?
 	set surface size to match lightning area and not whole screen, will it help with performance? (yes, it does, with GPU side of it!)

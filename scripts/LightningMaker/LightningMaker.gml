@@ -31,18 +31,18 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	
 	smoothing_type = SMOOTHING_GENTLE;
 	smoothing_base_type = animcurve_get_channel(ac_smoothing, smoothing_type);
-	static smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2"); // change this to gentle for non-directional up&down wave motion mode //make static?
+	static smoothing_secondary_type = animcurve_get_channel(ac_smoothing, "rapid2"); // change this to gentle for non-directional up&down wave motion mode
 	secondary_noise_strength = .17; // jaggedness
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
 	segment_base = max(1, _segment); // segment length in pixels, aka "quality"/"precision", bigger -> better performance
 	density = .25; // Wave length, precision, quality
-	height = 120; // Max wave height, in pixels // (amplitude)
+	height = 120; // Max wave height/amplitude, in pixels
 	spd = -.1;
 	turbulence = 3;
 	
-	width = 4; // line width/thickness
+	line_width = 4; // line width/thickness
 	color = #FFFFFF;
 	outline_width = 0;
 	outline_color = #D6007C;
@@ -93,13 +93,13 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		var child_density = density;
 		var child_height = height * .8;
 		var child_spd = spd;
-		var child_width = max(1, width - 2); // add more ways of reduction
+		var child_width = max(1, line_width - 2); // add more ways of reduction
 		var new_child = new Lightning(points[p1_index], points[p2_index], segment_base);
 		// child height relative to it's length?
 		// reduce alpha for children?
 		new_child.height = child_height;
 		new_child.spd = child_spd;
-		new_child.width = child_width;
+		new_child.line_width = child_width;
 		new_child.density = child_density;
 		new_child.color = color;
 		new_child.outline_color = outline_color;
@@ -137,8 +137,8 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
 			// outline_width = set_outline_width(_outline_width) -> outline_width = width + max(1, _outline_width / (recursion_level+1))
-			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, width + max(1, outline_width / (recursion_level)), outline_color, outline_color);
-			draw_line_width_color(prev_x, prev_y, nx, ny, width, color, color);
+			if (outline_width > 0) draw_line_width_color(prev_x, prev_y, nx, ny, line_width + max(1, outline_width / (recursion_level)), outline_color, outline_color);
+			draw_line_width_color(prev_x, prev_y, nx, ny, line_width, color, color);
 		}
 		
 		// Taking care of babies
@@ -217,10 +217,9 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		var _surf_width = camera_get_view_width(camera_get_active());
 		var _surf_height = camera_get_view_height(camera_get_active());
 		
-		//var _surf_width = max(1, abs(start_point.x - end_point.x));
-		//var _surf_height = max(1, abs(start_point.y - end_point.y));
-		//surf_x = min(start_point.x, end_point.x);
-		//surf_y = min(start_point.y, end_point.y);
+		//var margin = height + line_width;
+		//_surf_width = abs(start_point.x - end_point.x) + 2*margin;
+		//_surf_height = abs(start_point.y - end_point.y) + 2*margin;
 		//trace($"{_surf_width} {_surf_height}");
 		
 		if (!surface_exists(surf_base)) {
@@ -348,8 +347,8 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		return self;
 	}
 	
-	static set_width = function(_width) {
-		width = _width;
+	static set_line_width = function(_line_width) {
+		line_width = _line_width;
 		return self;
 	}
 	
@@ -511,7 +510,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	}
 	
 	static set_child_length_min = function(_child_length_min) {
-		child_length_min = min(_child_length_min, child_length_max); // cut too long ones?
+		child_length_min = min(_child_length_min, child_length_max); // could add cutting too long ones
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
