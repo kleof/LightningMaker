@@ -30,6 +30,7 @@
     {"id":{"name":"obj_handle","path":"objects/obj_handle/obj_handle.yy",},},
     {"id":{"name":"broom","path":"rooms/broom/broom.yy",},},
     {"id":{"name":"LightningMaker","path":"scripts/LightningMaker/LightningMaker.yy",},},
+    {"id":{"name":"LightningMakerMacros","path":"scripts/LightningMakerMacros/LightningMakerMacros.yy",},},
     {"id":{"name":"PerlinNoise","path":"scripts/PerlinNoise/PerlinNoise.yy",},},
     {"id":{"name":"shd_blur_horizontal","path":"shaders/shd_blur_horizontal/shd_blur_horizontal.yy",},},
     {"id":{"name":"shd_blur_vertical","path":"shaders/shd_blur_vertical/shd_blur_vertical.yy",},},

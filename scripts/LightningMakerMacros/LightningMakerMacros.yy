@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"LightningMakerMacros",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"LightningMakerMacros",
+  "parent":{
+    "name":"Components",
+    "path":"folders/LightningMaker/Components.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
