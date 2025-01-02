@@ -37,7 +37,6 @@
     {"id":{"name":"shd_perlin_noise_glsl_es","path":"shaders/shd_perlin_noise_glsl_es/shd_perlin_noise_glsl_es.yy",},},
     {"id":{"name":"spr_handle","path":"sprites/spr_handle/spr_handle.yy",},},
     {"id":{"name":"spr_test","path":"sprites/spr_test/spr_test.yy",},},
-    {"id":{"name":"test_background","path":"sprites/test_background/test_background.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

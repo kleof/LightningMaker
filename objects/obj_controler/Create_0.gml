@@ -1,13 +1,5 @@
 #macro trace show_debug_message
-//randomize(); //get/set seed to freeze setup, randomize afterwards
-// add particles on end points (and slower, from line beam)
-// Randomize segments length
-// forks?
-// arch-like bend? +height(or additional param)*arc_curve?
-// separate smoothing type for children? potentially rapid looks better than gentle
-// tween density -> something like? TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
-// Option to draw every 2nd/3rd frame
-// allow children's endpoint anywhere, on parents and other children, or maybe just on main branch?
+//randomize();
 
 // ***** DEFAULTS ***** //
 
@@ -53,16 +45,14 @@ load_all_defaults = function() {
 load_all_defaults();
 
 bolt = new Lightning(start_handle, end_handle, params.segment);
-bolt2 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
-bolt3 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
-bolt4 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
-bolt5 = new Lightning({x:0, y:0}, {x:600, y:600}, params.segment);
 
 //bolts = [];
 //repeat (50) {
-//	var bolt = new Lightning(start_point, end_point, segment, density, height, spd, width);
+//	var bolt = new Lightning(start_point, end_point, segment);
 //	array_push(bolts, bolt);
 //}
+
+// ***** DEBUG FUNCTIONS ***** //
 
 activate_disk_mode = function() {
 	params.glow_type = GLOW_TYPE_DISK;
@@ -132,7 +122,7 @@ dbg_slider(ref_create(params, "disk_glow_quality"), 3, 10, "Quality", .5);
 // CHILDREN
 dbg_text_separator("Children Settings");
 dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .05);
-dbg_slider(ref_create(params, "children_max"), 0, 10, "Max children amount", 1); // maybe allow for more
+dbg_slider(ref_create(params, "children_max"), 0, 15, "Max children amount", 1);
 dbg_slider(ref_create(params, "child_life_min"), 0, 300, "Min child life", 1);
 dbg_slider(ref_create(params, "child_life_max"), 0, 300, "Max child life", 1);
 dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
@@ -146,13 +136,16 @@ dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 
 code_text = "";
 generate_code = function() {
-	// TODO add basics to generation, x,y, etc
 	var _names = struct_get_names(params);
 	text = $"bolt = new Lightning(your_start_point, your_endpoint, {params.segment})\n";
 	for (var i = 0; i < array_length(_names); i++) {
 		var _name = _names[i];
+		
+		// Filter these words
 		if ((params.glow_type == GLOW_TYPE_DISK || params.glow_type == GLOW_TYPE_NONE) && (string_pos("neon", _name) != 0)) continue;
 		if ((params.glow_type == GLOW_TYPE_NEON || params.glow_type == GLOW_TYPE_NONE) && (string_pos("disk", _name) != 0)) continue;
+		if (string_pos("segment", _name) != 0) continue;
+		
 		text += $".set_{_name}({params[$ _name]})\n";
 	}
 	code_text = text;
@@ -163,17 +156,9 @@ copy_to_clipboard = function() {
 
 dbg_view("GENERATED CODE", true, 900, 500, 450, 200);
 dbg_section("");
-dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260); //dbg_same_line();
+dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260);
 dbg_text(ref_create(self, "code_text"));
 
-
-
-//outline_width_uniform = shader_get_uniform(shd_outline_mimpy, "width");
-//tex_uniform = shader_get_uniform(shd_outline_mimpy, "texel_dimensions");
-//surf = -1;
-
-counter = 0;
-average = 0;
 
 
 

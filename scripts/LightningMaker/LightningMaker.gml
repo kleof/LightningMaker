@@ -52,10 +52,10 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	
 	width = 4; // line width/thickness
 	color = #FFFFFF;
-	outline_width = 0; // <- TODO
+	outline_width = 0;
 	outline_color = #D6007C;
 	
-	// Private variables, add _ ?
+	// Private variables
 	is_parent = true;
 	is_child = false;
 	
@@ -70,14 +70,14 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	noise_offset = random(10000); // (?) 500 seems enough, unsure what is the right value for this
 	noise_secondary_offset = random(10000);
 	
-	is_parent = true; // if children_max is 0 set to false?
+	is_parent = true;
 	is_child = false;
 	recursion_level = 1;
 	life = 0;
 	
 	child_chance = .10;
-	child_life_min = 6; // In frames (hmmm, may be affected by reduced drawing mode?)
-	child_life_max = 60; // Allow infinite life?
+	child_life_min = 6;
+	child_life_max = 60; // Allow infinite life or big number will suffice?
 	children_max = 3;
 	children = [];
 	recursion_level_max = 2;
@@ -122,7 +122,6 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	}
 	
 	static draw = function() {
-		//noise_offset = random(500);
 		
 		var nx = start_point.x;
 		var ny = start_point.y;	
@@ -173,7 +172,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 					// Update children positional data (because their endpoints are constantly changing) & draw them 
 					__update_positional_data();
 					draw();
-					life--; // ?dmode reminder
+					life--;
 				}
 			}
 		}
@@ -260,7 +259,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		
 		// Horizontal blur
 		surface_set_target(surf_pass); {
-			//draw_clear_alpha(c_black, 0); // why don't we need to clear this one? probably because of "gpu_set_blendenable(false)" later?
+			//draw_clear_alpha(c_black, 0);
 			
 			shader_set(shd_blur_horizontal); {
 				shader_set_uniform_f(uniform_blur_horizontal_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
@@ -318,7 +317,9 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		gpu_pop_state();
 	}
 	
-	#region SETTERS
+	// ===== SETTERS ===== //
+	
+	#region MAIN SETTERS
 	
 	static update_start = function(_x, _y) {
 		start_point.x = _x;
@@ -377,7 +378,31 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		return self;
 	}
 	
-	// GLOW SETTERS
+	static set_color = function(_color) {
+		color = _color;
+		
+		// TODO add to rest setters
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_color(color);
+			}
+		}
+		return self;
+	}
+	
+	static set_outline_color = function(_outline_color) {
+		outline_color = _outline_color;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_outline_color(outline_color);
+			}
+		}
+		return self;
+	}
+	#endregion
+	
+	#region GLOW SETTERS
 	
 	static set_neon_glow_intensity = function(_neon_glow_intensity) {
 		neon_glow_intensity = _neon_glow_intensity;
@@ -419,30 +444,6 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		return self;
 	}
 	
-	static set_color = function(_color) {
-		color = _color;
-		
-		// for smooth parameter changes that should affect children immediately, not just the newly created ones
-		// TODO add to rest setters
-		if (is_parent) {
-			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_color(color);
-			}
-		}
-		return self;
-	}
-	
-	static set_outline_color = function(_outline_color) {
-		outline_color = _outline_color;
-		
-		if (is_parent) {
-			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_outline_color(outline_color);
-			}
-		}
-		return self;
-	}
-	
 	static set_glow_type = function(_glow_type) {
 		glow_type = _glow_type;
 		switch (_glow_type) {
@@ -462,8 +463,9 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		}
 		return self;
 	}
+	#endregion
 	
-	// CHILDREN SETTERS
+	#region CHILDREN SETTERS
 
 	static set_child_chance = function(_child_chance) {
 		child_chance = _child_chance;
@@ -560,7 +562,6 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 		}
 		return self;
 	}
-	
 	#endregion
 	
 	// Freeing surfaces
@@ -587,40 +588,11 @@ function LPoint(_x, _y) constructor {
 		x = _x;
 		y = _y;
 		
-		// If they are being set, means they are active
+		// Being set = active
 		active = true;
 	}
 }
 
 
-function noop() {}
-
-
-function color_to_array(_color) {
-	var _hex = [];
-	var _ret = [];
-	for (var i = 0; _color != 0; ++i) {
-		_hex[i] = _color % 16;
-		_color = floor( _color / 16);
-	}
-	
-	// Make sure this is a color code
-	while (array_length(_hex) < 6) {
-		_hex[array_length(_hex)] = 0;
-	}
-	if (array_length( _hex) > 6) {
-		show_error("Unknown color: " + string(_color), true);
-		return -1;
-	}
-	
-	// Convert _hex to RGB
-	for (var i = 0; i < 3; ++i) {
-		_ret[i] = _hex[i * 2 + 1] * 16 + _hex[i * 2];
-		_ret[i] /= 255;
-	}
-	array_push(_ret, 1);
-	
-	return _ret;
-}
 
 
