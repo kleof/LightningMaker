@@ -44,11 +44,11 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	segment_base = max(1, _segment); // segment length in pixels, aka "quality", bigger -> better performance
+	segment_base = max(1, _segment); // segment length in pixels, aka "quality"/"precision", bigger -> better performance
 	density = .25; // Wave length, precision, quality
 	height = 120; // Max wave height, in pixels // (amplitude)
 	spd = -.1;
-	turbulence = 3; // slow it down, change every other/3rd frame?
+	turbulence = 3;
 	
 	width = 4; // line width/thickness
 	color = #FFFFFF;

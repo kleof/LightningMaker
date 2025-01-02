@@ -14,9 +14,11 @@ bolt.glow_reset();
 //	bolts[i].draw();
 //}
 
-draw_text(1130, 700, $"fps_real:   {fps_real}");
-draw_text(1130, 700, $"\nframe time: {1000 / fps_real} /16.67ms");
-draw_text(1130, 700, $"\n\nfps:        {fps}");
+var tx = 1130;
+var ty = 730;
+draw_text(tx, ty, $"fps_real:   {fps_real}");
+draw_text(tx, ty, $"\nframe time: {1000 / fps_real} /16.67ms");
+draw_text(tx, ty, $"\n\nfps:        {fps}");
 
 
 

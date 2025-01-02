@@ -44,6 +44,8 @@ load_all_defaults = function() {
 }
 load_all_defaults();
 
+// ***** CREATE LIGHTNING ***** //
+
 bolt = new Lightning(start_handle, end_handle, params.segment);
 
 //bolts = [];
@@ -77,7 +79,6 @@ load_neon_mode_defaults = function() {
 	params.color = 6226135;
 	params.outline_width = 0;
 }
-
 
 // ***** DEBUG PANEL ***** //
 
@@ -154,7 +155,7 @@ copy_to_clipboard = function() {
 	clipboard_set_text(code_text);
 }
 
-dbg_view("GENERATED CODE", true, 900, 500, 450, 200);
+dbg_view("GENERATED CODE", true, 910, 530, 450, 200);
 dbg_section("");
 dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260);
 dbg_text(ref_create(self, "code_text"));
