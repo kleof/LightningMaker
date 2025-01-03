@@ -1,10 +1,10 @@
 {
   "$GMNotes":"",
-  "%Name":"Presets",
-  "name":"Presets",
+  "%Name":"presets",
+  "name":"presets",
   "parent":{
-    "name":"LightningMaker",
-    "path":"LightningMaker.yyp",
+    "name":"notes_and_stuff",
+    "path":"folders/Visualizer/notes_and_stuff.yy",
   },
   "resourceType":"GMNotes",
   "resourceVersion":"2.0",

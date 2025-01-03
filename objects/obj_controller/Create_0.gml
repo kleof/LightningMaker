@@ -1,50 +1,26 @@
 #macro trace show_debug_message
 //randomize();
 
+
 // ***** DEFAULTS ***** //
 
 start_handle = instance_create_layer(969, 85, "Thingies", obj_handle, {image_alpha: .3});
 end_handle = instance_create_layer(587, 703, "Thingies", obj_handle, {image_alpha: .3});
+params = {};
 
-load_all_defaults = function() {
-	params = {
-		segment : 12,
-		density : .25,
-		height : 120,
-		spd : -.1,
-		line_width : 4,
-		outline_width : 5,
-		color : #FFFFFF,
-		outline_color : #E90057,
-		turbulence : 3,
-		smoothing_type : SMOOTHING_GENTLE,
-		
-		glow_type : GLOW_TYPE_DISK,
-
-		neon_glow_intensity : 1.9,
-		neon_glow_inner : 13.7,
-		neon_glow_inner_mult : 21,
-
-		disk_glow_radius : 256,
-		disk_glow_quality : 5.5,
-		disk_glow_intensity : 1,
-		disk_glow_alpha : 1,
-		disk_glow_gamma : .2,
-
-		child_chance : .1,
-		child_life_min : 6,
-		child_life_max : 60,
-		children_max : 3,
-		recursion_level_max : 2,
-		child_length_min: 100,
-		child_length_max: 2000,
-		child_cutoff_start: 0,
-		child_cutoff_end: 0
+load_preset = function(_preset) {
+	var names = struct_get_names(_preset.params);
+	for (var i = 0; i < array_length(names); i++) {
+		var name = names[i];
+		params[$ name] = _preset.params[$ name];
 	}
+	start_handle.x = _preset.positions.p1.x;
+	start_handle.y = _preset.positions.p1.y;
+	end_handle.x = _preset.positions.p2.x;
+	end_handle.y = _preset.positions.p2.y;
 }
-load_all_defaults();
+load_preset(PRESETS.defaults);
 
-// ***** CREATE LIGHTNING ***** //
 
 bolt = new Lightning(start_handle, end_handle, params.segment);
 
@@ -53,6 +29,7 @@ bolt = new Lightning(start_handle, end_handle, params.segment);
 //	var bolt = new Lightning(start_point, end_point, segment);
 //	array_push(bolts, bolt);
 //}
+
 
 // ***** DEBUG FUNCTIONS ***** //
 
@@ -80,11 +57,12 @@ load_neon_mode_defaults = function() {
 	params.outline_width = 0;
 }
 
+
 // ***** DEBUG PANEL ***** //
 
 dbg_view("CTRL+click on a slider to enter value directly", true, 10, 30, 450, 750); // what's up with sliders input btw? >.>
 dbg_section("Main Properties");
-dbg_button("RESET ALL", load_all_defaults, 230); dbg_same_line();
+dbg_button("RESET ALL", function() { load_preset(PRESETS.defaults) }, 230); dbg_same_line();
 dbg_button("Turn OFF Glow", activate_none_mode);
 
 // MAIN
@@ -131,6 +109,7 @@ dbg_slider(ref_create(params, "child_length_min"), 1, 500, "Min child length", 1
 dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 1);
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
+dbg_button("Preset1", function() { load_preset(PRESETS.blue_drain) });
 
 
 // ~~~~~ CODE GENERATION ~~~~~ //

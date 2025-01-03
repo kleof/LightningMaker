@@ -7,6 +7,9 @@
 	are paremeter names clear enough?
 	neon blur not looking too good with vertical lines
 
+- add setting x,y to presets
+- fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
+- fade out when child is about to die
 - allow more instances to be added in visualizer?
 - Default values for parameters
 
