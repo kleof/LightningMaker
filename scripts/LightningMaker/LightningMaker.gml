@@ -1,7 +1,7 @@
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
-function Lightning(_start_point, _end_point, _segment) constructor {
+function Lightning(_start_point, _end_point) constructor {
 	// Surfaces and shaders statics
 	static surf_base = -1;
 	static surf_pass = -1;
@@ -36,7 +36,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	secondary_noise_density_multiplier = 2; // jaggedness
 	start_point = _start_point;
 	end_point = _end_point;
-	segment_base = max(1, _segment); // segment length in pixels, aka "quality"/"precision", bigger -> better performance
+	segment_base = 12; // segment length in pixels, aka "quality"/"precision", bigger -> better performance
 	density = .25; // Wave length, precision, quality
 	height = 120; // Max wave height/amplitude, in pixels
 	spd = -.1;
@@ -115,6 +115,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	
 	static draw = function() {
 		
+		__update_positional_data();
 		var nx = start_point.x;
 		var ny = start_point.y;	
 		
@@ -171,6 +172,7 @@ function Lightning(_start_point, _end_point, _segment) constructor {
 	}
 	
 	static __update_positional_data = function() {
+		// TODO:
 		// add check if points changed, if not, evacuate early?
 		length = point_distance(start_point.x,start_point.y, end_point.x,end_point.y);
 		angle = point_direction(start_point.x,start_point.y, end_point.x,end_point.y);

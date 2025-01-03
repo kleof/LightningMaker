@@ -5,7 +5,8 @@
 	set surface size to match lightning area and not whole screen, will it help with performance? (yes, it does, with GPU side of it!)
 		- will need some margin though, so glow won't get cut
 	are paremeter names clear enough?
-	neon blur not looking too good with vertical lines
+	neon glow not looking too good with vertical lines
+	glow not visible on white, could blendmodes help?
 
 - add setting x,y to presets
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
@@ -61,22 +62,23 @@ unsure if impactful enough to implement?
  
 ### Basic Use:
 ```gml
+// Lightning(start_point, end_point)
+
 // CREATE EVENT
-bolt = new Lightning({x:100, y:100}, {x:300, y:500}, 12);
+bolt = new Lightning({x:100, y:100}, {x:300, y:500});
 
 // DRAW EVENT
 bolt.update();
 ```
-Start/end-point (first 2 arguments) can be anything with `x` and `y` variables:  
-struct literal (code above), object instance, etc.
+Start/end-point can be anything with `x` and `y` variables,  
+like struct literal (above), your own struct, object instance:
 ```gml
 // CREATE EVENT
 start_point = instance_create_layer(0, 0, "Instances", obj_cloud);
-end_point = instance_create_layer(0, 0, "Instances", obj_player);
-bolt = new Lightning(start_point, end_point, 12);
+bolt = new Lightning(start_point, obj_player);
 ```
 
-_Run example project to customize lightning and generate code that will set all parameters_
+### _Run example project to customize lightning and generate code that will set all parameters_
 \
 \
 \
@@ -98,6 +100,7 @@ Perlin Noise by Nate Hunter - [functions](https://github.com/badwrongg/gm_camera
 Disk Glow by [Xor](https://github.com/XorDev)  
 Neon Glow by [Jan Vorisek](https://github.com/odditica/NeonGlow)  
 Electric discharge simulation idea from [Pierluigi Pesenti](https://web.archive.org/web/20110802053412/http://blog.oaxoa.com/2009/04/26/actionscript-3-lightning-class-step-2/)  
+
 
 
 

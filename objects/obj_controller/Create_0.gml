@@ -22,7 +22,8 @@ load_preset = function(_preset) {
 load_preset(PRESETS.defaults);
 
 
-bolt = new Lightning(start_handle, end_handle, params.segment);
+bolt = new Lightning(start_handle, end_handle);
+
 
 //bolts = [];
 //repeat (50) {
@@ -124,7 +125,6 @@ generate_code = function() {
 		// Filter these words
 		if ((params.glow_type == GLOW_TYPE_DISK || params.glow_type == GLOW_TYPE_NONE) && (string_pos("neon", _name) != 0)) continue;
 		if ((params.glow_type == GLOW_TYPE_NEON || params.glow_type == GLOW_TYPE_NONE) && (string_pos("disk", _name) != 0)) continue;
-		if (string_pos("segment", _name) != 0) continue;
 		
 		text += $".set_{_name}({params[$ _name]})\n";
 	}

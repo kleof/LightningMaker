@@ -1,6 +1,6 @@
 
-
 bolt.glow_set();
+
 bolt.draw();
 
 //gpu_set_blendmode(bm_max);
