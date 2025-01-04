@@ -23,12 +23,14 @@ load_preset(PRESETS.defaults);
 
 
 bolt = new Lightning(start_handle, end_handle);
-
+trace(static_get(bolt));
+//bolt2 = new Lightning({x:0,y:0}, {x:0,y:0});
+trace(static_get(bolt));
 
 //bolts = [];
 //repeat (50) {
-//	var bolt = new Lightning(start_point, end_point, segment);
-//	array_push(bolts, bolt);
+//	var _bolt = new Lightning(start_handle, end_handle);
+//	array_push(bolts, _bolt);
 //}
 
 
@@ -105,9 +107,9 @@ dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .05);
 dbg_slider(ref_create(params, "children_max"), 0, 15, "Max children amount", 1);
 dbg_slider(ref_create(params, "child_life_min"), 0, 300, "Min child life", 1);
 dbg_slider(ref_create(params, "child_life_max"), 0, 300, "Max child life", 1);
-dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
 dbg_slider(ref_create(params, "child_length_min"), 1, 500, "Min child length", 1);
 dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 1);
+dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 dbg_button("Preset1", function() { load_preset(PRESETS.blue_drain) });

@@ -7,6 +7,11 @@
 	are paremeter names clear enough?
 	neon glow not looking too good with vertical lines
 	glow not visible on white, could blendmodes help?
+	
+	> density/speed seems to increase when new Lightning is instantiated
+	> something not quite right with child_length_min - shorter children are still spawning
+	
+	destroying instance holding start/end point crashes the game, should we do something about it?
 
 - add setting x,y to presets
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
@@ -77,6 +82,7 @@ like struct literal (above), your own struct, object instance:
 start_point = instance_create_layer(0, 0, "Instances", obj_cloud);
 bolt = new Lightning(start_point, obj_player);
 ```
+When using struct literal, update lightning position with `update_start(x, y)` and `update_end(x, y)` methods
 
 ### _Run example project to customize lightning and generate code that will set all parameters_
 \

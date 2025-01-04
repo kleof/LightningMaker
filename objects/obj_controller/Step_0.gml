@@ -1,4 +1,4 @@
-//var color = make_color_hsv((current_time*0.2 % 255), 255, 255);
+//params.color = make_color_hsv((current_time*0.2 % 255), 255, 255);
 params.child_life_min = min(params.child_life_min, params.child_life_max);
 params.child_length_min = min(params.child_length_min, params.child_length_max);
 //child_life_max = max(child_life_min, child_life_max);
@@ -33,8 +33,8 @@ bolt.set_density(params.density)
 	.set_child_cutoff_start(params.child_cutoff_start)
 	.set_child_cutoff_end(params.child_cutoff_end)
 
-
-
+// whoopsie
+//if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);
 
 
 
