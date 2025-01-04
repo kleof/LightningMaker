@@ -2,18 +2,14 @@
 	change width, height and other too ambiguous names
 	missing "chunks" of line if line has too high width
 		- check CleanShapes for line drawing to avoid gaps in lines of high width?
-	set surface size to match lightning area and not whole screen, will it help with performance? (yes, it does, with GPU side of it!)
-		- will need some margin though, so glow won't get cut
+	set surface size to match lightning area and not whole screen?
 	are paremeter names clear enough?
 	neon glow not looking too good with vertical lines
 	glow not visible on white, could blendmodes help?
-	
-	> density/speed seems to increase when new Lightning is instantiated
+	> memory rising slowly, there may be a memory leak
 	> something not quite right with child_length_min - shorter children are still spawning
-	
 	destroying instance holding start/end point crashes the game, should we do something about it?
 
-- add setting x,y to presets
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
 - fade out when child is about to die
 - allow more instances to be added in visualizer?
@@ -34,8 +30,6 @@ glow_color = merge_color(c1, c2, i/num);
 - heart-beat rainbow
 var color1 = make_color_hsv((current_time*0.2 % 255), 255, 255);
 
-- drain effect with slow speed and long length, long lasting children
-
 - children with different color(s)
 
 - use sprite (with round edges) instead of lines?
@@ -43,11 +37,10 @@ var color1 = make_color_hsv((current_time*0.2 % 255), 255, 255);
 function draw_line_sprite(_x1, _y1, _x2, _y2) {
     var _a    = point_direction(_x1, _y1, _x2, _y2);
     var _d    = point_distance(_x1, _y1, _x2, _y2);
-    // 64 is the sprite's width and height
+    // 64 = sprite's width and height
     draw_sprite_ext(sprite, 0, _x1, _y1, _d/64, 1/64, _a, color, 1);
 }
 
-- draw every 2nd/3rd frame?
 - allow children's endpoint anywhere, on parents and other children, or maybe just on main branch?
 - tween density? TweenFire(id, "ioQuad", 2, true, 0, 4, "density>", "@-.1");
 - arch-like bend? +height(or additional param)*arc_curve?

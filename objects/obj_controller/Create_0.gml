@@ -23,9 +23,7 @@ load_preset(PRESETS.defaults);
 
 
 bolt = new Lightning(start_handle, end_handle);
-trace(static_get(bolt));
-//bolt2 = new Lightning({x:0,y:0}, {x:0,y:0});
-trace(static_get(bolt));
+
 
 //bolts = [];
 //repeat (50) {
