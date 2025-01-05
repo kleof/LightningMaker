@@ -224,17 +224,19 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		__glow_reset_function();
 	}
 	
+	// ALL IN ONE
 	static update = function() {
 		glow_set();
 		draw();
 		glow_reset();
 	}
 	
-	
+	// DEFAULT SURFACE SETUP
 	static __glow_set_default = function() {
 		// Setting up surfaces
-		var _surf_width = camera_get_view_width(camera_get_active());
-		var _surf_height = camera_get_view_height(camera_get_active());
+		var _camera = view_camera[0];
+		var _surf_width = camera_get_view_width(_camera);
+		var _surf_height = camera_get_view_height(_camera);
 		
 		if (!surface_exists(surf_base)) {
 			surf_base = surface_create(_surf_width, _surf_height);
@@ -252,18 +254,26 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		surf_height = _surf_height;
 		
 		gpu_push_state();
-		surface_set_target(surf_base);
-		draw_clear_alpha(c_black, 1);
 		
-		gpu_set_blendmode(bm_max);
+		surface_set_target(surf_base);
+			camera_apply(_camera);
+			
+			draw_clear_alpha(c_black, 1);
+			gpu_set_blendmode(bm_max);
 	}
 	
+	// NEON GLOW
 	static __glow_reset_neon = function() {
 		surface_reset_target();
+		
+		var _camera = view_camera[0];
+		var _surf_x = camera_get_view_x(_camera);
+		var _surf_y = camera_get_view_y(_camera);
 		var time = current_time;
 		
 		// Horizontal blur
 		surface_set_target(surf_pass); {
+			camera_apply(_camera);
 			//draw_clear_alpha(c_black, 0);
 			
 			shader_set(shd_blur_horizontal); {
@@ -271,47 +281,52 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 				shader_set_uniform_f(uniform_blur_horizontal_time, time); // rather subtle effect, but why not
 
 				gpu_set_blendenable(false); // important!
-				draw_surface(surf_base, 0, 0);
+				draw_surface(surf_base, _surf_x, _surf_y);
 				gpu_set_blendenable(true);
 
 			} shader_reset();
 		} surface_reset_target();
 		
-		// Final drawing: Vertical blur (+ formely, Blending)
-		
+		// Final drawing, Vertical blur // (+ formely, blending)
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(uniform_blur_vertical_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
 			shader_set_uniform_f(uniform_blur_vertical_time, time);
-			draw_surface(surf_pass, 0, 0);
+			draw_surface(surf_pass, _surf_x, _surf_y);
 			
 		} shader_reset();
 		
 		gpu_pop_state();
 	}
 	
+	// DISK GLOW
 	static __glow_reset_disk = function() {
 		surface_reset_target();
+		
+		var _camera = view_camera[0];
+		var _surf_x = camera_get_view_x(_camera);
+		var _surf_y = camera_get_view_y(_camera);
 		
 		var _num = disk_glow_quality;
 		var _mult = power(disk_glow_radius, 1 / _num);
 		var _radius = _mult;
 		var _colour = merge_colour(c_black, c_white, disk_glow_intensity); // Colour for glow intensity
 		
-		draw_surface_ext(surf_base, 0,0,1,1,0,-1, disk_glow_alpha);
+		draw_surface_ext(surf_base, _surf_x,_surf_y,1,1,0,-1, disk_glow_alpha);
 		
 		repeat(_num) {
 			//Apply glow blur pass
 			surface_set_target(surf_pass); {
-			draw_clear(0);
+				camera_apply(_camera);
+				draw_clear(0);
 				shader_set(shd_disk_glow);
 					shader_set_uniform_f(uniform_disk_glow_texel_size, 1/surf_width, 1/surf_height);
 					shader_set_uniform_f(uniform_disk_glow_radius, _radius);
 					shader_set_uniform_f(uniform_disk_glow_gamma, disk_glow_gamma);
-					draw_surface(surf_base, 0, 0);
+					draw_surface(surf_base, _surf_x,_surf_y);
 				shader_reset();
 			} surface_reset_target();
 
-			draw_surface_ext(surf_pass, 0,0,1,1,0, _colour, 1);
+			draw_surface_ext(surf_pass, _surf_x,_surf_y,1,1,0, _colour, 1);
 
 			_radius *= -_mult;
 			var _surf = surf_base;

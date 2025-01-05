@@ -29,4 +29,3 @@ draw_text(tx, ty, $"\n\nfps:        {fps}");
 
 
 
-

@@ -1,17 +1,21 @@
 #macro PRESETS global.presets
 
-global.default_vertical = {
+global.handle_pos1 = {
 	p1: {x:969, y:85},
 	p2: {x:587, y:703}
 }
-global.default_horizontal = {
+global.handle_pos2 = {
+	p1: {x:914, y:146},
+	p2: {x:649, y:644}
+}
+global.handle_pos3 = {
 	p1: {x:969, y:85},
 	p2: {x:587, y:703}
 }
 
 PRESETS = {
 	defaults: {
-		positions: global.default_vertical,
+		positions: global.handle_pos2,
 		params: {
 			segment : 12,
 			density : .25,
@@ -50,7 +54,7 @@ PRESETS = {
 	},
 	
 	blue_drain: {
-		positions: global.default_vertical,
+		positions: global.handle_pos2,
 		params: {
 		  "segment":12.0,
 		  "density":0.17000000178813934,
