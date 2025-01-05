@@ -118,13 +118,14 @@ dbg_button("Preset1", function() { load_preset(PRESETS.blue_drain) });
 code_text = "";
 generate_code = function() {
 	var _names = struct_get_names(params);
-	text = $"bolt = new Lightning(your_start_point, your_endpoint, {params.segment})\n";
+	text = $"bolt = new Lightning(your_start_point, your_endpoint)\n";
 	for (var i = 0; i < array_length(_names); i++) {
 		var _name = _names[i];
 		
 		// Filter these words
 		if ((params.glow_type == GLOW_TYPE_DISK || params.glow_type == GLOW_TYPE_NONE) && (string_pos("neon", _name) != 0)) continue;
 		if ((params.glow_type == GLOW_TYPE_NEON || params.glow_type == GLOW_TYPE_NONE) && (string_pos("disk", _name) != 0)) continue;
+		if ((string_pos("child_length_max", _name) != 0) && params[$ _name] >= 2000) { text += $".set_{_name}(infinity)\n"; continue; }
 		
 		text += $".set_{_name}({params[$ _name]})\n";
 	}
@@ -134,7 +135,7 @@ copy_to_clipboard = function() {
 	clipboard_set_text(code_text);
 }
 
-dbg_view("GENERATED CODE", true, 910, 530, 450, 200);
+dbg_view("GENERATED CODE", true, 690, 730, 420, 200);
 dbg_section("");
 dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260);
 dbg_text(ref_create(self, "code_text"));

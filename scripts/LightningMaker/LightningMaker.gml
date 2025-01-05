@@ -18,13 +18,13 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	turbulence =	      _var_struct[$ "turbulence"]		   ?? 3;
 	line_width =	      _var_struct[$ "line_width"]		   ?? 4;
 	color =			      _var_struct[$ "color"]			   ?? #FFFFFF;
-	outline_width =       _var_struct[$ "outline_width"]	   ?? 0;
-	outline_color =       _var_struct[$ "outline_color"]	   ?? #D6007C;
+	outline_width =       _var_struct[$ "outline_width"]	   ?? 5;
+	outline_color =       _var_struct[$ "outline_color"]	   ?? #E90057;
 	smoothing_type =      _var_struct[$ "smoothing_type"]      ?? SMOOTHING_GENTLE;
 	static secondary_noise_strength = .17;			// kinda jaggedness, turbulence seems enough, static for now
 	static secondary_noise_density_multiplier = 2;	// -//-
 	
-	child_chance =	      _var_struct[$ "child_chance"]		   ?? .10;
+	child_chance =	      _var_struct[$ "child_chance"]		   ?? .1;
 	child_life_min =      _var_struct[$ "child_life_min"]	   ?? 6;
 	child_life_max =      _var_struct[$ "child_life_max"]	   ?? 60;		// Allow infinite life or big number will suffice?
 	children_max =	      _var_struct[$ "children_max"]		   ?? 3;		
@@ -71,15 +71,15 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	__glow_reset_function = __glow_reset_disk;
 	__glow_set_function = __glow_set_default;
 	
-	neon_glow_intensity = 2;
-	neon_glow_inner = 10;
-	neon_glow_inner_mult = 22;
+	neon_glow_intensity = 1.9;
+	neon_glow_inner = 13.7;
+	neon_glow_inner_mult = 21;
 	
 	disk_glow_radius = 256;
-	disk_glow_quality = 5;
+	disk_glow_quality = 5.5;
 	disk_glow_intensity = 1;
-	disk_glow_alpha = 0;
-	disk_glow_gamma = .5;
+	disk_glow_alpha = 1;
+	disk_glow_gamma = .2;
 	
 	
 	// DRAW THE LIGHTNING
@@ -229,6 +229,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		draw();
 		glow_reset();
 	}
+	
 	
 	static __glow_set_default = function() {
 		// Setting up surfaces
