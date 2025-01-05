@@ -110,8 +110,16 @@ dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 
 dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
-dbg_button("Preset1", function() { load_preset(PRESETS.blue_drain) });
+dbg_button("Slow wave", function() { load_preset(PRESETS.slow_wave) }); dbg_same_line();
+dbg_button("Vampiric touch", function() { load_preset(PRESETS.vampiric_touch) });
+dbg_button("Cobweb", function() { load_preset(PRESETS.cobweb) }); dbg_same_line();
+dbg_button("Wild discharge", function() { load_preset(PRESETS.wild_discharge) }); dbg_same_line();
 
+dbg_slider(ref_create(params, "glow_type"), 0, 1, "---", .05); // DELETE
+
+dbg_text_separator("***");
+discokitty = false;
+dbg_checkbox(ref_create(self, "discokitty"), "discokitty");
 
 // ~~~~~ CODE GENERATION ~~~~~ //
 

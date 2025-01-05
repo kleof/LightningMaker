@@ -26,6 +26,7 @@ draw_text(tx, ty, $"\n\nfps:        {fps}");
 
 
 
+trace($"{start_handle.x} {start_handle.y} {end_handle.x} {end_handle.y}");
 
 
 

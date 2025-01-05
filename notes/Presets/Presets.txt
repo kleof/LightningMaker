@@ -1,16 +1,4 @@
-
-{
-  "segment":12.0,
-  "density":0.20999999344348907,
-  "spd":-0.10000000000000001,
-  "line_width":7.0,
-  "height":112.0,
-  "turbulence":4.0,
-  "outline_strength":4.0,
-  "glow_outer_intensity":1.8999999761581421,
-  "glow_inner_intensity":7.8000001907348633,
-  "glow_inner_multiplier":9.6000003814697266
-}
+change default to neon for a bit
 
 hot plasma (neon)
 {
@@ -33,31 +21,7 @@ hot plasma (neon)
   "disk_glow_quality":5.5
 }
 
-very thin
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "height":120.0,
-  "turbulence":3.0,
-  "smoothing_type":1.0,
-  "line_width":2.0,
-  "color":16777215.0,
-  "outline_width":8.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":0.05000000074505806,
-  "children_max":1.0,
-  "child_life_min":0.0,
-  "child_life_max":7.0
-}
+thin neon/skip
 {
   "segment":12.0,
   "density":0.20000000298023224,
@@ -77,6 +41,7 @@ very thin
   "disk_glow_radius":206.0,
   "disk_glow_quality":5.5
 }
+
 {
   "segment":12.0,
   "density":0.38999998569488525,
@@ -89,7 +54,6 @@ very thin
   "glow_inner_intensity":21.5,
   "glow_inner_multiplier":32.599998474121094
 }
-
 {
   "segment":12.0,
   "density":0.20000000298023224,
@@ -104,147 +68,14 @@ very thin
   "fx_glow_enabled":false
 }
 
-{
-  "segment":12.0,
-  "density":0.20000000298023224,
-  "spd":-0.10000000149011612,
-  "line_width":2.0,
-  "height":120.0,
-  "turbulence":1.0,
-  "neon_glow_intensity":2.4000000953674316,
-  "neon_glow_inner":8.8999996185302734,
-  "neon_glow_inner_mult":15.199999809265137,
-  "glow_color":54928,
-  "fx_glow_enabled":false
-}
-
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "height":120.0,
-  "turbulence":0.0,
-  "line_width":1.0,
-  "color":16761220,
-  "outline_width":0.0,
-  "outline_color":8126678.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":1.6000000238418579,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":312.0,
-  "disk_glow_quality":7.0
-}
-
-"dual"-color blurred
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "line_width":7.0,
-  "height":120.0,
-  "turbulence":0.0,
-  "glow_outer_intensity":3.2999999523162842,
-  "glow_inner_intensity":12.199999809265137,
-  "glow_inner_multiplier":8.8999996185302734,
-  "glow_color":5375259,
-  "fx_glow_enabled":false
-}
-
-slow-mo blue disk blur
-{
-  "segment":8.0,
-  "density":0.18999999761581421,
-  "spd":-0.019999999552965164,
-  "line_width":9.0,
-  "height":120.0,
-  "turbulence":0.0,
-  "glow_outer_intensity":1.8999999999999999,
-  "glow_inner_intensity":13.699999999999999,
-  "glow_inner_multiplier":21.0,
-  "glow_color":16719104.0,
-  "fx_glow_enabled":true
-}
 
 
-blurred neon
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "line_width":11.0,
-  "height":120.0,
-  "turbulence":0.0,
-  "glow_outer_intensity":1.8999999999999999,
-  "glow_inner_intensity":8.1000003814697266,
-  "glow_inner_multiplier":9.3000001907348633,
-  "glow_color":8126678.0,
-  "fx_glow_enabled":false
-}
 
-disk glow
-{
-  "segment":18.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "line_width":6.0,
-  "height":120.0,
-  "turbulence":0.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "glow_color":1965853,
-  "fx_glow_enabled":false,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000298023224,
-  "disk_glow_alpha":0.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.0,
-  "outline_strength":6.0
-}
 
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "height":120.0,
-  "turbulence":0.0,
-  "color":16514043,
-  "line_width":4.0,
-  "outline_width":8.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "fx_glow_enabled":false,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.40000000596046448,
-  "disk_glow_alpha":0.89999997615814209,
-  "disk_glow_radius":353.0,
-  "disk_glow_quality":5.0
-}
 
-green toxic
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.10000000000000001,
-  "height":120.0,
-  "turbulence":0.0,
-  "line_width":5.0,
-  "color":2162464,
-  "outline_width":3.0,
-  "outline_color":42313,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.69999998807907104,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.0
-}
+
+
+weeee
 {
   "segment":12.0,
   "density":0.079999998211860657,
@@ -265,49 +96,9 @@ green toxic
   "disk_glow_quality":7.0
 }
 
-add one more or two lightnings, smoothing type rapid (0) or rapid2
-gpu_set_blendmode(bm_max);
-draw_line_width_color(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 18, #D6007C, #D6007C);
-draw_line_width(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 10);
-{
-  "segment":12.0,
-  "density":0.10999999940395355,
-  "spd":-0.05000000074505806,
-  "height":77.0,
-  "turbulence":0.0,
-  "line_width":4.0,
-  "color":16777215.0,
-  "outline_width":6.0,
-  "outline_color":8126678.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.0,
-  "disk_glow_alpha":0.89999997615814209,
-  "disk_glow_radius":230.0,
-  "disk_glow_quality":6.0
-}
-inner beam ^v^ =======`|
-{
-  "segment":37.0,
-  "density":0.039999999105930328,
-  "spd":-0.029999999329447746,
-  "height":36.0,
-  "turbulence":0.0,
-  "line_width":18.0,
-  "color":16777215.0,
-  "outline_width":0.0,
-  "outline_color":8126678.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.0,
-  "disk_glow_alpha":0.80000000000000004,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.0
-}
+
+
+
 
 toxic(disk) add inner white?
 {
@@ -351,18 +142,18 @@ thin (disk)
   "disk_glow_quality":7.0
 }
 
-show case, put vertically, secondary noise speed x5, add turbulance
+golden strings secondary noise speed x5
 {
   "segment":12.0,
   "density":0.34000000357627869,
   "spd":-0.10000000000000001,
-  "height":66.0,
-  "turbulence":0.0,
+  "height":73.0,
+  "turbulence":1.0,
   "smoothing_type":1.0,
-  "line_width":4.0,
+  "line_width":3.0,
   "color":16777215.0,
   "outline_width":5.0,
-  "outline_color":5701865.0,
+  "outline_color":233,
   "neon_glow_intensity":1.8999999999999999,
   "neon_glow_inner":13.699999999999999,
   "neon_glow_inner_mult":21.0,
@@ -370,32 +161,22 @@ show case, put vertically, secondary noise speed x5, add turbulance
   "disk_glow_gamma":0.20000000000000001,
   "disk_glow_alpha":1.0,
   "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5
+  "disk_glow_quality":5.5,
+  "child_chance":0.10000000000000001,
+  "children_max":3.0,
+  "child_life_min":6.0,
+  "child_life_max":60.0,
+  "child_length_min":100.0,
+  "child_length_max":2000.0,
+  "recursion_level_max":2.0,
+  "child_cutoff_start":0.0,
+  "child_cutoff_end":0.0,
+  "glow_type":2.0,
+  "discokitty":false
 }
 
-+beam
-{
-  "segment":12.0,
-  "density":0.31999999284744263,
-  "spd":-0.14000000059604645,
-  "height":100.0,
-  "turbulence":5.0,
-  "smoothing_type":3.0,
-  "line_width":4.0,
-  "color":16777215.0,
-  "outline_width":5.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5
-}
 
-+beam, sine smoothing good for that
+move along
 {
   "segment":9.0,
   "density":0.68999999761581421,
@@ -417,211 +198,33 @@ show case, put vertically, secondary noise speed x5, add turbulance
   "disk_glow_quality":5.5
 }
 
-rapid children flashes
-{
-  "segment":12.0,
-  "density":0.25,
-  "spd":-0.11999999731779099,
-  "height":104.0,
-  "turbulence":3.0,
-  "smoothing_type":1.0,
-  "line_width":4.0,
-  "color":16777215.0,
-  "outline_width":5.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":1.8999999999999999,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":0.30000001192092896,
-  "children_max":7.0,
-  "child_life_min":10.0,
-  "child_life_max":20.0
-}
-rapid child flashes2
-{
-  "segment":12.0,
-  "density":0.41999998688697815,
-  "spd":-0.17000000178813934,
-  "height":56.0,
-  "turbulence":4.0,
-  "smoothing_type":0.0,
-  "line_width":6.0,
-  "color":5767376,
-  "outline_width":0.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":2.0,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":21.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":1.0,
-  "children_max":10.0,
-  "child_life_min":26.0,
-  "child_life_max":26.0
-}
-
-slow water neon
-{
-  "segment":12.0,
-  "density":0.17000000178813934,
-  "spd":-0.029999999329447746,
-  "height":133.0,
-  "turbulence":0.0,
-  "smoothing_type":1.0,
-  "line_width":6.0,
-  "color":9711890,
-  "outline_width":0.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":2.7999999523162842,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":25.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":0.5,
-  "children_max":3.0,
-  "child_life_min":275.0,
-  "child_life_max":275.0,
-  "recursion_level_max":2.0,
-  "child_length_min":117.0,
-  "child_length_max":2000.0,
-  "child_cutoff_start":0.20000000298023224,
-  "child_cutoff_end":0.20000000298023224
-}
-{
-  "segment":12.0,
-  "density":0.17000000178813934,
-  "spd":-0.029999999329447746,
-  "height":133.0,
-  "turbulence":0.0,
-  "smoothing_type":1.0,
-  "line_width":5.0,
-  "color":8455271,
-  "outline_width":9.0,
-  "outline_color":9243392,
-  "neon_glow_intensity":2.7999999523162842,
-  "neon_glow_inner":13.699999999999999,
-  "neon_glow_inner_mult":25.0,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":2.0,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":8.0,
-  "child_chance":0.5,
-  "children_max":3.0,
-  "child_life_min":275.0,
-  "child_life_max":275.0,
-  "recursion_level_max":2.0,
-  "child_length_min":201.0,
-  "child_length_max":2000.0,
-  "child_cutoff_start":0.05000000074505806,
-  "child_cutoff_end":0.05000000074505806
-}
 
 blood drain disk, change inner color to blue
+
+disko kitty, rgb ON, disk mode
+add another very short discharge?
+
+
+
+// leftovers
+inner beam ^v^ =======`|
 {
-  "segment":10.0,
-  "density":0.090000003576278687,
-  "spd":-0.05000000074505806,
-  "height":196.0,
+  "segment":37.0,
+  "density":0.039999999105930328,
+  "spd":-0.029999999329447746,
+  "height":36.0,
   "turbulence":0.0,
-  "smoothing_type":1.0,
-  "line_width":5.0,
-  "color":18835,
-  "outline_width":10.0,
-  "outline_color":1769727,
+  "line_width":18.0,
+  "color":16777215.0,
+  "outline_width":0.0,
+  "outline_color":8126678.0,
   "neon_glow_intensity":1.8999999999999999,
   "neon_glow_inner":13.699999999999999,
   "neon_glow_inner_mult":21.0,
   "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
+  "disk_glow_gamma":0.0,
+  "disk_glow_alpha":0.80000000000000004,
   "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":0.10000000000000001,
-  "children_max":3.0,
-  "child_life_min":160.0,
-  "child_life_max":160.0,
-  "recursion_level_max":2.0,
-  "child_length_min":388.0,
-  "child_length_max":2000.0,
-  "child_cutoff_start":0.0,
-  "child_cutoff_end":0.0
+  "disk_glow_quality":5.0
 }
-
-
-disko kitty, rgb ON, disk mode
-{
-  "segment":58.0,
-  "density":0.18000000715255737,
-  "spd":-0.05000000074505806,
-  "height":120.0,
-  "turbulence":0.0,
-  "smoothing_type":1.0,
-  "line_width":6.0,
-  "color":16773120.0,
-  "outline_width":0.0,
-  "outline_color":5701865.0,
-  "neon_glow_intensity":1.7000000476837158,
-  "neon_glow_inner":18.700000762939453,
-  "neon_glow_inner_mult":18.700000762939453,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":1.0,
-  "children_max":3.0,
-  "child_life_min":5.0,
-  "child_life_max":140.0,
-  "recursion_level_max":3.0,
-  "child_length_min":167.0,
-  "child_length_max":2000.0,
-  "child_cutoff_start":0.0,
-  "child_cutoff_end":0.0
-}
-
-cocoon in the middle, neon, hozirontal
-{
-  "segment":19.0,
-  "density":0.44999998807907104,
-  "spd":-0.10999999940395355,
-  "height":131.0,
-  "turbulence":3.0,
-  "smoothing_type":1.0,
-  "line_width":3.0,
-  "color":7947717,
-  "outline_width":4.0,
-  "outline_color":15269915,
-  "neon_glow_intensity":1.8999999761581421,
-  "neon_glow_inner":9.3000001907348633,
-  "neon_glow_inner_mult":22.299999237060547,
-  "disk_glow_intensity":1.0,
-  "disk_glow_gamma":0.20000000000000001,
-  "disk_glow_alpha":1.0,
-  "disk_glow_radius":256.0,
-  "disk_glow_quality":5.5,
-  "child_chance":0.30000001192092896,
-  "children_max":5.0,
-  "child_life_min":53.0,
-  "child_life_max":123.0,
-  "child_length_min":100.0,
-  "child_length_max":2000.0,
-  "recursion_level_max":2.0,
-  "child_cutoff_start":0.20000000298023224,
-  "child_cutoff_end":0.20000000298023224
-}
-
-
-
 
