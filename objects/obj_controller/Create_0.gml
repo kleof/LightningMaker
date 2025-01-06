@@ -19,12 +19,12 @@ load_preset = function(_preset) {
 	end_handle.x = _preset.positions.p2.x;
 	end_handle.y = _preset.positions.p2.y;
 }
-load_preset(PRESETS.defaults);
+load_preset(PRESETS.pale_rose);
 
 
 bolt = new Lightning(start_handle, end_handle);
 
-
+// Stress test
 //bolts = [];
 //repeat (50) {
 //	var _bolt = new Lightning(start_handle, end_handle);
@@ -63,7 +63,7 @@ load_neon_mode_defaults = function() {
 
 dbg_view("CTRL+click on a slider to enter value directly", true, 10, 30, 450, 750); // what's up with sliders input btw? >.>
 dbg_section("Main Properties");
-dbg_button("RESET ALL", function() { load_preset(PRESETS.defaults) }, 230); dbg_same_line();
+dbg_button("RESET ALL", function() { load_preset(PRESETS.pale_rose) }, 230); dbg_same_line();
 dbg_button("Turn OFF Glow", activate_none_mode);
 
 // MAIN
@@ -110,16 +110,23 @@ dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 
 dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
-dbg_button("Slow wave", function() { load_preset(PRESETS.slow_wave) }); dbg_same_line();
+
+// EXAMPLES
+dbg_text_separator("Examples");
+dbg_button("Abyssal wave", function() { load_preset(PRESETS.abyssal_wave) }); dbg_same_line();
 dbg_button("Vampiric touch", function() { load_preset(PRESETS.vampiric_touch) });
 dbg_button("Cobweb", function() { load_preset(PRESETS.cobweb) }); dbg_same_line();
-dbg_button("Wild discharge", function() { load_preset(PRESETS.wild_discharge) }); dbg_same_line();
+dbg_button("Wild discharge", function() { load_preset(PRESETS.wild_discharge) });
+dbg_button("Plasma", function() { load_preset(PRESETS.plasma) }); dbg_same_line();
+dbg_button("Impulses", function() { load_preset(PRESETS.impulses) });
+dbg_button("Toxic", function() { load_preset(PRESETS.toxic) }); dbg_same_line();
+dbg_button("Precise cut", function() { load_preset(PRESETS.precise_cut) });
 
-dbg_slider(ref_create(params, "glow_type"), 0, 1, "---", .05); // DELETE
-
-dbg_text_separator("***");
+dbg_text_separator("^. .^");
 discokitty = false;
 dbg_checkbox(ref_create(self, "discokitty"), "discokitty");
+//dbg_slider(ref_create(params, "glow_type"), 0, 1, "---", .05);
+
 
 // ~~~~~ CODE GENERATION ~~~~~ //
 

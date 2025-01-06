@@ -4,14 +4,14 @@
 /// @desc Function Description
 /// @param {any*} start_point Starting point, can be anything with x,y attributes, like object instance, struct literal, etc
 /// @param {any*} end_point Ending point, can be anything with x,y attributes, like object instance, struct literal, etc
-/// @param {struct} [var_struct] [Optional] struct containing variables passed 
+/// @param {struct} [var_struct] [Optional] struct containing variables to pass
 function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	
 	// Main variables
 	start_point =	      _start_point;
 	end_point =		      _end_point;
 					      									  
-	segment_base =	      _var_struct[$ "segment_base"]		   ?? 12;		// segment length in pixels, aka "quality"/"precision", bigger -> better performance
+	segment_base =	      _var_struct[$ "segment_base"]		   ?? 12;		// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
 	density =		      _var_struct[$ "density"]			   ?? .25;		// Wave length
 	height =		      _var_struct[$ "height"]			   ?? 120;		// Max wave height/amplitude, in pixels
 	spd =			      _var_struct[$ "spd"]				   ?? -.1;
@@ -31,8 +31,19 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	child_length_min =    _var_struct[$ "child_length_min"]	   ?? 100;		// In pixels (could be % of starting/actual length?)
 	child_length_max =    _var_struct[$ "child_length_max"]	   ?? infinity;
 	recursion_level_max = _var_struct[$ "recursion_level_max"] ?? 2;
-	child_cutoff_start =  _var_struct[$ "child_cutoff_start"]  ?? .0;		// % of parent length
+	child_cutoff_start =  _var_struct[$ "child_cutoff_start"]  ?? .0;		// % of parent length, (should it apply only to main and not children?)
 	child_cutoff_end =    _var_struct[$ "child_cutoff_end"]	   ?? .0;		// % of parent length
+	
+	glow_type = GLOW_TYPE_DISK;
+	
+	neon_glow_intensity = 1.9;
+	neon_glow_inner = 13.7;
+	neon_glow_inner_mult = 21;
+	disk_glow_radius = 256;
+	disk_glow_quality = 5.5;												// lower -> better performance (GPU)
+	disk_glow_intensity = 1;
+	disk_glow_alpha = 1;
+	disk_glow_gamma = .2;
 	
 	// Private variables
 	is_parent =			  _var_struct[$ "is_parent"]		   ?? true;
@@ -42,7 +53,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	angle = 0;
 	num = -1;																// Number of segments from start to end 
 	segment_real = 0;
-	height_reduction = 1;
+	height_reduction = 1;													// hight reduction for small lengths, may be unnecessary
 	points = [];
 	children = [];
 	
@@ -54,7 +65,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	noise_offset = random(10000); // (?) 500 seems enough, unsure what is the right value for this
 	noise_secondary_offset = random(10000);
 	
-	// Surfaces, shaders, glow settings
+	// Surfaces, shaders
 	static surf_base = -1;
 	static surf_pass = -1;
 	static surf_width = 1;
@@ -66,20 +77,9 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	static uniform_disk_glow_radius = shader_get_uniform(shd_disk_glow, "g_GlowRadius");
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
-	glow_type = GLOW_TYPE_DISK;
 	
 	__glow_reset_function = __glow_reset_disk;
 	__glow_set_function = __glow_set_default;
-	
-	neon_glow_intensity = 1.9;
-	neon_glow_inner = 13.7;
-	neon_glow_inner_mult = 21;
-	
-	disk_glow_radius = 256;
-	disk_glow_quality = 5.5;
-	disk_glow_intensity = 1;
-	disk_glow_alpha = 1;
-	disk_glow_gamma = .2;
 	
 	
 	// DRAW THE LIGHTNING
@@ -109,7 +109,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 			
 			// Draw outline
 			if (outline_width > 0) {
-				var outline_adjusted = line_width + max(1, outline_width / recursion_level);
+				var outline_adjusted = line_width + max(1, outline_width / recursion_level); // max 2?
 				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, outline_color, outline_color);
 			}
 			
@@ -194,7 +194,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		var prev_num = num;
 		num = max(segments_num_min, floor(length / segment_base));
 		segment_real = length / num;								// In case given segment can't divide distance evenly, resize it
-		height_reduction = (length > 50) ? 1 : (length / 100);		// Reduce height for small lengths
+		height_reduction = (length > 50) ? 1 : (length / 100);
 		
 		// In case of parent, "resize" array of all points when distance changes
 		if (is_parent) {

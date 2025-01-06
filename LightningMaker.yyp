@@ -27,6 +27,7 @@
     {"id":{"name":"Licenses","path":"notes/Licenses/Licenses.yy",},},
     {"id":{"name":"notes","path":"notes/notes/notes.yy",},},
     {"id":{"name":"presets","path":"notes/presets/presets.yy",},},
+    {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"obj_controller","path":"objects/obj_controller/obj_controller.yy",},},
     {"id":{"name":"obj_handle","path":"objects/obj_handle/obj_handle.yy",},},
     {"id":{"name":"broom","path":"rooms/broom/broom.yy",},},

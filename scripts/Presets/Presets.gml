@@ -18,7 +18,7 @@ global.handle_pos_hori = {
 }
 
 PRESETS = {
-	defaults: {
+	pale_rose: {
 		positions: global.handle_pos_vert_long,
 		params: {
 			segment : 12,
@@ -160,7 +160,143 @@ PRESETS = {
 		}
 	},
 	
-	slow_wave: {
+	plasma: {
+		positions: global.handle_pos_hori,
+		params: {
+		  "segment":12.0,
+		  "density":0.25,
+		  "spd":-0.10000000000000001,
+		  "height":120.0,
+		  "turbulence":0.0,
+		  "smoothing_type":1.0,
+		  "line_width":5.0,
+		  "color":6226135.0,
+		  "outline_width":0.0,
+		  "outline_color":16711739.0,
+		  "neon_glow_intensity":2.2999999523162842,
+		  "neon_glow_inner":8.3000001907348633,
+		  "neon_glow_inner_mult":6.3000001907348633,
+		  "disk_glow_intensity":1.0,
+		  "disk_glow_gamma":0.20000000000000001,
+		  "disk_glow_alpha":1.0,
+		  "disk_glow_radius":256.0,
+		  "disk_glow_quality":5.5,
+		  "child_chance":0.10000000000000001,
+		  "children_max":3.0,
+		  "child_life_min":6.0,
+		  "child_life_max":60.0,
+		  "child_length_min":100.0,
+		  "child_length_max":2000.0,
+		  "recursion_level_max":2.0,
+		  "child_cutoff_start":0.0,
+		  "child_cutoff_end":0.0,
+		  "glow_type":1.0,
+		}
+	},
+	
+	impulses: {
+		positions: global.handle_pos_vert_long,
+		params: {
+		  "segment":10.0,
+		  "density":0.20000000298023224,
+		  "spd":-0.029999999329447746,
+		  "height":133.0,
+		  "turbulence":2.0,
+		  "smoothing_type":1.0,
+		  "line_width":1.0,
+		  "color":14580787.0,
+		  "outline_width":0.0,
+		  "outline_color":5701865.0,
+		  "neon_glow_intensity":2.7999999523162842,
+		  "neon_glow_inner":16.600000381469727,
+		  "neon_glow_inner_mult":28.799999237060547,
+		  "disk_glow_intensity":0.69999998807907104,
+		  "disk_glow_gamma":0.69999998807907104,
+		  "disk_glow_alpha":0.89999997615814209,
+		  "disk_glow_radius":206.0,
+		  "disk_glow_quality":5.5,
+		  "child_chance":0.20000000298023224,
+		  "children_max":3.0,
+		  "child_life_min":6.0,
+		  "child_life_max":18.0,
+		  "child_length_min":100.0,
+		  "child_length_max":2000.0,
+		  "recursion_level_max":2.0,
+		  "child_cutoff_start":0.0,
+		  "child_cutoff_end":0.0,
+		  "glow_type":1.0,
+		}
+	},
+	
+	toxic: {
+		positions: global.handle_pos_vert_long,
+		params: {
+		  "segment":12.0,
+		  "density":0.25,
+		  "spd":-0.10000000000000001,
+		  "height":120.0,
+		  "turbulence":0.0,
+		  "smoothing_type":0.0,
+		  "line_width":4.0,
+		  "color":1048320.0,
+		  "outline_width":1.0,
+		  "outline_color":65384.0,
+		  "neon_glow_intensity":1.8999999999999999,
+		  "neon_glow_inner":13.699999999999999,
+		  "neon_glow_inner_mult":21.0,
+		  "disk_glow_intensity":1.0,
+		  "disk_glow_gamma":0.69999998807907104,
+		  "disk_glow_alpha":1.0,
+		  "disk_glow_radius":248.0,
+		  "disk_glow_quality":5.0,
+		  "child_chance":0.10000000000000001,
+		  "children_max":3.0,
+		  "child_life_min":6.0,
+		  "child_life_max":60.0,
+		  "child_length_min":100.0,
+		  "child_length_max":2000.0,
+		  "recursion_level_max":2.0,
+		  "child_cutoff_start":0.0,
+		  "child_cutoff_end":0.0,
+		  "glow_type":2.0,
+		}
+	},
+	
+	precise_cut: {
+		positions: global.handle_pos_vert_long,
+		params: {
+		  "segment":12.0,
+		  "density":0.25,
+		  "spd":-0.27000001072883606,
+		  "height":29.0,
+		  "turbulence":0.0,
+		  "smoothing_type":1.0,
+		  "line_width":3.0,
+		  "color":16777215.0,
+		  "outline_width":5.0,
+		  "outline_color":233,
+		  "neon_glow_intensity":1.8999999999999999,
+		  "neon_glow_inner":13.699999999999999,
+		  "neon_glow_inner_mult":21.0,
+		  "disk_glow_intensity":1.0,
+		  "disk_glow_gamma":0.20000000000000001,
+		  "disk_glow_alpha":1.0,
+		  "disk_glow_radius":256.0,
+		  "disk_glow_quality":5.5,
+		  "child_chance":0.10000000000000001,
+		  "children_max":3.0,
+		  "child_life_min":6.0,
+		  "child_life_max":60.0,
+		  "child_length_min":100.0,
+		  "child_length_max":2000.0,
+		  "recursion_level_max":2.0,
+		  "child_cutoff_start":0.0,
+		  "child_cutoff_end":0.0,
+		  "glow_type":2.0,
+		}
+	},
+	
+	abyssal_wave: {
 		positions: global.handle_pos_hori,
 		params: {
 		  "segment":12.0,
@@ -193,6 +329,5 @@ PRESETS = {
 		  "glow_type":2.0
 		}
 	},
-	
 }
 	

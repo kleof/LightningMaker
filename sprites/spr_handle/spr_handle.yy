@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Visualizer",
-    "path":"folders/Visualizer.yy",
+    "name":"notes_and_stuff",
+    "path":"folders/Visualizer/notes_and_stuff.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

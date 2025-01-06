@@ -1,14 +1,12 @@
 * issues: 
-	change width, height and other too ambiguous names
 	missing "chunks" of line if line has too high width
 		- check CleanShapes for line drawing to avoid gaps in lines of high width?
 	set surface size to match lightning area and not whole screen?
-	are paremeter names clear enough?
 	neon glow not looking too good with vertical lines
 	glow not visible on white, could blendmodes help?
-	> memory rising slowly, there may be a memory leak
 	> something not quite right with child_length_min - shorter children are still spawning
 	destroying instance holding start/end point crashes the game, should we do something about it?
+	outline of very thin children is too small, adjust formula
 
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
 - fade out when child is about to die

@@ -3,10 +3,6 @@ bolt.glow_set();
 
 bolt.draw();
 
-//gpu_set_blendmode(bm_max);
-//draw_line_width_color(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 18, #D6007C, #D6007C);
-//draw_line_width(start_handle.x, start_handle.y, end_handle.x, end_handle.y, 10);
-
 //for (var i = 0; i < array_length(bolts); i++) {
 //	bolts[i].draw();
 //}
@@ -26,7 +22,7 @@ draw_text(tx, ty, $"\n\nfps:        {fps}");
 
 
 
-trace($"{start_handle.x} {start_handle.y} {end_handle.x} {end_handle.y}");
+//trace($"{start_handle.x} {start_handle.y} {end_handle.x} {end_handle.y}");
 
 
 
