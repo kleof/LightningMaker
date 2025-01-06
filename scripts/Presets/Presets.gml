@@ -237,7 +237,7 @@ PRESETS = {
 		  "height":120.0,
 		  "turbulence":0.0,
 		  "smoothing_type":0.0,
-		  "line_width":4.0,
+		  "line_width":3.0,
 		  "color":1048320.0,
 		  "outline_width":1.0,
 		  "outline_color":65384.0,

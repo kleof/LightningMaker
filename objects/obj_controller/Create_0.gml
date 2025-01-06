@@ -113,14 +113,15 @@ dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 
 // EXAMPLES
 dbg_text_separator("Examples");
-dbg_button("Abyssal wave", function() { load_preset(PRESETS.abyssal_wave) }); dbg_same_line();
-dbg_button("Vampiric touch", function() { load_preset(PRESETS.vampiric_touch) });
+dbg_button("Precise cut", function() { load_preset(PRESETS.precise_cut) }); dbg_same_line();
+dbg_button("Toxic", function() { load_preset(PRESETS.toxic) });
+dbg_button("Vampiric touch", function() { load_preset(PRESETS.vampiric_touch) }); dbg_same_line();
+dbg_button("Abyssal wave", function() { load_preset(PRESETS.abyssal_wave) });
 dbg_button("Cobweb", function() { load_preset(PRESETS.cobweb) }); dbg_same_line();
+dbg_button("Plasma", function() { load_preset(PRESETS.plasma) });
+dbg_button("Impulses", function() { load_preset(PRESETS.impulses) }); dbg_same_line();
 dbg_button("Wild discharge", function() { load_preset(PRESETS.wild_discharge) });
-dbg_button("Plasma", function() { load_preset(PRESETS.plasma) }); dbg_same_line();
-dbg_button("Impulses", function() { load_preset(PRESETS.impulses) });
-dbg_button("Toxic", function() { load_preset(PRESETS.toxic) }); dbg_same_line();
-dbg_button("Precise cut", function() { load_preset(PRESETS.precise_cut) });
+
 
 dbg_text_separator("^. .^");
 discokitty = false;

@@ -24,9 +24,9 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	static secondary_noise_strength = .17;			// kinda jaggedness, turbulence seems enough, static for now
 	static secondary_noise_density_multiplier = 2;	// -//-
 	
-	child_chance =	      _var_struct[$ "child_chance"]		   ?? .1;
+	child_chance =	      _var_struct[$ "child_chance"]		   ?? .1;		// chance to spawn child every frame
 	child_life_min =      _var_struct[$ "child_life_min"]	   ?? 6;
-	child_life_max =      _var_struct[$ "child_life_max"]	   ?? 60;		// Allow infinite life or big number will suffice?
+	child_life_max =      _var_struct[$ "child_life_max"]	   ?? 60;
 	children_max =	      _var_struct[$ "children_max"]		   ?? 3;		
 	child_length_min =    _var_struct[$ "child_length_min"]	   ?? 100;		// In pixels (could be % of starting/actual length?)
 	child_length_max =    _var_struct[$ "child_length_max"]	   ?? infinity;
@@ -52,7 +52,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	length = 0;
 	angle = 0;
 	num = -1;																// Number of segments from start to end 
-	segment_real = 0;
+	segment_real = 0;														// Recalculated segment length
 	height_reduction = 1;													// hight reduction for small lengths, may be unnecessary
 	points = [];
 	children = [];
@@ -78,8 +78,8 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
-	__glow_reset_function = __glow_reset_disk;
 	__glow_set_function = __glow_set_default;
+	__glow_reset_function = __glow_reset_disk;
 	
 	
 	// DRAW THE LIGHTNING
@@ -163,7 +163,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 			color,										// reduce alpha/darken color for children?
 			outline_color,
 			turbulence,
-			outline_width,								// put outline calculations here, instead of draw method
+			outline_width,								// TODO put outline calculations here, instead of draw method
 			height:				height * .8,			// make child height relative to it's length? // for big heights bigger reduction looks better
 			line_width:			max(1, line_width - 2), // add more ways of reduction
 			smoothing_type:		child_smoothing_type,
@@ -267,8 +267,8 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		surface_reset_target();
 		
 		var _camera = view_camera[0];
-		var _surf_x = camera_get_view_x(_camera);
-		var _surf_y = camera_get_view_y(_camera);
+		var _cam_x = camera_get_view_x(_camera);
+		var _cam_y = camera_get_view_y(_camera);
 		var time = current_time;
 		
 		// Horizontal blur
@@ -281,7 +281,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 				shader_set_uniform_f(uniform_blur_horizontal_time, time); // rather subtle effect, but why not
 
 				gpu_set_blendenable(false); // important!
-				draw_surface(surf_base, _surf_x, _surf_y);
+				draw_surface(surf_base, _cam_x, _cam_y);
 				gpu_set_blendenable(true);
 
 			} shader_reset();
@@ -291,7 +291,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		shader_set(shd_blur_vertical); {
 			shader_set_uniform_f(uniform_blur_vertical_glow, neon_glow_intensity, neon_glow_inner, neon_glow_inner_mult);
 			shader_set_uniform_f(uniform_blur_vertical_time, time);
-			draw_surface(surf_pass, _surf_x, _surf_y);
+			draw_surface(surf_pass, _cam_x, _cam_y);
 			
 		} shader_reset();
 		
@@ -303,15 +303,15 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		surface_reset_target();
 		
 		var _camera = view_camera[0];
-		var _surf_x = camera_get_view_x(_camera);
-		var _surf_y = camera_get_view_y(_camera);
+		var _cam_x = camera_get_view_x(_camera);
+		var _cam_y = camera_get_view_y(_camera);
 		
 		var _num = disk_glow_quality;
 		var _mult = power(disk_glow_radius, 1 / _num);
 		var _radius = _mult;
 		var _colour = merge_colour(c_black, c_white, disk_glow_intensity); // Colour for glow intensity
 		
-		draw_surface_ext(surf_base, _surf_x,_surf_y,1,1,0,-1, disk_glow_alpha);
+		draw_surface_ext(surf_base, _cam_x,_cam_y,1,1,0,-1, disk_glow_alpha);
 		
 		repeat(_num) {
 			//Apply glow blur pass
@@ -322,11 +322,11 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 					shader_set_uniform_f(uniform_disk_glow_texel_size, 1/surf_width, 1/surf_height);
 					shader_set_uniform_f(uniform_disk_glow_radius, _radius);
 					shader_set_uniform_f(uniform_disk_glow_gamma, disk_glow_gamma);
-					draw_surface(surf_base, _surf_x,_surf_y);
+					draw_surface(surf_base, _cam_x,_cam_y);
 				shader_reset();
 			} surface_reset_target();
 
-			draw_surface_ext(surf_pass, _surf_x,_surf_y,1,1,0, _colour, 1);
+			draw_surface_ext(surf_pass, _cam_x,_cam_y,1,1,0, _colour, 1);
 
 			_radius *= -_mult;
 			var _surf = surf_base;
@@ -430,7 +430,7 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 	static set_smoothing_type = function(_smoothing_type) {
 		smoothing_type = _smoothing_type;
 		smoothing_base_channel = animcurve_get_channel(ac_smoothing, smoothing_type);
-		// Do not set for it's children
+		// Do not set for children
 		return self;
 	}
 	
