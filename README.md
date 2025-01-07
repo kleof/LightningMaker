@@ -1,5 +1,9 @@
 ## [> Download <](https://github.com/kleof/LightningMaker/archive/refs/heads/main.zip)
  
+
+https://github.com/user-attachments/assets/3da5580e-9dc7-4301-9916-bde346398a40
+
+
 ### Basic Use:
 ```gml
 // Lightning(start_point, end_point)
