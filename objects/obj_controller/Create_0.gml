@@ -151,7 +151,7 @@ copy_to_clipboard = function() {
 	clipboard_set_text(code_text);
 }
 
-dbg_view("GENERATED CODE", true, 690, 730, 420, 200);
+dbg_view("GENERATED CODE", true, 700, 640, 420, 200);
 dbg_section("");
 dbg_button("COPY CODE TO CLIPBOARD", copy_to_clipboard, 260);
 dbg_text(ref_create(self, "code_text"));

@@ -4,56 +4,54 @@
 /// @desc Function Description
 /// @param {any*} start_point Starting point, can be anything with x,y attributes, like object instance, struct literal, etc
 /// @param {any*} end_point Ending point, can be anything with x,y attributes, like object instance, struct literal, etc
-/// @param {struct} [var_struct] [Optional] struct containing variables to pass
-function Lightning(_start_point, _end_point, _var_struct={}) constructor {
+function Lightning(_start_point, _end_point) constructor {
 	
 	// Main variables
 	start_point =	      _start_point;
 	end_point =		      _end_point;
 					      									  
-	segment_base =	      _var_struct[$ "segment_base"]		   ?? 12;		// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
-	density =		      _var_struct[$ "density"]			   ?? .25;		// Wave length
-	height =		      _var_struct[$ "height"]			   ?? 120;		// Max wave height/amplitude, in pixels
-	spd =			      _var_struct[$ "spd"]				   ?? -.1;
-	turbulence =	      _var_struct[$ "turbulence"]		   ?? 3;
-	line_width =	      _var_struct[$ "line_width"]		   ?? 4;
-	color =			      _var_struct[$ "color"]			   ?? #FFFFFF;
-	outline_width =       _var_struct[$ "outline_width"]	   ?? 5;
-	outline_color =       _var_struct[$ "outline_color"]	   ?? #E90057;
-	smoothing_type =      _var_struct[$ "smoothing_type"]      ?? SMOOTHING_GENTLE;
+	segment_base =	       12;						// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
+	density =		       .25;						// Wave length
+	height =		       120;						// Max wave height/amplitude, in pixels
+	spd =			       -.1;
+	turbulence =	       3;
+	line_width =	       4;
+	color =			       #FFFFFF;
+	outline_width =        5;
+	outline_color =        #E90057;
+	smoothing_type =       SMOOTHING_GENTLE;
 	static secondary_noise_strength = .17;			// kinda jaggedness, turbulence seems enough, static for now
 	static secondary_noise_density_multiplier = 2;	// -//-
 	
-	child_chance =	      _var_struct[$ "child_chance"]		   ?? .1;		// chance to spawn child every frame
-	child_life_min =      _var_struct[$ "child_life_min"]	   ?? 6;
-	child_life_max =      _var_struct[$ "child_life_max"]	   ?? 60;
-	children_max =	      _var_struct[$ "children_max"]		   ?? 3;		
-	child_length_min =    _var_struct[$ "child_length_min"]	   ?? 100;		// In pixels (could be % of starting/actual length?)
-	child_length_max =    _var_struct[$ "child_length_max"]	   ?? infinity;
-	recursion_level_max = _var_struct[$ "recursion_level_max"] ?? 2;
-	child_cutoff_start =  _var_struct[$ "child_cutoff_start"]  ?? .0;		// % of parent length, (should it apply only to main and not children?)
-	child_cutoff_end =    _var_struct[$ "child_cutoff_end"]	   ?? .0;		// % of parent length
+	child_chance =	       .1;						// chance to spawn child every frame
+	child_life_min =       6;						
+	child_life_max =       60;						
+	children_max =	       3;						
+	child_length_min =     100;						// In pixels (could be % of starting/actual length?)
+	child_length_max =     infinity;
+	recursion_level_max =  2;
+	child_cutoff_start =   .0;						// % of parent length, (should it apply only to main and not children?)
+	child_cutoff_end =     .0;						// % of parent length
 	
-	glow_type = GLOW_TYPE_DISK;
-	
-	neon_glow_intensity = 1.9;
-	neon_glow_inner = 13.7;
+	glow_type =			   GLOW_TYPE_DISK;
+	neon_glow_intensity =  1.9;
+	neon_glow_inner =	   13.7;
 	neon_glow_inner_mult = 21;
-	disk_glow_radius = 256;
-	disk_glow_quality = 5.5;												// lower -> better performance (GPU)
-	disk_glow_intensity = 1;
-	disk_glow_alpha = 1;
-	disk_glow_gamma = .2;
+	disk_glow_radius =	   256;
+	disk_glow_quality =	   5.5;						// lower -> better performance (GPU)
+	disk_glow_intensity =  1;
+	disk_glow_alpha =      1;
+	disk_glow_gamma =      .2;
 	
 	// Private variables
-	is_parent =			  _var_struct[$ "is_parent"]		   ?? true;
-	recursion_level =	  _var_struct[$ "recursion_level"]	   ?? 1;
-	life =				  _var_struct[$ "life"]				   ?? 0;
+	is_parent =	true;
+	recursion_level = 1;
+	life = 0;
 	length = 0;
 	angle = 0;
-	num = -1;																// Number of segments from start to end 
-	segment_real = 0;														// Recalculated segment length
-	height_reduction = 1;													// hight reduction for small lengths, may be unnecessary
+	num = -1;										// Number of segments from start to end 
+	segment_real = 0;								// Recalculated segment length
+	height_reduction = 1;							// hight reduction for small lengths, may be unnecessary
 	points = [];
 	children = [];
 	
@@ -155,34 +153,33 @@ function Lightning(_start_point, _end_point, _var_struct={}) constructor {
 		var p2_start = p1_index + child_segments_num_min;
 		var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
 		
+		var new_child = new Lightning(points[p1_index], points[p2_index]);
+		
 		// Variables passed to child
-		var var_struct = {
-			segment_base,
-			density,									// reduced for children could look alright
-			spd,
-			color,										// reduce alpha/darken color for children?
-			outline_color,
-			turbulence,
-			outline_width,								// TODO put outline calculations here, instead of draw method
-			height:				height * .8,			// make child height relative to it's length? // for big heights bigger reduction looks better
-			line_width:			max(1, line_width - 2), // add more ways of reduction
-			smoothing_type:		child_smoothing_type,
+		new_child.segment_base			= segment_base;
+		new_child.density				= density;						// reduced for children could look alright
+		new_child.spd					= spd;
+		new_child.color					= color;						// reduce alpha/darken color for children?
+		new_child.outline_color			= outline_color;
+		new_child.turbulence			= turbulence;
+		new_child.outline_width			= outline_width;				// TODO put outline calculations here, instead of draw method
+		new_child.height				= height * .8;					// make child height relative to it's length? // for big heights bigger reduction looks better
+		new_child.line_width			= max(1, line_width - 2);		// add more ways of reduction
+		new_child.smoothing_type		= child_smoothing_type;
+		
+		new_child.child_chance			= child_chance;	
+		new_child.child_life_min		= child_life_min;	
+		new_child.child_life_max		= child_life_max;	
+		new_child.children_max			= children_max;	
+		new_child.child_length_min		= child_length_min;	
+		new_child.child_length_max		= child_length_max;	
+		new_child.recursion_level_max	= recursion_level_max;		
+		new_child.child_cutoff_start	= child_cutoff_start;	
+		new_child.child_cutoff_end		= child_cutoff_end;
 			
-			child_chance,
-			child_life_min,
-			child_life_max,
-			children_max,
-			child_length_min,
-			child_length_max,
-			recursion_level_max,
-			child_cutoff_start,
-			child_cutoff_end,
-			
-			recursion_level:	recursion_level + 1,
-			is_parent:			(recursion_level + 1 <= recursion_level_max) ? true : false,
-			life:				irandom_range(child_life_min, child_life_max),
-		}
-		var new_child = new Lightning(points[p1_index], points[p2_index], var_struct);
+		new_child.recursion_level		= recursion_level + 1;
+		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
+		new_child.life					= irandom_range(child_life_min, child_life_max);
 		//if (new_child.length < child_length_min) trace(new_child.length);
 		
 		array_push(children, new_child);
