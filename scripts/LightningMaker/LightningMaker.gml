@@ -1,7 +1,7 @@
 
 //*****     --_./\/\./``\__/`\/\.-->     *****//
 
-/// @desc Function Description
+/// @desc Creates new lightning
 /// @param {any*} start_point Starting point, can be anything with x,y attributes, like object instance, struct literal, etc
 /// @param {any*} end_point Ending point, can be anything with x,y attributes, like object instance, struct literal, etc
 function Lightning(_start_point, _end_point) constructor {
