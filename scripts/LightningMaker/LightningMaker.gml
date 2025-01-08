@@ -8,8 +8,14 @@ function Lightning(_start_point, _end_point) constructor {
 	
 	// Main variables
 	start_point =	      _start_point;
-	end_point =		      _end_point;
-					      									  
+	if (is_array(_end_point)) {
+		end_point = array_shift(_end_point);
+		alternative_end_points = _end_point;
+	} else {
+		end_point = _end_point;
+		alternative_end_points = -1;
+	}
+	
 	segment_base =	       12;						// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
 	density =		       .25;						// Wave length
 	height =		       120;						// Max wave height/amplitude, in pixels
@@ -130,7 +136,7 @@ function Lightning(_start_point, _end_point) constructor {
 				with (child) {
 					
 					// Deleting dead children or whos endpoint got deactivated; by extension, reference to their children is lost (right?)
-					if (life <= 0 || end_point.active == false) { // end_point should be enough
+					if (life <= 0 || end_point.__active == false || start_point.__active == false) {
 						array_delete(other.children, array_get_index(other.children, self), 1);
 						continue;
 					}
@@ -150,10 +156,18 @@ function Lightning(_start_point, _end_point) constructor {
 		var cutoff_start = floor(child_cutoff_start * num);
 		var cutoff_end = floor(child_cutoff_end * num);
 		var p1_index = irandom_range(cutoff_start, num - cutoff_end - child_segments_num_min);
-		var p2_start = p1_index + child_segments_num_min;
-		var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
+		var p1 = points[p1_index];
+		var p2;
 		
-		var new_child = new Lightning(points[p1_index], points[p2_index]);
+		if (alternative_end_points != -1 && random(1) < .8) {
+			p2 = alternative_end_points[irandom(array_length(alternative_end_points)-1)];
+		} else {
+			var p2_start = p1_index + child_segments_num_min;
+			var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
+			p2 = points[p2_index];
+		}
+		
+		var new_child = new Lightning(p1, p2);
 		
 		// Variables passed to child
 		new_child.segment_base			= segment_base;
@@ -205,7 +219,7 @@ function Lightning(_start_point, _end_point) constructor {
 			// Deactivate points (not delete) if lightning length decreased, so we can destroy children using them
 			else if (prev_num > num) {
 				for (var i = num; i <= prev_num; i++) {
-					points[i].active = false;
+					points[i].__active = false;
 				}
 			}
 		}
@@ -646,14 +660,14 @@ function Lightning(_start_point, _end_point) constructor {
 function LPoint(_x, _y) constructor {
 	x = _x;
 	y = _y;
-	active = true;
+	__active = true;
 	
 	static update_position = function(_x, _y) {
 		x = _x;
 		y = _y;
 		
 		// Being set = active
-		active = true;
+		__active = true;
 	}
 }
 
