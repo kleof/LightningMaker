@@ -1,5 +1,5 @@
 #macro trace show_debug_message
-//randomize();
+randomize();
 
 
 // ***** DEFAULTS ***** //
