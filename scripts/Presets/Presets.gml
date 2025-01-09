@@ -88,7 +88,6 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":2.0,
-		  "discokitty":false
 		}
 	},
 	
