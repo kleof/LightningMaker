@@ -165,7 +165,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			p2 = points[p2_index];
 		}
 		
-		var new_child = new Lightning(p1, p2);
+		var new_child = new Lightning(p1, p2, collateral);
 		
 		// Variables passed to child
 		new_child.segment_base			= segment_base;
