@@ -6,9 +6,9 @@
 
 start_handle = instance_create_layer(969, 85, "Thingies", obj_handle, {image_alpha: .3});
 end_handle = instance_create_layer(587, 703, "Thingies", obj_handle, {image_alpha: .3});
-//handle3 = instance_create_layer(500, 720, "Thingies", obj_handle, {image_alpha: .3, __active: true});
-//handle4 = instance_create_layer(540, 720, "Thingies", obj_handle, {image_alpha: .3, __active: true});
-//handle5 = instance_create_layer(580, 720, "Thingies", obj_handle, {image_alpha: .3, __active: true});
+//handle3 = instance_create_layer(500, 720, "Thingies", obj_handle, {image_alpha: .3});
+//handle4 = instance_create_layer(540, 720, "Thingies", obj_handle, {image_alpha: .3});
+//handle5 = instance_create_layer(580, 720, "Thingies", obj_handle, {image_alpha: .3});
 params = {};
 
 load_preset = function(_preset) {
@@ -26,7 +26,7 @@ load_preset(PRESETS.pale_rose);
 
 
 bolt = new Lightning(start_handle, end_handle);
-//bolt = new Lightning(start_handle, [end_handle, handle3, handle4, handle5]);
+//bolt = new Lightning(start_handle, end_handle, [handle3, handle4, handle5]);
 
 // Stress test
 //bolts = [];

@@ -4,17 +4,14 @@
 /// @desc Creates new lightning
 /// @param {any*} start_point Starting point, can be anything with x,y attributes, like object instance, struct literal, etc
 /// @param {any*} end_point Ending point, can be anything with x,y attributes, like object instance, struct literal, etc
-function Lightning(_start_point, _end_point) constructor {
+/// @param {any*} collateral [Optional] array of points (instances, structs, etc) that can be hit by child lightnings
+function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	// Main variables
-	start_point =	      _start_point;
-	if (is_array(_end_point)) {
-		end_point = array_shift(_end_point);
-		alternative_end_points = _end_point;
-	} else {
-		end_point = _end_point;
-		alternative_end_points = -1;
-	}
+	start_point =	       _start_point;
+	end_point =			   _end_point;
+	collateral =		   _collateral;
+	array_foreach(collateral, function(element) { element.__active = true; });
 	
 	segment_base =	       12;						// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
 	density =		       .25;						// Wave length
@@ -159,8 +156,9 @@ function Lightning(_start_point, _end_point) constructor {
 		var p1 = points[p1_index];
 		var p2;
 		
-		if (alternative_end_points != -1 && random(1) < .8) {
-			p2 = alternative_end_points[irandom(array_length(alternative_end_points)-1)];
+		var collateral_length = array_length(collateral);
+		if (collateral_length > 0 && random(1) < .8) {
+			p2 = collateral[irandom(collateral_length - 1)];
 		} else {
 			var p2_start = p1_index + child_segments_num_min;
 			var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
@@ -188,8 +186,8 @@ function Lightning(_start_point, _end_point) constructor {
 		new_child.child_length_min		= child_length_min;	
 		new_child.child_length_max		= child_length_max;	
 		new_child.recursion_level_max	= recursion_level_max;		
-		new_child.child_cutoff_start	= child_cutoff_start;	
-		new_child.child_cutoff_end		= child_cutoff_end;
+		//new_child.child_cutoff_start	= 0;							// Not applying it to children
+		//new_child.child_cutoff_end	= 0;							// -//-
 			
 		new_child.recursion_level		= recursion_level + 1;
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
@@ -365,6 +363,10 @@ function Lightning(_start_point, _end_point) constructor {
 		end_point.y = _y;
 		__update_positional_data();
 		return self;
+	}
+	
+	static set_collateral = function(_collateral) {
+		collateral = _collateral;
 	}
 	
 	static set_segment = function(_segment) {
