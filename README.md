@@ -25,6 +25,9 @@ When using anonymous struct literal, you can update lightning position with `upd
 
 ### _Run example project to customize lightning and generate code that will set all parameters_
 \
+![image](https://github.com/user-attachments/assets/ce5ea202-85ad-495c-8815-51ffafd199e6)
+\
+\
 \
 \
 When drawing more than one lightning utilizing same glow effect use `draw`,`glow_set`,`glow_reset` methods:
