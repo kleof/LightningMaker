@@ -1,5 +1,5 @@
-## [> Download <](https://github.com/kleof/LightningMaker/archive/refs/heads/main.zip)
- 
+## [> Download All<](https://github.com/kleof/LightningMaker/archive/refs/heads/main.zip)
+[download local package only](https://github.com/kleof/LightningMaker/releases/download/v0.0.1/LightningMaker.yymps)
 
 https://github.com/user-attachments/assets/3da5580e-9dc7-4301-9916-bde346398a40
 
