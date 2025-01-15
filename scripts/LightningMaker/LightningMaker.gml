@@ -49,6 +49,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	// Private variables
 	is_parent =	true;
 	recursion_level = 1;
+	outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / recursion_level);
 	life = 0;
 	length = 0;
 	angle = 0;
@@ -110,7 +111,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			
 			// Draw outline
 			if (outline_width > 0) {
-				var outline_adjusted = line_width + max(1, outline_width / recursion_level); // max 2?
 				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, outline_color, outline_color);
 			}
 			
@@ -171,12 +171,12 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.segment_base			= segment_base;
 		new_child.density				= density;						// reduced for children could look alright
 		new_child.spd					= spd;
+		new_child.line_width			= max(1, line_width - 2);		// add more ways of reduction // Warning: formula is in set_ function as well
 		new_child.color					= color;						// reduce alpha/darken color for children?
 		new_child.outline_color			= outline_color;
 		new_child.turbulence			= turbulence;
-		new_child.outline_width			= outline_width;				// TODO put outline calculations here, instead of draw method
+		new_child.outline_width			= outline_width;
 		new_child.height				= height * .8;					// make child height relative to it's length? // for big heights bigger reduction looks better
-		new_child.line_width			= max(1, line_width - 2);		// add more ways of reduction
 		new_child.smoothing_type		= child_smoothing_type;
 		
 		new_child.child_chance			= child_chance;	
@@ -190,6 +190,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		//new_child.child_cutoff_end	= 0;							// -//-
 			
 		new_child.recursion_level		= recursion_level + 1;
+		new_child.outline_adjusted		= new_child.line_width + max(1 + floor(new_child.line_width/3), outline_width / (recursion_level +1)); // Warning: formula is in set_ function as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= irandom_range(child_life_min, child_life_max);
 		//if (new_child.length < child_length_min) trace(new_child.length);
@@ -412,17 +413,11 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	static set_line_width = function(_line_width) {
 		line_width = _line_width;
-		
-		// skip children for now
-		return self;
-	}
-	
-	static set_turbulence = function(_turbulence) {
-		turbulence = _turbulence;
+		set_outline_width(outline_width);
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_turbulence(turbulence);
+				children[i].set_line_width(max(1, line_width - 2));
 			}
 		}
 		return self;
@@ -430,8 +425,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	static set_outline_width = function(_outline_width) {
 		outline_width = _outline_width;
+		outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / recursion_level);
 		
-		// get back to this later
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
 				children[i].set_outline_width(outline_width);
@@ -464,6 +459,17 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
 				children[i].set_outline_color(outline_color);
+			}
+		}
+		return self;
+	}
+	
+	static set_turbulence = function(_turbulence) {
+		turbulence = _turbulence;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_turbulence(turbulence);
 			}
 		}
 		return self;

@@ -4,7 +4,6 @@
 	glow not visible on white, could blendmodes help?
 	something not quite right with child_length_min - shorter children are still spawning
 	destroying instance holding start/end point crashes the game, should we do something about it?
-	outline of very thin children is too small, adjust formula
 
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
 - fade out when child is about to die
@@ -31,6 +30,8 @@ glow_color = merge_color(c1, c2, i/num);
 - arch-like bend? +height(or additional param)*arc_curve?
 - randomize each segment length?
 - particles on end points (and slower, from line beam)
+
+- preset shader uniforms
 
 - object pooling - Precreate all potentially needed children and use them, instead of creating and destroying
 unsure if impactful enough to implement?
