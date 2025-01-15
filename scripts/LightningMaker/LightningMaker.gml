@@ -13,38 +13,38 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	collateral =		   _collateral;
 	array_foreach(collateral, function(element) { element.__active = true; });
 	
-	segment_base =	       12;						// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
-	density =		       .25;						// Wave length
-	height =		       120;						// Max wave height/amplitude, in pixels
-	spd =			       -.1;
-	turbulence =	       3;
-	line_width =	       4;
-	color =			       #FFFFFF;
-	outline_width =        5;
-	outline_color =        #E90057;
-	smoothing_type =       SMOOTHING_GENTLE;
-	static secondary_noise_strength = .17;			// kinda jaggedness, turbulence seems enough, static for now
-	static secondary_noise_density_multiplier = 2;	// -//-
+	segment_base =	       LMD_SEGMENT;										// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
+	density =		       LMD_DENSITY;										// Wave length
+	height =		       LMD_HEIGHT;										// Max wave height/amplitude, in pixels
+	spd =			       LMD_SPD;
+	turbulence =	       LMD_TURBULENCE;
+	line_width =	       LMD_LINE_WIDTH;
+	color =			       LMD_COLOR;
+	outline_width =        LMD_OUTLINE_WIDTH;
+	outline_color =        LMD_OUTLINE_COLOR;
+	smoothing_type =       LMD_SMOOTHING_TYPE;
+	static secondary_noise_strength = LMD_SEC_NOISE_STRENGTH;				// kinda jaggedness, turbulence seems enough, static for now
+	static secondary_noise_density_multiplier = LMD_SEC_NOISE_DENSITY_MULT;	// -//-
 	
-	child_chance =	       .1;						// chance to spawn child every frame
-	child_life_min =       6;						
-	child_life_max =       60;						
-	children_max =	       3;						
-	child_length_min =     100;						// In pixels (could be % of starting/actual length?)
-	child_length_max =     infinity;
-	recursion_level_max =  2;
-	child_cutoff_start =   .0;						// % of parent length, (should it apply only to main and not children?)
-	child_cutoff_end =     .0;						// % of parent length
+	child_chance =	       LMD_CHILD_CHANCE;								// chance to spawn child every frame
+	child_life_min =       LMD_CHILD_LIFE_MIN;						
+	child_life_max =       LMD_CHILD_LIFE_MAX;						
+	children_max =	       LMD_CHILDREN_MAX;						
+	child_length_min =     LMD_CHILD_LENGTH_MIN;							// In pixels (could be % of starting/actual length?)
+	child_length_max =     LMD_CHILD_LENGTH_MAX;
+	recursion_level_max =  LMD_RECURSION_LEVEL_MAX;
+	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (should it apply only to main and not children?)
+	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
 	
-	glow_type =			   GLOW_TYPE_DISK;
-	neon_glow_intensity =  1.9;
-	neon_glow_inner =	   13.7;
-	neon_glow_inner_mult = 21;
-	disk_glow_radius =	   256;
-	disk_glow_quality =	   5.5;						// lower -> better performance (GPU)
-	disk_glow_intensity =  1;
-	disk_glow_alpha =      1;
-	disk_glow_gamma =      .2;
+	glow_type =			   LMD_GLOW_TYPE;
+	neon_glow_intensity =  LMD_NEON_GLOW_INTENSITY;
+	neon_glow_inner =	   LMD_GLOW_INNER;
+	neon_glow_inner_mult = LMD_GLOW_INNER_MULT;
+	disk_glow_radius =	   LMD_DISK_GLOW_RADIUS;
+	disk_glow_quality =	   LMD_DISK_GLOW_QUALITY;							// lower -> better performance (GPU)
+	disk_glow_intensity =  LMD_DISK_GLOW_INTENSITY;
+	disk_glow_alpha =      LMD_DISK_GLOW_ALPHA;
+	disk_glow_gamma =      LMD_DISK_GLOW_GAMMA;
 	
 	// Private variables
 	is_parent =	true;
@@ -175,7 +175,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.color					= color;						// reduce alpha/darken color for children?
 		new_child.outline_color			= outline_color;
 		new_child.turbulence			= turbulence;
-		new_child.outline_width			= outline_width;
 		new_child.height				= height * .8;					// make child height relative to it's length? // for big heights bigger reduction looks better
 		new_child.smoothing_type		= child_smoothing_type;
 		
@@ -188,9 +187,9 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.recursion_level_max	= recursion_level_max;		
 		//new_child.child_cutoff_start	= 0;							// Not applying it to children
 		//new_child.child_cutoff_end	= 0;							// -//-
-			
+		
 		new_child.recursion_level		= recursion_level + 1;
-		new_child.outline_adjusted		= new_child.line_width + max(1 + floor(new_child.line_width/3), outline_width / (recursion_level +1)); // Warning: formula is in set_ function as well
+		new_child.set_outline_width(outline_width);						// this sets adjusted_outline as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= irandom_range(child_life_min, child_life_max);
 		//if (new_child.length < child_length_min) trace(new_child.length);
