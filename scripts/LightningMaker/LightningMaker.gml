@@ -23,23 +23,23 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	outline_width =        LMD_OUTLINE_WIDTH;
 	outline_color =        LMD_OUTLINE_COLOR;
 	smoothing_type =       LMD_SMOOTHING_TYPE;
-	static secondary_noise_strength = LMD_SEC_NOISE_STRENGTH;				// kinda jaggedness, turbulence seems enough, static for now
+	static secondary_noise_strength =			LMD_SEC_NOISE_STRENGTH;		// kinda jaggedness, turbulence seems enough, static for now
 	static secondary_noise_density_multiplier = LMD_SEC_NOISE_DENSITY_MULT;	// -//-
 	
 	child_chance =	       LMD_CHILD_CHANCE;								// chance to spawn child every frame
 	child_life_min =       LMD_CHILD_LIFE_MIN;						
 	child_life_max =       LMD_CHILD_LIFE_MAX;						
 	children_max =	       LMD_CHILDREN_MAX;						
-	child_length_min =     LMD_CHILD_LENGTH_MIN;							// In pixels (could be % of starting/actual length?)
+	child_length_min =     LMD_CHILD_LENGTH_MIN;							// In pixels (could be % of starting/actual length?), accuracy depends on segment base length
 	child_length_max =     LMD_CHILD_LENGTH_MAX;
 	recursion_level_max =  LMD_RECURSION_LEVEL_MAX;
-	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (should it apply only to main and not children?)
+	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
 	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
 	
 	glow_type =			   LMD_GLOW_TYPE;
 	neon_glow_intensity =  LMD_NEON_GLOW_INTENSITY;
-	neon_glow_inner =	   LMD_GLOW_INNER;
-	neon_glow_inner_mult = LMD_GLOW_INNER_MULT;
+	neon_glow_inner =	   LMD_NEON_GLOW_INNER;
+	neon_glow_inner_mult = LMD_NEON_GLOW_INNER_MULT;
 	disk_glow_radius =	   LMD_DISK_GLOW_RADIUS;
 	disk_glow_quality =	   LMD_DISK_GLOW_QUALITY;							// lower -> better performance (GPU)
 	disk_glow_intensity =  LMD_DISK_GLOW_INTENSITY;
@@ -154,16 +154,17 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		var cutoff_end = floor(child_cutoff_end * num);
 		var p1_index = irandom_range(cutoff_start, num - cutoff_end - child_segments_num_min);
 		var p1 = points[p1_index];
-		var p2;
+		var p2_index, p2;
 		
 		var collateral_length = array_length(collateral);
 		if (collateral_length > 0 && random(1) < .8) {
 			p2 = collateral[irandom(collateral_length - 1)];
 		} else {
 			var p2_start = p1_index + child_segments_num_min;
-			var p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
+			p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
 			p2 = points[p2_index];
 		}
+		if (p1_index == p2_index) return; // don't create 0 length children
 		
 		var new_child = new Lightning(p1, p2, collateral);
 		
@@ -192,7 +193,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.set_outline_width(outline_width);						// this sets adjusted_outline as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= irandom_range(child_life_min, child_life_max);
-		//if (new_child.length < child_length_min) trace(new_child.length);
 		
 		array_push(children, new_child);
 	}

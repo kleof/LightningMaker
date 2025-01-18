@@ -2,7 +2,6 @@
 	missing "chunks" of line if line has too high width
 	neon glow not looking too good with vertical lines
 	glow not visible on white, could blendmodes help?
-	something not quite right with child_length_min - shorter children are still spawning
 	destroying instance holding start/end point crashes the game, should we do something about it?
 
 - fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
