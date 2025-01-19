@@ -80,8 +80,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
-	__glow_set_function = __glow_set_default;
-	__glow_reset_function = __glow_reset_disk;
+	glow_set = __glow_set_default;	// SET THE SURFACES
+	glow_reset = __glow_reset_disk;	// APPLY SHADERS AND DRAW SURFACES
 	
 	
 	// DRAW THE LIGHTNING
@@ -221,16 +221,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 				}
 			}
 		}
-	}
-	
-	// SET THE SURFACES
-	static glow_set = function() {
-		__glow_set_function();
-	}
-	
-	// APPLY SHADERS AND DRAW SURFACES
-	static glow_reset = function() {
-		__glow_reset_function();
 	}
 	
 	// ALL IN ONE
@@ -520,18 +510,18 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static set_glow_type = function(_glow_type) {
 		glow_type = _glow_type;
 		switch (_glow_type) {
-			case 0:
-				// Set additive blendmode for drawing without any glow, so outlines don't go over main line
-				__glow_set_function = function() { gpu_set_blendmode(bm_max); };
-				__glow_reset_function = function() { gpu_set_blendmode(bm_normal); };
+			case GLOW_TYPE_NONE:
+				// Set additive blendmode for drawing without any glow, so children outlines don't go over main line
+				glow_set = function() { gpu_set_blendmode(bm_max); };
+				glow_reset = function() { gpu_set_blendmode(bm_normal); };
 				break;
-			case 1:
-				__glow_set_function = __glow_set_default;
-				__glow_reset_function = __glow_reset_neon;
+			case GLOW_TYPE_NEON:
+				glow_set = __glow_set_default;
+				glow_reset = __glow_reset_neon;
 				break;
-			case 2:
-				__glow_set_function = __glow_set_default;
-				__glow_reset_function = __glow_reset_disk;
+			case GLOW_TYPE_DISK:
+				glow_set = __glow_set_default;
+				glow_reset = __glow_reset_disk;
 				break;
 		}
 		return self;
