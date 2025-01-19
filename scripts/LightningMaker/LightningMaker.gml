@@ -80,9 +80,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static uniform_disk_glow_gamma = shader_get_uniform(shd_disk_glow, "g_GlowGamma");
 	static uniform_disk_glow_texel_size  = shader_get_uniform(shd_disk_glow, "gm_pSurfaceTexelSize");
 	
-	glow_set = __glow_set_default;	// SET THE SURFACES
-	glow_reset = __glow_reset_disk;	// APPLY SHADERS AND DRAW SURFACES
-	
 	
 	// DRAW THE LIGHTNING
 	static draw = function() {
@@ -148,7 +145,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static __spawn_child = function() {
 		
 		// Calculating start/end point index
-		var child_segments_num_min = floor(child_length_min / segment_real);
+		var child_segments_num_min = ceil(child_length_min / segment_real);
 		var max_delta = floor(child_length_max / segment_real) - child_segments_num_min;
 		var cutoff_start = floor(child_cutoff_start * num);
 		var cutoff_end = floor(child_cutoff_end * num);
@@ -164,7 +161,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			p2_index = irandom_range(p2_start, min(p2_start + max_delta, num - cutoff_end));
 			p2 = points[p2_index];
 		}
-		if (p1_index == p2_index) return; // don't create 0 length children
 		
 		var new_child = new Lightning(p1, p2, collateral);
 		
@@ -222,6 +218,9 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			}
 		}
 	}
+	
+	glow_set = __glow_set_default;	// SET THE SURFACES
+	glow_reset = __glow_reset_disk;	// APPLY SHADERS AND DRAW SURFACES
 	
 	// ALL IN ONE
 	static update = function() {
