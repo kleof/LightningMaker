@@ -106,11 +106,9 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			
 			// Draw outline
 			if (outline_width > 0) {
-				var final_color = is_array(outline_color) ? color_gradient(outline_color, i/num) : outline_color;
-				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, final_color, final_color);
+				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, outline_color, outline_color);
 			}
 			
 			// Draw main line
@@ -669,14 +667,6 @@ function LPoint(_x, _y) constructor {
 	}
 }
 
-/// @desc Smoothly merge between array colors. Returns the final GM color.
-/// @param {array} colors_array Array of colors.
-/// @param {real} progress The array progress, from 0 to 1.
-/// @returns {constant} 
-function color_gradient(_colorsArray, _progress) {
-	var _len = array_length(_colorsArray) - 1;
-	var _prog = clamp(_progress, 0, 1) * _len;
-	return merge_color(_colorsArray[floor(_prog)], _colorsArray[ceil(_prog)], frac(_prog));
-}
+
 
 

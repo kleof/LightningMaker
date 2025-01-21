@@ -83,7 +83,7 @@ dbg_text_separator("Line");
 dbg_slider(ref_create(params, "line_width"), 1, 18, "Line width", 1);
 dbg_colour(ref_create(params, "color"), "Main color");
 dbg_slider(ref_create(params, "outline_width"), 0, 20, "Outline width", 1);
-//dbg_colour(ref_create(params, "outline_color"), "Outline color");
+dbg_colour(ref_create(params, "outline_color"), "Outline color");
 
 // NEON GLOW
 dbg_text_separator("Neon Glow Settings");
