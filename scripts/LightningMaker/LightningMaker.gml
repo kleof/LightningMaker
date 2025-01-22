@@ -68,10 +68,10 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	noise_secondary_offset = random(10000);
 	
 	// Surfaces, shaders
-	static surf_base = -1;
-	static surf_pass = -1;
-	static surf_width = 1;
-	static surf_height = 1;
+	surf_base = -1;
+	surf_pass = -1;
+	surf_width = 1;
+	surf_height = 1;
 	static uniform_blur_horizontal_glow = shader_get_uniform(shd_blur_horizontal, "u_glowProperties");
 	static uniform_blur_horizontal_time = shader_get_uniform(shd_blur_horizontal, "u_time");
 	static uniform_blur_vertical_glow = shader_get_uniform(shd_blur_vertical, "u_glowProperties");
@@ -235,7 +235,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		var _camera = view_camera[0];
 		var _surf_width = camera_get_view_width(_camera);
 		var _surf_height = camera_get_view_height(_camera);
-		
+
 		if (!surface_exists(surf_base)) {
 			surf_base = surface_create(_surf_width, _surf_height);
 		}
@@ -640,7 +640,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	// Freeing surfaces
 	static cleanup = function() {
-		// all instances are re-using same static surfaces so when are we supposed to call this?
+		// when to call this?
 		if (surface_exists(surf_base)) {
 			surface_free(surf_base);
 			surf_base = -1;
