@@ -107,13 +107,14 @@ dbg_slider(ref_create(params, "disk_glow_quality"), 3, 10, "Quality", .5);
 dbg_text_separator("Children Settings");
 dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .05);
 dbg_slider(ref_create(params, "children_max"), 0, 15, "Max children amount", 1);
-dbg_slider(ref_create(params, "child_life_min"), 0, 300, "Min child life", 1);
-dbg_slider(ref_create(params, "child_life_max"), 0, 300, "Max child life", 1);
+dbg_slider(ref_create(params, "child_life_min"), 1, 300, "Min child life", 1);
+dbg_slider(ref_create(params, "child_life_max"), 1, 300, "Max child life", 1);
 dbg_slider(ref_create(params, "child_length_min"), 1, 500, "Min child length", 1);
 dbg_slider(ref_create(params, "child_length_max"), 1, 2000, "Max child length", 1);
 dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion level", 1);
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
+dbg_checkbox(ref_create(params, "fade"), "Fading");
 
 // EXAMPLES
 dbg_text_separator("Examples");
@@ -130,6 +131,7 @@ dbg_button("Wild discharge", function() { load_preset(PRESETS.wild_discharge) })
 dbg_text_separator("^. .^");
 discokitty = false;
 dbg_checkbox(ref_create(self, "discokitty"), "discokitty");
+dbg_checkbox(ref_create(params, "blend_mode_add"), "additive blendmode (high saturation and contrast)");
 //dbg_slider(ref_create(params, "glow_type"), 0, 1, "---", .05);
 
 

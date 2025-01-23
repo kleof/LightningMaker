@@ -35,8 +35,10 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	recursion_level_max =  LMD_RECURSION_LEVEL_MAX;
 	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
 	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
+	fade =				   LMD_FADE;
 	
 	glow_type =			   LMD_GLOW_TYPE;
+	blend_mode_add =	   LMD_BLEND_MODE_ADD;
 	neon_glow_intensity =  LMD_NEON_GLOW_INTENSITY;
 	neon_glow_inner =	   LMD_NEON_GLOW_INNER;
 	neon_glow_inner_mult = LMD_NEON_GLOW_INNER_MULT;
@@ -51,6 +53,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	recursion_level = 1;
 	outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / recursion_level);
 	life = 0;
+	alpha = 1;
 	length = 0;
 	angle = 0;
 	num = -1;										// Number of segments from start to end 
@@ -89,6 +92,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		var ny = start_point.y;	
 		
 		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
+		if (fade && life > 0) { alpha -= .02; draw_set_alpha(alpha);}
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -114,6 +118,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			// Draw main line
 			draw_line_width_color(prev_x, prev_y, nx, ny, line_width, color, color);
 		}
+		
+		if (fade) draw_set_alpha(1); // reload saved one?
 		
 		// Taking care of babies
 		if (is_parent) {
@@ -181,7 +187,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.children_max			= children_max;	
 		new_child.child_length_min		= child_length_min;	
 		new_child.child_length_max		= child_length_max;	
-		new_child.recursion_level_max	= recursion_level_max;		
+		new_child.recursion_level_max	= recursion_level_max;
+		new_child.fade					= fade;
 		//new_child.child_cutoff_start	= 0;							// Not applying it to children
 		//new_child.child_cutoff_end	= 0;							// -//-
 		
@@ -189,6 +196,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.set_outline_width(outline_width);						// this sets adjusted_outline as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= irandom_range(child_life_min, child_life_max);
+		new_child.alpha					= alpha;
 		
 		array_push(children, new_child);
 	}
@@ -257,7 +265,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			camera_apply(_camera);
 			
 			draw_clear_alpha(c_black, 1);
-			gpu_set_blendmode(bm_max);
+			if (fade || blend_mode_add) gpu_set_blendmode(bm_add);
+			else gpu_set_blendmode(bm_max);
 	}
 	
 	// NEON GLOW
@@ -299,6 +308,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	// DISK GLOW
 	static __glow_reset_disk = function() {
 		surface_reset_target();
+		
+		if (blend_mode_add == false && fade == true) gpu_set_blendmode(bm_max);
 		
 		var _camera = view_camera[0];
 		var _cam_x = camera_get_view_x(_camera);
@@ -525,6 +536,11 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		}
 		return self;
 	}
+	
+	static set_blend_mode_add = function(_enable) {
+		blend_mode_add = _enable;
+		return self;
+	}
 	#endregion
 	
 	#region CHILDREN SETTERS
@@ -634,6 +650,11 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 				children[i].set_child_cutoff_end(child_cutoff_end);
 			}
 		}
+		return self;
+	}
+	
+	static set_fade = function(_enable) {
+		fade = _enable;
 		return self;
 	}
 	#endregion

@@ -34,6 +34,7 @@ PRESETS = {
 			outline_color : LMD_OUTLINE_COLOR,
 			
 			glow_type : LMD_GLOW_TYPE,
+			blend_mode_add: LMD_BLEND_MODE_ADD,
 			
 			neon_glow_intensity : LMD_NEON_GLOW_INTENSITY,
 			neon_glow_inner : LMD_NEON_GLOW_INNER,
@@ -53,7 +54,8 @@ PRESETS = {
 			child_length_min: LMD_CHILD_LENGTH_MIN,
 			child_length_max: 2000,
 			child_cutoff_start: LMD_CHILD_CUTOFF_START,
-			child_cutoff_end: LMD_CHILD_CUTOFF_END
+			child_cutoff_end: LMD_CHILD_CUTOFF_END,
+			fade: LMD_FADE
 		}
 	},
 	

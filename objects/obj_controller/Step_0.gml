@@ -32,6 +32,8 @@ bolt.set_density(params.density)
 	.set_child_length_max(params.child_length_max)
 	.set_child_cutoff_start(params.child_cutoff_start)
 	.set_child_cutoff_end(params.child_cutoff_end)
+	.set_blend_mode_add(params.blend_mode_add)
+	.set_fade(params.fade)
 
 // crash button
 //if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);
