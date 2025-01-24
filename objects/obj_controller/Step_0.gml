@@ -33,7 +33,10 @@ bolt.set_density(params.density)
 	.set_child_cutoff_start(params.child_cutoff_start)
 	.set_child_cutoff_end(params.child_cutoff_end)
 	.set_blend_mode_add(params.blend_mode_add)
-	.set_fade(params.fade)
+	.set_fade_out(params.fade_out)
+	.set_fade_in(params.fade_in) // not ready
+	.set_child_reduce_width(params.child_reduce_width)
+	.set_child_reduce_alpha(params.child_reduce_alpha)
 
 // crash button
 //if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);

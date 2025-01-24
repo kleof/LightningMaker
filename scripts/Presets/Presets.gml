@@ -55,7 +55,10 @@ PRESETS = {
 			child_length_max: 2000,
 			child_cutoff_start: LMD_CHILD_CUTOFF_START,
 			child_cutoff_end: LMD_CHILD_CUTOFF_END,
-			fade: LMD_FADE
+			fade_out: LMD_FADE_OUT,
+			fade_in: LMD_FADE_IN,
+			child_reduce_width: LMD_CHILD_REDUCE_WIDTH,
+			child_reduce_alpha: LMD_CHILD_REDUCE_ALPHA
 		}
 	},
 	

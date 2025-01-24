@@ -35,7 +35,10 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	recursion_level_max =  LMD_RECURSION_LEVEL_MAX;
 	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
 	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
-	fade =				   LMD_FADE;
+	fade_out =			   LMD_FADE_OUT;
+	fade_in =			   LMD_FADE_IN;
+	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;								// Should children be thinner
+	child_reduce_alpha =   LMD_CHILD_REDUCE_ALPHA;
 	
 	glow_type =			   LMD_GLOW_TYPE;
 	blend_mode_add =	   LMD_BLEND_MODE_ADD;
@@ -61,6 +64,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	height_reduction = 1;							// hight reduction for small lengths, may be unnecessary
 	points = [];
 	children = [];
+	draw_alpha = (fade_out || fade_in || child_reduce_alpha);
 	
 	smoothing_base_channel = animcurve_get_channel(ac_smoothing, smoothing_type);
 	static smoothing_secondary_channel = animcurve_get_channel(ac_smoothing, "rapid2"); // change to gentle for non-directional up&down wave motion mode?
@@ -92,7 +96,10 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		var ny = start_point.y;	
 		
 		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
-		if (fade && life > 0) { alpha -= .02; draw_set_alpha(alpha);}
+		if (draw_alpha) {
+			draw_set_alpha(alpha);
+			if (fade_out && life > 0) alpha -= .02;
+		}
 		
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
@@ -119,7 +126,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			draw_line_width_color(prev_x, prev_y, nx, ny, line_width, color, color);
 		}
 		
-		if (fade) draw_set_alpha(1); // reload saved one?
+		if (draw_alpha) draw_set_alpha(1); // reload saved one?
 		
 		// Taking care of babies
 		if (is_parent) {
@@ -172,13 +179,13 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		
 		// Variables passed to child
 		new_child.segment_base			= segment_base;
-		new_child.density				= density;						// reduced for children could look alright
+		new_child.density				= density;														// reduced for children could look alright
 		new_child.spd					= spd;
-		new_child.line_width			= max(1, line_width - 2);		// add more ways of reduction // Warning: formula is in set_ function as well
-		new_child.color					= color;						// reduce alpha/darken color for children?
-		new_child.outline_color			= outline_color;
-		new_child.turbulence			= turbulence;
-		new_child.height				= height * .8;					// make child height relative to it's length? // for big heights bigger reduction looks better
+		new_child.line_width			= (child_reduce_width) ? max(1, line_width - 2) : line_width;		// Warning: formula is in set_ method as well
+		new_child.color					= color;														// reduce alpha/darken color for children?
+		new_child.outline_color			= outline_color;												
+		new_child.turbulence			= turbulence;													
+		new_child.height				= height * .8;													// make child height relative to it's length? // for big heights bigger reduction looks better
 		new_child.smoothing_type		= child_smoothing_type;
 		
 		new_child.child_chance			= child_chance;	
@@ -188,16 +195,21 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.child_length_min		= child_length_min;	
 		new_child.child_length_max		= child_length_max;	
 		new_child.recursion_level_max	= recursion_level_max;
-		new_child.fade					= fade;
-		//new_child.child_cutoff_start	= 0;							// Not applying it to children
-		//new_child.child_cutoff_end	= 0;							// -//-
+		new_child.child_reduce_width	= child_reduce_width;
+		new_child.child_reduce_alpha	= child_reduce_alpha;
+		new_child.fade_out				= fade_out;
+		new_child.fade_in				= fade_in;
+		//new_child.child_cutoff_start	= 0;															// Not applying it to children
+		//new_child.child_cutoff_end	= 0;															// -//-
 		
 		new_child.recursion_level		= recursion_level + 1;
-		new_child.set_outline_width(outline_width);						// this sets adjusted_outline as well
+		new_child.set_outline_width(outline_width);														// this sets adjusted_outline as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= irandom_range(child_life_min, child_life_max);
-		new_child.alpha					= alpha;
+		new_child.alpha					= (child_reduce_alpha) ? min(alpha, random_range(.2, alpha-.1)) : alpha;
 		
+		new_child.__set_draw_alpha();
+
 		array_push(children, new_child);
 	}
 	
@@ -265,7 +277,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			camera_apply(_camera);
 			
 			draw_clear_alpha(c_black, 1);
-			if (fade || blend_mode_add) gpu_set_blendmode(bm_add);
+			if (draw_alpha || blend_mode_add) gpu_set_blendmode(bm_add); // bm_add is required for proper alpha blending
 			else gpu_set_blendmode(bm_max);
 	}
 	
@@ -309,7 +321,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static __glow_reset_disk = function() {
 		surface_reset_target();
 		
-		if (blend_mode_add == false && fade == true) gpu_set_blendmode(bm_max);
+		if (blend_mode_add == false && draw_alpha == true) gpu_set_blendmode(bm_max); // If we drew with alpha (but don't want bm_add for glow effect) we go back to bm_max
 		
 		var _camera = view_camera[0];
 		var _cam_x = camera_get_view_x(_camera);
@@ -416,7 +428,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_line_width(max(1, line_width - 2));
+				children[i].set_line_width((child_reduce_width) ? max(1, line_width - 2) : line_width);
 			}
 		}
 		return self;
@@ -424,7 +436,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	static set_outline_width = function(_outline_width) {
 		outline_width = _outline_width;
-		outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / recursion_level);
+		var _recursion = (child_reduce_width) ? recursion_level : 1;
+		outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / _recursion);
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
@@ -653,11 +666,44 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		return self;
 	}
 	
-	static set_fade = function(_enable) {
-		fade = _enable;
+	static set_fade_out = function(_enable) {
+		fade_out = _enable;
+		__set_draw_alpha();
+		return self;
+	}
+	
+	static set_fade_in = function(_enable) {
+		fade_in = _enable;
+		__set_draw_alpha();
+		return self;
+	}
+	
+	static set_child_reduce_width = function(_enable) {
+		child_reduce_width = _enable;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_reduce_width(_enable);
+			}
+		}
+		return self;
+	}
+	
+	static set_child_reduce_alpha = function(_enable) {
+		child_reduce_alpha = _enable;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_child_reduce_alpha(_enable);
+			}
+		}
 		return self;
 	}
 	#endregion
+	
+	static __set_draw_alpha = function() {
+		draw_alpha = (fade_out || fade_in || child_reduce_alpha);
+	}
 	
 	// Freeing surfaces
 	static cleanup = function() {

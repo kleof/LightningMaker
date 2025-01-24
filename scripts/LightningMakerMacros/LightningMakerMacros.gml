@@ -31,7 +31,10 @@
 #macro LMD_RECURSION_LEVEL_MAX 2
 #macro LMD_CHILD_CUTOFF_START .0
 #macro LMD_CHILD_CUTOFF_END .0
-#macro LMD_FADE true
+#macro LMD_FADE_OUT true
+#macro LMD_FADE_IN false
+#macro LMD_CHILD_REDUCE_WIDTH true
+#macro LMD_CHILD_REDUCE_ALPHA false
 
 #macro LMD_GLOW_TYPE GLOW_TYPE_DISK
 #macro LMD_BLEND_MODE_ADD false
