@@ -55,7 +55,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	is_parent =	true;
 	recursion_level = 1;
 	outline_adjusted = line_width + max(1 + floor(line_width/3), outline_width / recursion_level);
-	life = 0;
+	life = infinity;
 	alpha = 1;
 	length = 0;
 	angle = 0;
@@ -98,7 +98,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
 		if (draw_alpha) {
 			draw_set_alpha(alpha);
-			if (fade_out && life > 0) alpha -= .02;
+			if (fade_out && life < 50) alpha -= .02;
 		}
 		
 		for (var i = 1; i <= num; i++) {
@@ -205,11 +205,11 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.recursion_level		= recursion_level + 1;
 		new_child.set_outline_width(outline_width);														// this sets adjusted_outline as well
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
-		new_child.life					= irandom_range(child_life_min, child_life_max);
+		new_child.life					= min(life, irandom_range(child_life_min, child_life_max));
 		new_child.alpha					= (child_reduce_alpha) ? min(alpha, random_range(.2, alpha-.1)) : alpha;
 		
 		new_child.__set_draw_alpha();
-
+		trace($"{child_life_min}  {child_life_max}");
 		array_push(children, new_child);
 	}
 	
@@ -570,7 +570,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	}
 	
 	static set_child_life_min = function(_child_life_min) {
-		child_life_min = min(_child_life_min, children_max); // Do not allow for min to be bigger than max?
+		child_life_min = min(_child_life_min, child_life_max); // Do not allow for min to be bigger than max?
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
@@ -583,12 +583,15 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static set_child_life_max = function(_child_life_max) {
 		child_life_max = max(0, _child_life_max);
 		child_life_min = min(child_life_min, child_life_max);
-		// Reduce the life to new max if it's currently too high
-		life = min(life, child_life_max);
 		
 		if (is_parent) {
+			// Reduce the life if it's currently too high
+			var child_life = min(life, child_life_max);
+			
 			for (var i = 0; i < array_length(children); i++) {
-				children[i].set_child_life_max(child_life_max);
+				var child = children[i];
+				child.set_child_life_max(child_life_max);
+				child.life = min(child_life, child.life);
 			}
 		}
 		return self;

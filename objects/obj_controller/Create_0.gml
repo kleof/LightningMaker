@@ -105,7 +105,7 @@ dbg_slider(ref_create(params, "disk_glow_quality"), 3, 10, "Quality", .5);
 
 // CHILDREN
 dbg_text_separator("Children Settings");
-dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .05);
+dbg_slider(ref_create(params, "child_chance"), 0, 1, "Child chance", .025);
 dbg_slider(ref_create(params, "children_max"), 0, 15, "Max children amount", 1);
 dbg_slider(ref_create(params, "child_life_min"), 1, 300, "Min child life", 1);
 dbg_slider(ref_create(params, "child_life_max"), 1, 300, "Max child life", 1);
