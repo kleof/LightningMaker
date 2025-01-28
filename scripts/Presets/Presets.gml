@@ -21,44 +21,44 @@ PRESETS = {
 	pale_rose: {
 		positions: global.handle_pos_vert_long,
 		params: {
-			segment :	LMD_SEGMENT,
-			density :	LMD_DENSITY,
-			height : 	LMD_HEIGHT,
-			spd : 		LMD_SPD,
-			turbulence : LMD_TURBULENCE,
+			segment :		 LMD_SEGMENT,
+			density :		 LMD_DENSITY,
+			height : 		 LMD_HEIGHT,
+			spd : 			 LMD_SPD,
+			turbulence :	 LMD_TURBULENCE,
 			smoothing_type : LMD_SMOOTHING_TYPE,
 			
-			line_width : LMD_LINE_WIDTH,
-			outline_width : LMD_OUTLINE_WIDTH,
-			color : LMD_COLOR,
-			outline_color : LMD_OUTLINE_COLOR,
+			line_width :	 LMD_LINE_WIDTH,
+			outline_width :  LMD_OUTLINE_WIDTH,
+			color :			 LMD_COLOR,
+			outline_color :  LMD_OUTLINE_COLOR,
 			
-			glow_type : LMD_GLOW_TYPE,
-			blend_mode_add: LMD_BLEND_MODE_ADD,
+			glow_type :		 LMD_GLOW_TYPE,
+			blend_mode_add:  LMD_BLEND_MODE_ADD,
 			
-			neon_glow_intensity : LMD_NEON_GLOW_INTENSITY,
-			neon_glow_inner : LMD_NEON_GLOW_INNER,
-			neon_glow_inner_mult : LMD_NEON_GLOW_INNER_MULT,
+			neon_glow_intensity :	LMD_NEON_GLOW_INTENSITY,
+			neon_glow_inner :		LMD_NEON_GLOW_INNER,
+			neon_glow_inner_mult :  LMD_NEON_GLOW_INNER_MULT,
 			
-			disk_glow_radius : LMD_DISK_GLOW_RADIUS,
-			disk_glow_quality : LMD_DISK_GLOW_QUALITY,
+			disk_glow_radius :	  LMD_DISK_GLOW_RADIUS,
+			disk_glow_quality :	  LMD_DISK_GLOW_QUALITY,
 			disk_glow_intensity : LMD_DISK_GLOW_INTENSITY,
-			disk_glow_alpha : LMD_DISK_GLOW_ALPHA,
-			disk_glow_gamma : LMD_DISK_GLOW_GAMMA,
+			disk_glow_alpha :	  LMD_DISK_GLOW_ALPHA,
+			disk_glow_gamma :	  LMD_DISK_GLOW_GAMMA,
 			
-			child_chance : LMD_CHILD_CHANCE,
+			child_chance :   LMD_CHILD_CHANCE,
 			child_life_min : LMD_CHILD_LIFE_MIN,
 			child_life_max : LMD_CHILD_LIFE_MAX,
-			children_max : LMD_CHILDREN_MAX,
+			children_max :	 LMD_CHILDREN_MAX,
 			recursion_level_max : LMD_RECURSION_LEVEL_MAX,
-			child_length_min: LMD_CHILD_LENGTH_MIN,
-			child_length_max: 2000,
-			child_cutoff_start: LMD_CHILD_CUTOFF_START,
-			child_cutoff_end: LMD_CHILD_CUTOFF_END,
-			fade_out: LMD_FADE_OUT,
-			fade_in: LMD_FADE_IN,
-			child_reduce_width: LMD_CHILD_REDUCE_WIDTH,
-			child_reduce_alpha: LMD_CHILD_REDUCE_ALPHA
+			child_length_min:     LMD_CHILD_LENGTH_MIN,
+			child_length_max:     2000,
+			child_cutoff_start:   LMD_CHILD_CUTOFF_START,
+			child_cutoff_end:     LMD_CHILD_CUTOFF_END,
+			fade_out:			  LMD_FADE_OUT,
+			fade_in:			  LMD_FADE_IN,
+			child_reduce_width:   LMD_CHILD_REDUCE_WIDTH,
+			child_reduce_alpha:   LMD_CHILD_REDUCE_ALPHA
 		}
 	},
 	
@@ -93,6 +93,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":2.0,
+		  fade_out: false,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: true
 		}
 	},
 	
@@ -127,6 +131,10 @@ PRESETS = {
 		  "child_cutoff_start":0.20000000298023224,
 		  "child_cutoff_end":0.20000000298023224,
 		  "glow_type":1,
+		  fade_out: false,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: false
 		}
 	},
 	
@@ -161,6 +169,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":2,
+		  fade_out: true,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: false
 		}
 	},
 	
@@ -195,6 +207,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":1.0,
+		  fade_out: false,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: false
 		}
 	},
 	
@@ -229,6 +245,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":1.0,
+		  fade_out: false,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: false
 		}
 	},
 	
@@ -263,6 +283,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":2.0,
+		  fade_out: true,
+		  fade_in: false,			
+		  child_reduce_width: false,
+		  child_reduce_alpha: true
 		}
 	},
 	
@@ -297,6 +321,10 @@ PRESETS = {
 		  "child_cutoff_start":0.0,
 		  "child_cutoff_end":0.0,
 		  "glow_type":2.0,
+		  fade_out: false,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: false
 		}
 	},
 	
@@ -330,7 +358,11 @@ PRESETS = {
 		  "recursion_level_max":2.0,
 		  "child_cutoff_start":0.05000000074505806,
 		  "child_cutoff_end":0.05000000074505806,
-		  "glow_type":2.0
+		  "glow_type":2.0,
+		  fade_out: true,
+		  fade_in: false,			
+		  child_reduce_width: true,
+		  child_reduce_alpha: true
 		}
 	},
 }

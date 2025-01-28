@@ -151,10 +151,12 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 					}
 					
 					draw();
-					life--;
 				}
 			}
 		}
+		
+		// Reduce life
+		life--;
 	}
 	
 	static __spawn_child = function() {
@@ -183,8 +185,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.segment_base			= segment_base;
 		new_child.density				= density;														// reduced for children could look alright
 		new_child.spd					= spd;
-		new_child.line_width			= (child_reduce_width) ? max(1, line_width - 2) : line_width;		// Warning: formula is in set_ method as well
-		new_child.color					= color;														// reduce alpha/darken color for children?
+		new_child.line_width			= (child_reduce_width) ? max(1, line_width - 2) : line_width;	// Warning: formula is in set_ method as well
+		new_child.color					= color;
 		new_child.outline_color			= outline_color;												
 		new_child.turbulence			= turbulence;													
 		new_child.height				= height * .8;													// make child height relative to it's length? // for big heights bigger reduction looks better
