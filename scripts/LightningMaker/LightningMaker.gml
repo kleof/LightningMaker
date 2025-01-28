@@ -39,6 +39,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	fade_in =			   LMD_FADE_IN;
 	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;								// Should children be thinner
 	child_reduce_alpha =   LMD_CHILD_REDUCE_ALPHA;
+	static fade_speed =	   0.02;
+	static fade_start =    floor(1 / fade_speed);
 	
 	glow_type =			   LMD_GLOW_TYPE;
 	blend_mode_add =	   LMD_BLEND_MODE_ADD;
@@ -98,7 +100,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
 		if (draw_alpha) {
 			draw_set_alpha(alpha);
-			if (fade_out && life < 50) alpha -= .02;
+			if (fade_out && life < fade_start) alpha -= fade_speed;
 		}
 		
 		for (var i = 1; i <= num; i++) {
@@ -209,7 +211,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.alpha					= (child_reduce_alpha) ? min(alpha, random_range(.2, alpha-.1)) : alpha;
 		
 		new_child.__set_draw_alpha();
-		trace($"{child_life_min}  {child_life_max}");
+		
 		array_push(children, new_child);
 	}
 	
