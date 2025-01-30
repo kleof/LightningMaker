@@ -4,12 +4,9 @@
 	glow not visible on white, could blendmodes help?
 	destroying instance holding start/end point crashes the game, should we do something about it?
 * reduce child chance per recursion level
-	children spawning with already randomly reduced alpha?
+** increase fade in speed if child life is too short
 
-- fade in newly created children/ animate/draw them from start to end /fading by darkening child color?
-- fade out when child is about to die
 - allow more instances to be added in visualizer?
-- Default values for parameters
 
 - less directional, more up and down main lightning movement
 var base_noise = perlin_noise(noise_offset + x_offset * density, spd);
