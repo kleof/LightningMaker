@@ -73,7 +73,7 @@ dbg_button("Turn OFF Glow", activate_none_mode);
 // MAIN
 dbg_slider(ref_create(params, "segment"), 1, 80, "Segment", 1);
 dbg_slider(ref_create(params, "density"), 0, 1, "Density", .01);
-dbg_slider(ref_create(params, "spd"), -.7, 0, "Speed", .01);
+dbg_slider(ref_create(params, "spd"), -.7, 0, "Speed", .005);
 dbg_slider(ref_create(params, "height"), 10, 300, "Height", 1);
 dbg_slider(ref_create(params, "turbulence"), 0, 20, "Turbulence", 1);
 dbg_drop_down(ref_create(params, "smoothing_type"), "Rapid:0,Gentle:1,Sine:2,Rapid2:3,OpenEnd:4", "Endpoints smoothing");

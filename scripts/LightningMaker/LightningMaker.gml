@@ -12,6 +12,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	end_point =			   _end_point;
 	collateral =		   _collateral;
 	array_foreach(collateral, function(element) { element.__active = true; });
+	start_point[$ "__drawn"] ??= true;
 	
 	segment_base =	       LMD_SEGMENT;										// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
 	density =		       LMD_DENSITY;										// Wave length
@@ -37,6 +38,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
 	fade_out =			   LMD_FADE_OUT;
 	fade_in =			   LMD_FADE_IN;
+	fade_in_speed =		   2.5;
 	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;								// Should children be thinner
 	child_reduce_alpha =   LMD_CHILD_REDUCE_ALPHA;
 	static fade_speed =	   0.02;
@@ -67,6 +69,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	points = [];
 	children = [];
 	draw_alpha = (fade_out || fade_in || child_reduce_alpha);
+	points_drawn = 0;
 	
 	smoothing_base_channel = animcurve_get_channel(ac_smoothing, smoothing_type);
 	static smoothing_secondary_channel = animcurve_get_channel(ac_smoothing, "rapid2"); // change to gentle for non-directional up&down wave motion mode?
@@ -92,6 +95,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	// DRAW THE LIGHTNING
 	static draw = function() {
+		if (start_point.__drawn == true) points_drawn += fade_in_speed;
 		
 		__update_positional_data();
 		var nx = start_point.x;
@@ -119,6 +123,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
+			if (i > points_drawn) continue;
+			if (is_parent) points[i].__drawn = true;
 			// Draw outline
 			if (outline_width > 0) {
 				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, outline_color, outline_color);
@@ -731,6 +737,7 @@ function LPoint(_x, _y) constructor {
 	x = _x;
 	y = _y;
 	__active = true;
+	__drawn = false;
 	
 	static update_position = function(_x, _y) {
 		x = _x;
