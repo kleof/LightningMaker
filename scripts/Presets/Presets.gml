@@ -96,7 +96,8 @@ PRESETS = {
 		  fade_out: false,
 		  fade_in: false,			
 		  child_reduce_width: true,
-		  child_reduce_alpha: true
+		  child_reduce_alpha: true,
+		  blend_mode_add: false
 		}
 	},
 	
@@ -170,7 +171,7 @@ PRESETS = {
 		  "child_cutoff_end":0.0,
 		  "glow_type":2,
 		  fade_out: true,
-		  fade_in: false,			
+		  fade_in: true,			
 		  child_reduce_width: true,
 		  child_reduce_alpha: false
 		}

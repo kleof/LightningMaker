@@ -38,8 +38,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
 	fade_out =			   LMD_FADE_OUT;
 	fade_in =			   LMD_FADE_IN;
-	fade_in_speed =		   5.5;
-	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;								// Should children be thinner
+	fade_in_speed =		   1.5;
+	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;							// Should children be thinner
 	child_reduce_alpha =   LMD_CHILD_REDUCE_ALPHA;
 	static fade_speed =	   0.02;
 	static fade_start =    floor(1 / fade_speed);
@@ -68,8 +68,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	height_reduction = 1;							// hight reduction for small lengths, may be unnecessary
 	points = [];
 	children = [];
-	draw_alpha = (fade_out || fade_in || child_reduce_alpha);
-	points_drawn = 0;
+	draw_alpha = (fade_out || child_reduce_alpha);	// Turns on alpha drawing used by fade_out and child_reduce_alpha
+	points_to_draw = (fade_in) ? 0 : infinity;		// Number of points that should be drawn. For fade_in
 	
 	smoothing_base_channel = animcurve_get_channel(ac_smoothing, smoothing_type);
 	static smoothing_secondary_channel = animcurve_get_channel(ac_smoothing, "rapid2"); // change to gentle for non-directional up&down wave motion mode?
@@ -95,18 +95,23 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	// DRAW THE LIGHTNING
 	static draw = function() {
-		if (start_point.__drawn == true) points_drawn += fade_in_speed;
 		
 		__update_positional_data();
 		var nx = start_point.x;
 		var ny = start_point.y;	
 		
 		if (is_parent) points[0].update_position(nx, ny); // Updating start point here, because we're skipping i=0
+		
+		// For fade_in
+		if (start_point.__drawn == true) points_to_draw += fade_in_speed; // Once our parent drawn the point that is our start_point, we can start drawing our own points
+		
+		// For fade_out and child_reduce_alpha
 		if (draw_alpha) {
 			draw_set_alpha(alpha);
 			if (fade_out && life < fade_start) alpha -= fade_speed;
 		}
 		
+		// Main loop
 		for (var i = 1; i <= num; i++) {
 			var prev_x = nx;
 			var prev_y = ny;
@@ -123,8 +128,10 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 			
 			if (is_parent) points[i].update_position(nx, ny); // update only point indexes belonging to children? BUT how to check them and remove when needed?
 			
-			if (i > points_drawn) continue;
+			// For fade_in
+			if (i > points_to_draw) continue;
 			if (is_parent) points[i].__drawn = true;
+			
 			// Draw outline
 			if (outline_width > 0) {
 				draw_line_width_color(prev_x, prev_y, nx, ny, outline_adjusted, outline_color, outline_color);
@@ -209,6 +216,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.child_reduce_alpha	= child_reduce_alpha;
 		new_child.fade_out				= fade_out;
 		new_child.fade_in				= fade_in;
+		new_child.fade_in_speed			= fade_in_speed;
 		//new_child.child_cutoff_start	= 0;															// Not applying it to children
 		//new_child.child_cutoff_end	= 0;															// -//-
 		
@@ -217,6 +225,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.is_parent				= (recursion_level + 1 <= recursion_level_max) ? true : false;
 		new_child.life					= min(life, irandom_range(child_life_min, child_life_max));
 		new_child.alpha					= (child_reduce_alpha) ? min(alpha, random_range(.2, alpha-.1)) : alpha;
+		new_child.points_to_draw		= (fade_in) ? 0 : infinity;
 		
 		new_child.__set_draw_alpha();
 		
@@ -686,8 +695,20 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	}
 	
 	static set_fade_in = function(_enable) {
+		if (fade_in == _enable) return self;
+		
+		points_to_draw = (_enable) ? 0 : infinity;
+		array_foreach(points, function(point) {
+			point.__drawn = false;
+		});
+			
 		fade_in = _enable;
-		__set_draw_alpha();
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_fade_in(_enable);
+			}
+		}
 		return self;
 	}
 	
@@ -704,6 +725,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	static set_child_reduce_alpha = function(_enable) {
 		child_reduce_alpha = _enable;
+		__set_draw_alpha();
 		
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
@@ -715,7 +737,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	#endregion
 	
 	static __set_draw_alpha = function() {
-		draw_alpha = (fade_out || fade_in || child_reduce_alpha);
+		draw_alpha = (fade_out || child_reduce_alpha);
 	}
 	
 	// Freeing surfaces

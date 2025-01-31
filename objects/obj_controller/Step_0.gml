@@ -45,7 +45,7 @@ bolt.set_density(params.density)
 //if (mouse_check_button_pressed(mb_left)) {
 //	bolt.alpha = 1;
 //	bolt.life = 120;
-//	bolt.points_drawn = 0;
+//	bolt.points_to_draw = 0;
 //	bolt.children = [];
 //	array_foreach(bolt.points, function(point) {
 //		point.__drawn = false;

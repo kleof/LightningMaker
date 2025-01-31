@@ -5,6 +5,7 @@
 	destroying instance holding start/end point crashes the game, should we do something about it?
 * reduce child chance per recursion level
 ** increase fade in speed if child life is too short
+- do not fade in main branch? or add such option
 
 - allow more instances to be added in visualizer?
 
