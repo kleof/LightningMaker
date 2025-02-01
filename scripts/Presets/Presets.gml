@@ -57,6 +57,7 @@ PRESETS = {
 			child_cutoff_end:     LMD_CHILD_CUTOFF_END,
 			fade_out:			  LMD_FADE_OUT,
 			fade_in:			  LMD_FADE_IN,
+			fade_in_speed:		  LMD_FADE_IN_SPEED,
 			child_reduce_width:   LMD_CHILD_REDUCE_WIDTH,
 			child_reduce_alpha:   LMD_CHILD_REDUCE_ALPHA
 		}
@@ -171,7 +172,8 @@ PRESETS = {
 		  "child_cutoff_end":0.0,
 		  "glow_type":2,
 		  fade_out: true,
-		  fade_in: true,			
+		  fade_in: true,
+		  fade_in_speed: 1.9,
 		  child_reduce_width: true,
 		  child_reduce_alpha: false
 		}

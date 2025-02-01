@@ -8,7 +8,7 @@
 #macro SMOOTHING_OPENEND 4
 
 // LIGHTNINGMAKER DEFAULTS
-	
+
 #macro LMD_SEGMENT 12
 #macro LMD_DENSITY .25
 #macro LMD_HEIGHT 120
@@ -33,6 +33,7 @@
 #macro LMD_CHILD_CUTOFF_END .0
 #macro LMD_FADE_OUT true
 #macro LMD_FADE_IN false
+#macro LMD_FADE_IN_SPEED 2.5
 #macro LMD_CHILD_REDUCE_WIDTH true
 #macro LMD_CHILD_REDUCE_ALPHA false
 

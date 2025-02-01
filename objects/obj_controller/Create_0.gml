@@ -116,6 +116,7 @@ dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 dbg_checkbox(ref_create(params, "fade_out"), "Fade out");
 dbg_checkbox(ref_create(params, "fade_in"), "Fade in"); // not ready
+dbg_slider(ref_create(params, "fade_in_speed"), 0.1, 10, "Fade in speed", .1);
 dbg_checkbox(ref_create(params, "child_reduce_width"), "Reduce child width");
 dbg_checkbox(ref_create(params, "child_reduce_alpha"), "Reduce child alpha");
 

@@ -14,46 +14,46 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	array_foreach(collateral, function(element) { element.__active = true; });
 	start_point[$ "__drawn"] ??= true;
 	
-	segment_base =	       LMD_SEGMENT;										// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
-	density =		       LMD_DENSITY;										// Wave length
-	height =		       LMD_HEIGHT;										// Max wave height/amplitude, in pixels
-	spd =			       LMD_SPD;
-	turbulence =	       LMD_TURBULENCE;
-	line_width =	       LMD_LINE_WIDTH;
-	color =			       LMD_COLOR;
-	outline_width =        LMD_OUTLINE_WIDTH;
-	outline_color =        LMD_OUTLINE_COLOR;
-	smoothing_type =       LMD_SMOOTHING_TYPE;
+	segment_base =	        LMD_SEGMENT;									// segment length in pixels, aka quality/precision, bigger -> better performance (CPU)
+	density =		        LMD_DENSITY;									// Wave length
+	height =		        LMD_HEIGHT;										// Max wave height/amplitude, in pixels
+	spd =			        LMD_SPD;
+	turbulence =	        LMD_TURBULENCE;
+	line_width =	        LMD_LINE_WIDTH;
+	color =			        LMD_COLOR;
+	outline_width =         LMD_OUTLINE_WIDTH;
+	outline_color =         LMD_OUTLINE_COLOR;
+	smoothing_type =        LMD_SMOOTHING_TYPE;
 	static secondary_noise_strength =			LMD_SEC_NOISE_STRENGTH;		// kinda jaggedness, turbulence seems enough, static for now
 	static secondary_noise_density_multiplier = LMD_SEC_NOISE_DENSITY_MULT;	// -//-
 	
-	child_chance =	       LMD_CHILD_CHANCE;								// chance to spawn child every frame
-	child_life_min =       LMD_CHILD_LIFE_MIN;						
-	child_life_max =       LMD_CHILD_LIFE_MAX;						
-	children_max =	       LMD_CHILDREN_MAX;						
-	child_length_min =     LMD_CHILD_LENGTH_MIN;							// In pixels (could be % of starting/actual length?), accuracy depends on segment base length
-	child_length_max =     LMD_CHILD_LENGTH_MAX;
-	recursion_level_max =  LMD_RECURSION_LEVEL_MAX;
-	child_cutoff_start =   LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
-	child_cutoff_end =     LMD_CHILD_CUTOFF_END;							// % of parent length
-	fade_out =			   LMD_FADE_OUT;
-	fade_in =			   LMD_FADE_IN;
-	fade_in_speed =		   1.5;
-	child_reduce_width =   LMD_CHILD_REDUCE_WIDTH;							// Should children be thinner
-	child_reduce_alpha =   LMD_CHILD_REDUCE_ALPHA;
-	static fade_speed =	   0.02;
-	static fade_start =    floor(1 / fade_speed);
-	
-	glow_type =			   LMD_GLOW_TYPE;
-	blend_mode_add =	   LMD_BLEND_MODE_ADD;
-	neon_glow_intensity =  LMD_NEON_GLOW_INTENSITY;
-	neon_glow_inner =	   LMD_NEON_GLOW_INNER;
-	neon_glow_inner_mult = LMD_NEON_GLOW_INNER_MULT;
-	disk_glow_radius =	   LMD_DISK_GLOW_RADIUS;
-	disk_glow_quality =	   LMD_DISK_GLOW_QUALITY;							// lower -> better performance (GPU)
-	disk_glow_intensity =  LMD_DISK_GLOW_INTENSITY;
-	disk_glow_alpha =      LMD_DISK_GLOW_ALPHA;
-	disk_glow_gamma =      LMD_DISK_GLOW_GAMMA;
+	child_chance =	        LMD_CHILD_CHANCE;								// chance to spawn child every frame
+	child_life_min =        LMD_CHILD_LIFE_MIN;						
+	child_life_max =        LMD_CHILD_LIFE_MAX;						
+	children_max =	        LMD_CHILDREN_MAX;						
+	child_length_min =      LMD_CHILD_LENGTH_MIN;							// In pixels (could be % of starting/actual length?), accuracy depends on segment base length
+	child_length_max =      LMD_CHILD_LENGTH_MAX;
+	recursion_level_max =   LMD_RECURSION_LEVEL_MAX;
+	child_cutoff_start =    LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
+	child_cutoff_end =      LMD_CHILD_CUTOFF_END;							// % of parent length
+	fade_out =			    LMD_FADE_OUT;
+	fade_in =			    LMD_FADE_IN;
+	fade_in_speed =		    LMD_FADE_IN_SPEED;
+	child_reduce_width =    LMD_CHILD_REDUCE_WIDTH;
+	child_reduce_alpha =    LMD_CHILD_REDUCE_ALPHA;
+	static fade_out_speed = 0.02;
+	static fade_out_start = floor(1 / fade_out_speed);
+						    
+	glow_type =			    LMD_GLOW_TYPE;
+	blend_mode_add =	    LMD_BLEND_MODE_ADD;
+	neon_glow_intensity =   LMD_NEON_GLOW_INTENSITY;
+	neon_glow_inner =	    LMD_NEON_GLOW_INNER;
+	neon_glow_inner_mult =  LMD_NEON_GLOW_INNER_MULT;
+	disk_glow_radius =	    LMD_DISK_GLOW_RADIUS;
+	disk_glow_quality =	    LMD_DISK_GLOW_QUALITY;							// lower -> better performance (GPU)
+	disk_glow_intensity =   LMD_DISK_GLOW_INTENSITY;
+	disk_glow_alpha =       LMD_DISK_GLOW_ALPHA;
+	disk_glow_gamma =       LMD_DISK_GLOW_GAMMA;
 	
 	// Private variables
 	is_parent =	true;
@@ -108,7 +108,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		// For fade_out and child_reduce_alpha
 		if (draw_alpha) {
 			draw_set_alpha(alpha);
-			if (fade_out && life < fade_start) alpha -= fade_speed;
+			if (fade_out && life < fade_out_start) alpha -= fade_out_speed;
 		}
 		
 		// Main loop
@@ -216,7 +216,6 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.child_reduce_alpha	= child_reduce_alpha;
 		new_child.fade_out				= fade_out;
 		new_child.fade_in				= fade_in;
-		new_child.fade_in_speed			= fade_in_speed;
 		//new_child.child_cutoff_start	= 0;															// Not applying it to children
 		//new_child.child_cutoff_end	= 0;															// -//-
 		
@@ -226,7 +225,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.life					= min(life, irandom_range(child_life_min, child_life_max));
 		new_child.alpha					= (child_reduce_alpha) ? min(alpha, random_range(.2, alpha-.1)) : alpha;
 		new_child.points_to_draw		= (fade_in) ? 0 : infinity;
-		
+		new_child.fade_in_speed			= fade_in_speed;
 		new_child.__set_draw_alpha();
 		
 		array_push(children, new_child);
@@ -707,6 +706,17 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		if (is_parent) {
 			for (var i = 0; i < array_length(children); i++) {
 				children[i].set_fade_in(_enable);
+			}
+		}
+		return self;
+	}
+	
+	static set_fade_in_speed = function(_fade_in_speed) {
+		fade_in_speed = _fade_in_speed;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_fade_in_speed(_fade_in_speed);
 			}
 		}
 		return self;

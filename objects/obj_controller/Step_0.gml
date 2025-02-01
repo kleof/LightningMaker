@@ -34,18 +34,21 @@ bolt.set_density(params.density)
 	.set_child_cutoff_end(params.child_cutoff_end)
 	.set_blend_mode_add(params.blend_mode_add)
 	.set_fade_out(params.fade_out)
-	.set_fade_in(params.fade_in) // not ready
+	.set_fade_in(params.fade_in)
 	.set_child_reduce_width(params.child_reduce_width)
 	.set_child_reduce_alpha(params.child_reduce_alpha)
+	.set_fade_in_speed(params.fade_in_speed)
 
 // crash button
 //if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);
 
 
 //if (mouse_check_button_pressed(mb_left)) {
+//	//turn fade_in ON automatically
+//	bolt.noise_offset = random(10000);
 //	bolt.alpha = 1;
-//	bolt.life = 120;
-//	bolt.points_to_draw = 0;
+//	bolt.life = 40;
+//	bolt.points_to_draw = (params.fade_in) ? 0 : infinity;
 //	bolt.children = [];
 //	array_foreach(bolt.points, function(point) {
 //		point.__drawn = false;
