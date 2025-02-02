@@ -43,14 +43,23 @@ bolt.set_density(params.density)
 //if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);
 
 
-//if (mouse_check_button_pressed(mb_left)) {
-//	//turn fade_in ON automatically
-//	bolt.noise_offset = random(10000);
-//	bolt.alpha = 1;
-//	bolt.life = 40;
-//	bolt.points_to_draw = (params.fade_in) ? 0 : infinity;
-//	bolt.children = [];
-//	array_foreach(bolt.points, function(point) {
-//		point.__drawn = false;
-//	});
-//}
+if (mouse_check_button_pressed(mb_right)) {
+	// Check if params changed, make new thunderbolt if they did, otherwise use the same one
+	if (variable_get_hash(params_clone) != variable_get_hash(params)) {
+		params_clone = variable_clone(params);
+		thunder.set_template(bolt);
+	}
+	
+	var _x = random_range(580, 970);
+	thunder.strike(_x, 85, _x, 703);
+	
+	//turn fade_in ON automatically
+	//bolt.noise_offset = random(10000);
+	//bolt.alpha = 1;
+	//bolt.life = 40;
+	//bolt.points_to_draw = (params.fade_in) ? 0 : infinity;
+	//bolt.children = [];
+	//array_foreach(bolt.points, function(point) {
+	//	point.__drawn = false;
+	//});
+}

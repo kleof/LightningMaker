@@ -23,9 +23,11 @@ load_preset = function(_preset) {
 	end_handle.y = _preset.positions.p2.y;
 }
 load_preset(PRESETS.pale_rose);
-
+params_clone = variable_clone(params);
 
 bolt = new Lightning(start_handle, end_handle);
+thunder = new Thunderbolt(bolt);
+
 //bolt = new Lightning(start_handle, end_handle, [handle3, handle4, handle5]);
 
 // Stress test

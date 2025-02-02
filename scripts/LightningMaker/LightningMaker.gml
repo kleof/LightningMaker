@@ -159,7 +159,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 					
 					// Deleting dead children or whos endpoint got deactivated; by extension, reference to their children is lost (right?)
 					if (life <= 0 || end_point.__active == false || start_point.__active == false) {
-						array_delete(other.children, array_get_index(other.children, self), 1);
+						array_delete(other.children, k, 1);
 						continue;
 					}
 					
@@ -750,6 +750,18 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		draw_alpha = (fade_out || child_reduce_alpha);
 	}
 	
+	static __copy = function(_lightning) {
+		static params_to_skip = ["start_point", "end_point", "points", "num", "noise_offset", "alpha", "children"];
+		ref = self;
+		
+		struct_foreach(_lightning, method({params_to_skip, ref}, function(_param_name, _value) {
+			if (array_contains(params_to_skip, _param_name)) {
+				return;
+			}
+			ref[$ _param_name] = _value;
+		}));
+	}
+	
 	// Freeing surfaces
 	static cleanup = function() {
 		// when to call this?
@@ -781,5 +793,48 @@ function LPoint(_x, _y) constructor {
 }
 
 
+function Thunderbolt(_template) constructor {
+	template = _template;
+	lightnings = [];
+	
+	static strike = function(_start_x, _start_y, _end_x, _end_y, _duration=40, _fade_in_speed=template.fade_in_speed) {
+		var lightning = new Lightning(new LPoint(_start_x, _start_y), new LPoint(_end_x, _end_y));
+		lightning.__copy(template);
+		
+		lightning.start_point.__drawn = true;
+		lightning.points_to_draw = (lightning.fade_in) ? 0 : infinity;
+		lightning.life = _duration;
+		
+		array_push(lightnings, lightning);
+	}
+	
+	static draw = function() {
+		var lightnings_number = array_length(lightnings);
+		
+		for (var i = lightnings_number - 1; i >= 0; i--) {
+			var lightning = lightnings[i];
+			if (lightning.life <= 0) {
+				array_delete(lightnings, i, 1);
+				continue;
+			}
+			
+			lightning.draw();
+		}
+	}
+	
+	// test if it's working
+	static update = function() {
+		if (array_length(lightnings) == 0) return;
+		
+		template.glow_set();
+		draw();
+		template.glow_reset();
+	}
+	
+	static set_template = function(_template) {
+		template = _template;
+		return self;
+	}
+}
 
 

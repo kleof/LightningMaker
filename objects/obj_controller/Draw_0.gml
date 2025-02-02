@@ -2,7 +2,7 @@
 bolt.glow_set();
 
 bolt.draw();
-
+thunder.draw();
 //for (var i = 0; i < array_length(bolts); i++) {
 //	bolts[i].draw();
 //}
