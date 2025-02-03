@@ -51,15 +51,11 @@ if (mouse_check_button_pressed(mb_right)) {
 	}
 	
 	var _x = random_range(580, 970);
-	thunder.strike(_x, 85, _x, 703);
+	var _collateral = [];
+	repeat (irandom(8)) { // add param for that
+		array_push(_collateral, new LPoint(_x + random_range(-200, 200), 703));
+	}
 	
-	//turn fade_in ON automatically
-	//bolt.noise_offset = random(10000);
-	//bolt.alpha = 1;
-	//bolt.life = 40;
-	//bolt.points_to_draw = (params.fade_in) ? 0 : infinity;
-	//bolt.children = [];
-	//array_foreach(bolt.points, function(point) {
-	//	point.__drawn = false;
-	//});
+	thunder.strike(_x, 85, _x, 703, params.duration, , _collateral);
+	
 }

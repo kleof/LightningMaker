@@ -59,7 +59,10 @@ PRESETS = {
 			fade_in:			  LMD_FADE_IN,
 			fade_in_speed:		  LMD_FADE_IN_SPEED,
 			child_reduce_width:   LMD_CHILD_REDUCE_WIDTH,
-			child_reduce_alpha:   LMD_CHILD_REDUCE_ALPHA
+			child_reduce_alpha:   LMD_CHILD_REDUCE_ALPHA,
+			
+			// Strike Params
+			duration:			  LMD_STRIKE_DURATION,
 		}
 	},
 	

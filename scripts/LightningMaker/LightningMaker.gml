@@ -35,7 +35,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	child_length_max =      LMD_CHILD_LENGTH_MAX;
 	recursion_level_max =   LMD_RECURSION_LEVEL_MAX;
 	child_cutoff_start =    LMD_CHILD_CUTOFF_START;							// % of parent length, (applies only to main and not children)
-	child_cutoff_end =      LMD_CHILD_CUTOFF_END;							// % of parent length
+	child_cutoff_end =      LMD_CHILD_CUTOFF_END;							// % of parent length, (applies to children - useful for forked, multi-end lightnings)
 	fade_out =			    LMD_FADE_OUT;
 	fade_in =			    LMD_FADE_IN;
 	fade_in_speed =		    LMD_FADE_IN_SPEED;
@@ -217,7 +217,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.fade_out				= fade_out;
 		new_child.fade_in				= fade_in;
 		//new_child.child_cutoff_start	= 0;															// Not applying it to children
-		//new_child.child_cutoff_end	= 0;															// -//-
+		new_child.child_cutoff_end		= child_cutoff_end;												// Useful for forked, multi-end lightnings
 		
 		new_child.recursion_level		= recursion_level + 1;
 		new_child.set_outline_width(outline_width);														// this sets adjusted_outline as well
@@ -753,6 +753,7 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static __copy = function(_lightning) {
 		static params_to_skip = ["start_point",
 								 "end_point",
+								 "collateral",
 								 "points",
 								 "num",
 								 "noise_offset",
@@ -807,8 +808,8 @@ function LightningStrike(_template) constructor {
 	template = _template;
 	lightnings = [];
 	
-	static strike = function(_start_x, _start_y, _end_x, _end_y, _duration=40, _fade_in_speed=template.fade_in_speed) {
-		var lightning = new Lightning(new LPoint(_start_x, _start_y), new LPoint(_end_x, _end_y));
+	static strike = function(_start_x, _start_y, _end_x, _end_y, _duration=LMD_STRIKE_DURATION, _fade_in_speed=template.fade_in_speed, _collateral=[]) {
+		var lightning = new Lightning(new LPoint(_start_x, _start_y), new LPoint(_end_x, _end_y), _collateral);
 		lightning.__copy(template);
 		
 		lightning.start_point.__drawn = true;
@@ -819,9 +820,9 @@ function LightningStrike(_template) constructor {
 	}
 	
 	static draw = function() {
-		var lightnings_number = array_length(lightnings);
+		var lightnings_length = array_length(lightnings);
 		
-		for (var i = lightnings_number - 1; i >= 0; i--) {
+		for (var i = lightnings_length - 1; i >= 0; i--) {
 			var lightning = lightnings[i];
 			if (lightning.life <= 0) {
 				array_delete(lightnings, i, 1);

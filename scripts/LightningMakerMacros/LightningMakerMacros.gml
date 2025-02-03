@@ -47,3 +47,8 @@
 #macro LMD_DISK_GLOW_INTENSITY 1
 #macro LMD_DISK_GLOW_ALPHA 1
 #macro LMD_DISK_GLOW_GAMMA .2
+
+// Strike defaults
+
+#macro LMD_STRIKE_DURATION 60
+
