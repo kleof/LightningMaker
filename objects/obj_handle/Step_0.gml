@@ -1,6 +1,7 @@
 if (dragging) {
     x = mouse_x - xoffset;
     y = mouse_y - yoffset;
+	
     if (mouse_check_button_released(mb_left)) {
         dragging = false;    
     }

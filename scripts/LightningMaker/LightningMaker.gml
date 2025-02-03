@@ -751,7 +751,17 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	}
 	
 	static __copy = function(_lightning) {
-		static params_to_skip = ["start_point", "end_point", "points", "num", "noise_offset", "alpha", "children"];
+		static params_to_skip = ["start_point",
+								 "end_point",
+								 "points",
+								 "num",
+								 "noise_offset",
+								 "alpha",
+								 "length",
+								 "angle",
+								 "segment_real",
+								 "height_reduction",
+								 "children"];
 		ref = self;
 		
 		struct_foreach(_lightning, method({params_to_skip, ref}, function(_param_name, _value) {
@@ -793,7 +803,7 @@ function LPoint(_x, _y) constructor {
 }
 
 
-function Thunderbolt(_template) constructor {
+function LightningStrike(_template) constructor {
 	template = _template;
 	lightnings = [];
 	
@@ -822,7 +832,6 @@ function Thunderbolt(_template) constructor {
 		}
 	}
 	
-	// test if it's working
 	static update = function() {
 		if (array_length(lightnings) == 0) return;
 		

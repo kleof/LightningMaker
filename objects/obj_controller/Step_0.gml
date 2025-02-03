@@ -44,7 +44,7 @@ bolt.set_density(params.density)
 
 
 if (mouse_check_button_pressed(mb_right)) {
-	// Check if params changed, make new thunderbolt if they did, otherwise use the same one
+	// Check if params changed, make new LightningStrike if they did, otherwise use the same one
 	if (variable_get_hash(params_clone) != variable_get_hash(params)) {
 		params_clone = variable_clone(params);
 		thunder.set_template(bolt);

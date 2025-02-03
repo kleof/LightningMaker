@@ -26,7 +26,7 @@ load_preset(PRESETS.pale_rose);
 params_clone = variable_clone(params);
 
 bolt = new Lightning(start_handle, end_handle);
-thunder = new Thunderbolt(bolt);
+thunder = new LightningStrike(bolt);
 
 //bolt = new Lightning(start_handle, end_handle, [handle3, handle4, handle5]);
 
@@ -117,10 +117,11 @@ dbg_slider(ref_create(params, "recursion_level_max"), 1, 10, "Max recursion leve
 dbg_slider(ref_create(params, "child_cutoff_start"), 0, 1, "Start cutoff", .05);
 dbg_slider(ref_create(params, "child_cutoff_end"), 0, 1, "End cutoff", .05);
 dbg_checkbox(ref_create(params, "fade_out"), "Fade out");
-dbg_checkbox(ref_create(params, "fade_in"), "Fade in"); // not ready
-dbg_slider(ref_create(params, "fade_in_speed"), 0.1, 10, "Fade in speed", .1);
 dbg_checkbox(ref_create(params, "child_reduce_width"), "Reduce child width");
 dbg_checkbox(ref_create(params, "child_reduce_alpha"), "Reduce child alpha");
+dbg_text_separator("Fade in & Strike");
+dbg_checkbox(ref_create(params, "fade_in"), "Fade in");
+dbg_slider(ref_create(params, "fade_in_speed"), 0.1, 10, "Fade in speed", .1);
 
 // EXAMPLES
 dbg_text_separator("Examples");
