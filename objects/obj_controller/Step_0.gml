@@ -60,6 +60,6 @@ if (mouse_check_button_pressed(mb_right)) {
 		array_push(_collateral, new LPoint(_x + random_range(-200, 200), 703));
 	}
 	
-	thunder.strike(_x, 85, _x, 703, params.duration, , _collateral);
+	thunder.strike(_x, 85, _x + random_range(-100, 100), 703, params.duration, , _collateral);
 	
 }
