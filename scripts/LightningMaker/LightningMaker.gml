@@ -24,8 +24,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	outline_width =         LMD_OUTLINE_WIDTH;
 	outline_color =         LMD_OUTLINE_COLOR;
 	smoothing_type =        LMD_SMOOTHING_TYPE;
-	static secondary_noise_strength =			LMD_SEC_NOISE_STRENGTH;		// kinda jaggedness, turbulence seems enough, static for now
-	static secondary_noise_density_multiplier = LMD_SEC_NOISE_DENSITY_MULT;	// -//-
+	secondary_noise_strength =			 LMD_SEC_NOISE_STRENGTH;		// similar effect to turbulence, useful for LightningStrikes
+	secondary_noise_density_multiplier = LMD_SEC_NOISE_DENSITY_MULT;	// -//-
 	
 	child_chance =	        LMD_CHILD_CHANCE;								// chance to spawn child every frame
 	child_life_min =        LMD_CHILD_LIFE_MIN;						
@@ -41,9 +41,9 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	fade_in_speed =		    LMD_FADE_IN_SPEED;
 	child_reduce_width =    LMD_CHILD_REDUCE_WIDTH;
 	child_reduce_alpha =    LMD_CHILD_REDUCE_ALPHA;
-	static fade_out_speed = 0.02;
-	static fade_out_start = floor(1 / fade_out_speed);
-						    
+	fade_out_speed =		LMD_FADE_OUT_SPEED;
+	fade_out_start =		floor(1 / LMD_FADE_OUT_SPEED);
+	
 	glow_type =			    LMD_GLOW_TYPE;
 	blend_mode_add =	    LMD_BLEND_MODE_ADD;
 	neon_glow_intensity =   LMD_NEON_GLOW_INTENSITY;
@@ -204,6 +204,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.turbulence			= turbulence;													
 		new_child.height				= height * .8;													// make child height relative to it's length? // for big heights bigger reduction looks better
 		new_child.smoothing_type		= child_smoothing_type;
+		new_child.secondary_noise_strength				= secondary_noise_strength;
+		new_child.secondary_noise_density_multiplier	= secondary_noise_density_multiplier;
 		
 		new_child.child_chance			= child_chance;	
 		new_child.child_life_min		= child_life_min;	
@@ -218,6 +220,8 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		new_child.fade_in				= fade_in;
 		//new_child.child_cutoff_start	= 0;															// Not applying it to children
 		new_child.child_cutoff_end		= child_cutoff_end;												// Useful for forked, multi-end lightnings
+		new_child.fade_out_speed		= fade_out_speed;
+		new_child.fade_out_start		= fade_out_start;
 		
 		new_child.recursion_level		= recursion_level + 1;
 		new_child.set_outline_width(outline_width);														// this sets adjusted_outline as well
@@ -504,6 +508,28 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 		}
 		return self;
 	}
+	
+	static set_secondary_noise_strength = function(_secondary_noise_strength) {
+		secondary_noise_strength = _secondary_noise_strength;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_secondary_noise_strength(secondary_noise_strength);
+			}
+		}
+		return self;
+	}
+	
+	static set_secondary_noise_density_multiplier = function(_secondary_noise_density_multiplier) {
+		secondary_noise_density_multiplier = _secondary_noise_density_multiplier;
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_secondary_noise_density_multiplier(secondary_noise_density_multiplier);
+			}
+		}
+		return self;
+	}
 	#endregion
 	
 	#region GLOW SETTERS
@@ -690,6 +716,24 @@ function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	static set_fade_out = function(_enable) {
 		fade_out = _enable;
 		__set_draw_alpha();
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_fade_out(fade_out);
+			}
+		}
+		return self;
+	}
+	
+	static set_fade_out_speed = function(_fade_out_speed) {
+		fade_out_speed = _fade_out_speed;
+		fade_out_start = floor(1 / _fade_out_speed);
+		
+		if (is_parent) {
+			for (var i = 0; i < array_length(children); i++) {
+				children[i].set_fade_out_speed(fade_out_speed);
+			}
+		}
 		return self;
 	}
 	

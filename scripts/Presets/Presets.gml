@@ -33,6 +33,9 @@ PRESETS = {
 			color :			 LMD_COLOR,
 			outline_color :  LMD_OUTLINE_COLOR,
 			
+			secondary_noise_strength : LMD_SEC_NOISE_STRENGTH,
+			secondary_noise_density_multiplier : LMD_SEC_NOISE_DENSITY_MULT,
+			
 			glow_type :		 LMD_GLOW_TYPE,
 			blend_mode_add:  LMD_BLEND_MODE_ADD,
 			
@@ -56,6 +59,7 @@ PRESETS = {
 			child_cutoff_start:   LMD_CHILD_CUTOFF_START,
 			child_cutoff_end:     LMD_CHILD_CUTOFF_END,
 			fade_out:			  LMD_FADE_OUT,
+			fade_out_speed:		  LMD_FADE_OUT_SPEED,
 			fade_in:			  LMD_FADE_IN,
 			fade_in_speed:		  LMD_FADE_IN_SPEED,
 			child_reduce_width:   LMD_CHILD_REDUCE_WIDTH,
@@ -98,10 +102,13 @@ PRESETS = {
 		  "child_cutoff_end":0.0,
 		  "glow_type":2.0,
 		  fade_out: false,
-		  fade_in: false,			
+		  fade_in: false,
 		  child_reduce_width: true,
 		  child_reduce_alpha: true,
-		  blend_mode_add: false
+		  blend_mode_add: false,
+		  secondary_noise_strength: LMD_SEC_NOISE_STRENGTH,
+		  secondary_noise_density_multiplier: LMD_SEC_NOISE_DENSITY_MULT,
+		  fade_out_speed: LMD_FADE_OUT_SPEED
 		}
 	},
 	

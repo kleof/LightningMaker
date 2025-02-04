@@ -38,6 +38,10 @@ bolt.set_density(params.density)
 	.set_child_reduce_width(params.child_reduce_width)
 	.set_child_reduce_alpha(params.child_reduce_alpha)
 	.set_fade_in_speed(params.fade_in_speed)
+	.set_secondary_noise_strength(params.secondary_noise_strength)
+	.set_secondary_noise_density_multiplier(params.secondary_noise_density_multiplier)
+	.set_fade_out_speed(params.fade_out_speed)
+
 
 // crash button
 //if (mouse_check_button_pressed(mb_left)) instance_destroy(start_handle);
