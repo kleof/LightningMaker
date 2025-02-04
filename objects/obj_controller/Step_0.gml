@@ -44,6 +44,10 @@ bolt.set_density(params.density)
 
 
 if (mouse_check_button_pressed(mb_right)) {
+	start_handle.x = 450;
+	start_handle.y = 600;
+	end_handle.x = 450;
+	end_handle.y = 700;
 	// Check if params changed, make new LightningStrike if they did, otherwise use the same one
 	if (variable_get_hash(params_clone) != variable_get_hash(params)) {
 		params_clone = variable_clone(params);
