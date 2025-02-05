@@ -58,7 +58,7 @@ if (mouse_check_button_pressed(mb_right)) {
 		thunder.set_template(bolt);
 	}
 	
-	var _x = random_range(580, 970);
+	var _x = random_range(700, 1100);
 	var _collateral = [];
 	repeat (irandom(8)) { // add param for that
 		array_push(_collateral, new LPoint(_x + random_range(-200, 200), 703));

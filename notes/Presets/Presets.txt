@@ -75,6 +75,42 @@ more fluid, increase sec density to 5, go green/blue?
   "discokitty":false,
   "blend_mode_add":false
 }
+{
+  "segment":12.0,
+  "density":0.14000000059604645,
+  "spd":0.02500000037252903,
+  "height":177.0,
+  "turbulence":1.0,
+  "smoothing_type":1.0,
+  "line_width":4.0,
+  "color":16777215.0,
+  "outline_width":3.0,
+  "outline_color":5701865.0,
+  "neon_glow_intensity":1.8999999999999999,
+  "neon_glow_inner":13.699999999999999,
+  "neon_glow_inner_mult":21.0,
+  "disk_glow_intensity":1.0,
+  "disk_glow_gamma":1.5,
+  "disk_glow_alpha":1.0,
+  "disk_glow_radius":256.0,
+  "disk_glow_quality":5.5,
+  "child_chance":1.0,
+  "children_max":2.0,
+  "child_life_min":108.0,
+  "child_life_max":133.0,
+  "child_length_min":176.0,
+  "child_length_max":2000.0,
+  "recursion_level_max":2.0,
+  "child_cutoff_start":0.0,
+  "child_cutoff_end":0.0,
+  "fade_out":true,
+  "fade_in":true,
+  "fade_in_speed":2.4000000953674316,
+  "child_reduce_width":true,
+  "child_reduce_alpha":false,
+  "discokitty":false,
+  "blend_mode_add":false
+}
 
 {
   "segment":12.0,
