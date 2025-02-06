@@ -4,7 +4,7 @@
 /// @desc Creates new lightning
 /// @param {any*} start_point Starting point, can be anything with x,y attributes, like object instance, struct literal, etc
 /// @param {any*} end_point Ending point, can be anything with x,y attributes, like object instance, struct literal, etc
-/// @param {any*} collateral [Optional] array of points (instances, structs, etc) that can be hit by child lightnings
+/// @param {Array} collateral [Optional] array of points (instances, structs, etc) that have a chance to be hit by child lightnings
 function Lightning(_start_point, _end_point, _collateral=[]) constructor {
 	
 	// Main variables
@@ -847,11 +847,21 @@ function LPoint(_x, _y) constructor {
 	}
 }
 
-
+/// @desc Creates new lightning strike
+/// @param {Struct.Lightning} template Lightning struct that will be used as a template to create strike effects
 function LightningStrike(_template) constructor {
 	template = _template;
 	lightnings = [];
 	
+	/* Strikes a lightning
+	 * @param {Real} _start_x Start point x coordinate
+	 * @param {Real} _start_y Start point y coordinate
+	 * @param {Real} _end_x End point x coordinate
+	 * @param {Real} _end_y End point y coordinate
+	 * @param {Real} [_duration] [Optional] How long will lightning be shown (in frames)
+	 * @param {Real} [_fade_in_speed] [Optional] Speed of a fade in animation. By default will use speed set in template lightning
+	 * @param {Array} [_collateral] [Optional] array of points (instances, structs, etc) that have a chance to be hit by child lightnings
+	 */
 	static strike = function(_start_x, _start_y, _end_x, _end_y, _duration=LMD_STRIKE_DURATION, _fade_in_speed=template.fade_in_speed, _collateral=[]) {
 		var lightning = new Lightning(new LPoint(_start_x, _start_y), new LPoint(_end_x, _end_y), _collateral);
 		lightning.__copy(template);
