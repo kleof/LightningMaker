@@ -121,12 +121,13 @@ dbg_slider(ref_create(params, "fade_out_speed"), .001, .15, "Fade out speed", .0
 dbg_checkbox(ref_create(params, "child_reduce_width"), "Reduce child width");
 dbg_checkbox(ref_create(params, "child_reduce_alpha"), "Reduce child alpha");
 // Fade in & Strike subsection
-dbg_text_separator("Fade in & Strike");
+dbg_text_separator("Fade in & Strike [PRESS RIGHT CLICK TO STRIKE]");
 dbg_checkbox(ref_create(params, "fade_in"), "Fade in");
 dbg_slider(ref_create(params, "fade_in_speed"), 0.1, 10, "Fade in speed", .1);
 dbg_slider(ref_create(params, "duration"), 1, 300, "Strike duration (in frames)", 1);
 dbg_slider(ref_create(params, "secondary_noise_strength"), .01, 2, "Secondary noise strength", .01);
 dbg_slider(ref_create(params, "secondary_noise_density_multiplier"), 0, 20, "Secondary noise density mult", 1);
+dbg_slider(ref_create(params, "end_points_max"), 0, 20, "Max number of random endpoints (only for preview)", 1);
 
 // EXAMPLES
 dbg_text_separator("Examples");
@@ -160,7 +161,7 @@ generate_code = function() {
 		if ((params.glow_type == GLOW_TYPE_DISK || params.glow_type == GLOW_TYPE_NONE) && (string_pos("neon", _name) != 0)) continue;
 		if ((params.glow_type == GLOW_TYPE_NEON || params.glow_type == GLOW_TYPE_NONE) && (string_pos("disk", _name) != 0)) continue;
 		if ((string_pos("child_length_max", _name) != 0) && params[$ _name] >= 2000) { text += $".set_{_name}(infinity)\n"; continue; }
-		if (string_pos("duration", _name) != 0) continue;
+		if (string_pos("duration", _name) != 0 || string_pos("end_points_max", _name) != 0) continue;
 		
 		text += $".set_{_name}({params[$ _name]})\n";
 	}

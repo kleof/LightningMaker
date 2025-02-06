@@ -67,6 +67,7 @@ PRESETS = {
 			
 			// Strike Params
 			duration:			  LMD_STRIKE_DURATION,
+			end_points_max: 8
 		}
 	},
 	
