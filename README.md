@@ -4,8 +4,7 @@
 
 Import using menu: Tools ➜ Import Local Asset Package, or by dragging and dropping the `.yymps` file onto the workspace area of the GameMaker window.
 
-https://github.com/user-attachments/assets/3da5580e-9dc7-4301-9916-bde346398a40
-
+https://github.com/user-attachments/assets/347219df-5155-4379-b645-b306eb135f0b
 
 ### ⚡ Basic Use:
 ```gml
@@ -46,6 +45,9 @@ bolt_3.draw();
 bolt.glow_reset();
 ```
 ### 🌩️ Lightning Strikes:
+
+https://github.com/user-attachments/assets/44137851-1464-4431-975c-c16fd4161e1c
+
 Make a Lightning and provide it to LightningStrike constructor - it will be used as a template for strike effects
 ```gml
 var template = new Lightning({x:0, y:0}, {x:0, y:0}).set_fade_in(true);
