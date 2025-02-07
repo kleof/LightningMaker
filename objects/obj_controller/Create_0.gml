@@ -158,7 +158,7 @@ dbg_button("Rose", function() { load_preset_strike(PRESETS.rose) }); dbg_same_li
 dbg_button("Spectre", function() { load_preset_strike(PRESETS.spectre) });
 dbg_button("Snek", function() { load_preset_strike(PRESETS.snek)}); dbg_same_line();
 dbg_button("Palpatine", function() { load_preset_strike(PRESETS.palpatine) });
-dbg_button("Goldi", function() { load_preset_strike(PRESETS.a3) }); dbg_same_line();
+dbg_button("Goldi", function() { load_preset_strike(PRESETS.goldi) }); dbg_same_line();
 dbg_button("Drain", function() { load_preset_strike(PRESETS.drain) });
 
 //dbg_slider(ref_create(params, "glow_type"), 0, 1, "---", .05);
