@@ -26,7 +26,7 @@ bolt = new Lightning(start_point, obj_player);
 ```
 When using anonymous struct literal, you can update lightning position with `update_start(x, y)` and `update_end(x, y)` methods
 
-### _Run example project to customize lightning and generate code that will set all parameters_
+### _Run visualizer to customize lightning and generate code that will set all parameters_
 \
 ![image](https://github.com/user-attachments/assets/ce5ea202-85ad-495c-8815-51ffafd199e6)
 \
