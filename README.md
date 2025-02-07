@@ -1,10 +1,13 @@
-## [> Download All<](https://github.com/kleof/LightningMaker/archive/refs/heads/main.zip)
-[download local package only](https://github.com/kleof/LightningMaker/releases/download/v0.0.1/LightningMaker.yymps)
+## ✨ Instalation
+[Download local package](https://github.com/kleof/LightningMaker/releases) \
+[Download visualizer](https://github.com/kleof/LightningMaker/archive/refs/heads/main.zip) 
+
+Import using menu: Tools ➜ Import Local Asset Package, or by dragging and dropping the `.yymps` file onto the workspace area of the GameMaker window.
 
 https://github.com/user-attachments/assets/3da5580e-9dc7-4301-9916-bde346398a40
 
 
-### Basic Use:
+### ⚡ Basic Use:
 ```gml
 // Lightning(start_point, end_point)
 
@@ -42,8 +45,39 @@ bolt_3.draw();
 
 bolt.glow_reset();
 ```
+### 🌩️ Lightning Strikes:
+Make a Lightning and provide it to LightningStrike constructor - it will be used as a template for strike effects
+```gml
+var template = new Lightning({x:0, y:0}, {x:0, y:0}).set_fade_in(true);
+lightning = new LightningStrike(template);
 
-## Resources:
+// DRAW EVENT
+lightning.update();
+// or
+lightning.glow_set();
+lightning.draw();
+lightning.glow_reset();
+```
+Now you can use `strike` method whenever you want:
+```gml
+/* strike
+* @param {Real} _start_x Start point x coordinate
+* @param {Real} _start_y Start point y coordinate
+* @param {Real} _end_x End point x coordinate
+* @param {Real} _end_y End point y coordinate
+* @param {Real} [_duration] [Optional] How long will lightning be shown (in frames)
+* @param {Real} [_fade_in_speed] [Optional] Speed of a fade in animation. By default speed set in template will be used
+* @param {Array} [_collateral] [Optional] array of points (instances, structs, etc) that have a chance to be hit by child lightnings
+*/
+
+// STEP EVENT
+if (mouse_check_button_pressed(mb_right)) {
+  var _x = random(room_width);
+  lightning.strike(_x, 0, _x, 800);
+}
+```
+
+## Acknowledgements:
 Perlin Noise by Nate Hunter - [functions](https://github.com/badwrongg/gm_camera_and_views/blob/main/scripts/perlin_noise_lib/perlin_noise_lib.gml), [shader](https://github.com/badwrongg/gm_camera_and_views/tree/main/shaders/shd_perlin_noise_glsl_es)  
 Disk Glow by [Xor](https://github.com/XorDev)  
 Neon Glow by [Jan Vorisek](https://github.com/odditica/NeonGlow)  
