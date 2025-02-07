@@ -859,7 +859,7 @@ function LightningStrike(_template) constructor {
 	 * @param {Real} _end_x End point x coordinate
 	 * @param {Real} _end_y End point y coordinate
 	 * @param {Real} [_duration] [Optional] How long will lightning be shown (in frames)
-	 * @param {Real} [_fade_in_speed] [Optional] Speed of a fade in animation. By default will use speed set in template lightning
+	 * @param {Real} [_fade_in_speed] [Optional] Speed of a fade in animation. By default speed set in template will be used
 	 * @param {Array} [_collateral] [Optional] array of points (instances, structs, etc) that have a chance to be hit by child lightnings
 	 */
 	static strike = function(_start_x, _start_y, _end_x, _end_y, _duration=LMD_STRIKE_DURATION, _fade_in_speed=template.fade_in_speed, _collateral=[]) {
@@ -885,6 +885,14 @@ function LightningStrike(_template) constructor {
 			
 			lightning.draw();
 		}
+	}
+	
+	static glow_set = function() {
+		template.glow_set();
+	}
+	
+	static glow_reset = function() {
+		template.glow_reset();
 	}
 	
 	static update = function() {

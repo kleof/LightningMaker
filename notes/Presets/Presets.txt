@@ -2,13 +2,6 @@
 
 
 
-
-
-
-
-
-
-
 set secondary noise speed multiplier to x5
 {
   "segment":12.0,
